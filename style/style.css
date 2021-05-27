@@ -13,19 +13,24 @@
 4 - NEW MEMBER LOGIN
 
     ******** GENERAL STYLING ********/
-
+* {
+    margin: 0px;
+}
 
 
     /******** HEADER AND FOOTER ********/
 
-
+#headerContainer, #footerContainer {
+    background-color: #810000;
+    height: 100px;
+}
 
 
     /******** LOGIN PAGE *******/
 
-    #memberContainer, #staffContainer, #newMemberContainer{
-        display: none;
-    }
+#memberContainer, #staffContainer, #newMemberContainer{
+    display: none;
+}
 
     /******** NEW MEMBER LOGIN ********/
 
