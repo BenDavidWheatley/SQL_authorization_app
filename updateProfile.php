@@ -14,16 +14,18 @@ include('login.php');
     </head>
 
     <body>
-        <header>
-            <?php include('header.php')?>
-        <header>
+        <div class='pageContainer'>
+            <div class='mainContainer'>       
+                <header>
+                    <?php include('header.php')?>
+                <header>
 
-
-        <footer>
-            <?php include('footer.php') ?>
-        </footer>
-
-        <script src='script/script.js'></script>
+                <footer>
+                    <?php include('footer.php') ?>
+                </footer>
+                <script src='script/script.js'></script>
+            </div>
+        </div>
 
     </body> 
 </html>

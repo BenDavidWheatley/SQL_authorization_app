@@ -12,21 +12,32 @@
 3 - LOGIN PAGE
 4 - NEW MEMBER LOGIN
 
-    ******** GENERAL STYLING ********/
+******** GENERAL STYLING ********/
 * {
     margin: 0px;
 }
+.pageContainer {
+    position: relative;
+    min-height: 100vh;
+  }
+.mainContainer {
+    padding-bottom: 100px;    /* Footer height */
+}
 
-
-    /******** HEADER AND FOOTER ********/
+/******** HEADER AND FOOTER ********/
 
 #headerContainer, #footerContainer {
     background-color: #810000;
     height: 100px;
 }
+#footerContainer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;  
+}   
 
-
-    /******** LOGIN PAGE *******/
+/******** LOGIN PAGE *******/
 
 #memberContainer, #staffContainer, #newMemberContainer{
     display: none;

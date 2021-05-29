@@ -12,18 +12,20 @@ include('login.php');
         <link rel="stylesheet" href="style/style.css" type="text/css">
         <title>Library App</title>
     </head>
-
-    <body>
-        <header>
-            <?php include('header.php')?>
-        <header>
-
-
-        <footer>
-            <?php include('footer.php')?>
-        </footer>
-
-        <script src='script/script.js'></script>
-    </body>
     
+    <body>
+        <div class='mainContainer'>
+            <div class='pageContainer'>
+                <header>
+                    <?php include('header.php')?>
+                <header>
+                
+                <footer>
+                    <?php include('footer.php')?>
+                </footer>
+
+                <script src='script/script.js'></script>
+            </div>
+        </div>
+    </body>  
 </html>
