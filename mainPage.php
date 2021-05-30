@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include('function.php');
+include('membersClassOOP.php');
 include('login.php');
 ?>
 
@@ -20,8 +20,8 @@ include('login.php');
                 <header>
                     <?php include('header.php')?>
                 <header>
-
                     <p>THIS IS THE MAIN PAGE</p>
+                    
 
                 <footer>
                     <?php include('footer.php') ?>

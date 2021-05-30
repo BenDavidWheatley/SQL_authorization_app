@@ -1,10 +1,16 @@
 member = (x) => {
     if (x === 'memberContainer') {
         document.getElementById(x).style.display = 'block';
+        document.getElementById('staffContainer').style.display = 'none';
+        document.getElementById('newMemberContainer').style.display = 'none';
     } else if (x === 'staffContainer'){
         document.getElementById(x).style.display = 'block';
+        document.getElementById('memberContainer').style.display = 'none'; 
+        document.getElementById('newMemberContainer').style.display = 'none';
     } else if (x === 'newMemberContainer') {
         document.getElementById(x).style.display = 'block';
+        document.getElementById('memberContainer').style.display = 'none'; 
+        document.getElementById('staffContainer').style.display = 'none';
     } else if (x === 'cancelMember'){
         document.getElementById('memberContainer').style.display = 'none'; 
     } else if (x === 'cancelStaff'){

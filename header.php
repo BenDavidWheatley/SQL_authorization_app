@@ -11,6 +11,9 @@
         <div id='headerContainer'>
             <section>
                 <p>LOGO</p>
+                <?php if($_SESSION['isStaff'] === TRUE){
+                        echo 'add edit database';
+                    }?>
             </section>
         </div>
     </body>

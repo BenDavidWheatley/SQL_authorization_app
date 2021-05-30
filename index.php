@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include('function.php');
+include('membersClassOOP.php');
 include('login.php');
 include('connect.php');
 $mysqli->query($sql);
@@ -52,34 +52,29 @@ $mysqli->query($sql);
                 </div>
                 <?php
                     if(isset($_POST['submitMember'])){
-                        $userName = $_POST['member'];
-                        $password = $_POST['memberPassword'];
-                        $sqled = "SELECT * FROM users WHERE username = '$userName'";                  
-                        $memberInfo = $mysqli->query($sqled);
-                        $memberCheck = $memberInfo->fetch_assoc();               
-                            if($memberCheck['username'] === $userName && $memberCheck['user_password'] === $password){
-                                header("Location: mainPage.php");
-                                exit();
-                            } else {
-                                echo 'The username or password is incorrect';
-                            }
-                    }?>
+                        $newUser->login();
+                    }
+                    ?>
 
                 <div id='staffContainer'>
-                    <form id='staffLoginForm' method='post' action='staff.php'>
+                    <form id='staffLoginForm' method='post'>
                         <label for='staffMember'>Staff ID</label>
-                        <input id='staffMember' name='staffMember' type='text'>
+                        <input id='staffMember' name='staffNumber' type='text'>
 
-                        <label for='staffMemberPassword'>Password</label>
-                        <input id='staffMemberPassword' name='staffMemberPassword' type='text'>
+                        <label for='staffPassword'>Password</label>
+                        <input id='staffPassword' name='staffPassword' type='text'>
 
-                        <button type='submit'>Login</button>                
+                        <button type='submit' name='staffLogin'>Login</button>                
                     </form>
                     <button onclick='member("cancelStaff")'>Cancel</button>
                 </div>
-
+                <?php 
+                    if(isset($_POST['staffLogin'])){
+                        $newUser->staffLogin();
+                    }
+                    ?>
                 <div id='newMemberContainer'>
-                    <form id='newMemberForm'  method='post'>  <!--action='newAccount.php'-->
+                    <form id='newMemberForm'  method='post' >
                         <label for='newMemberFirstName'>First Name</label>
                         <input id='newMemberFirstName' name='newMemberFirstName' type='text'>
 
@@ -99,6 +94,11 @@ $mysqli->query($sql);
                     </form>
                     <button onclick='member("cancelNewMember")'>Cancel</button>
                 </div> 
+                <?php 
+                    if(isset($_POST['newMemberSubmit'])){
+                        $newUser->newUserAccount();
+                        header("Location: newAccount.php");
+                    }?>
             </section>
 
             <footer>
