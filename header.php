@@ -10,10 +10,17 @@
     <body>
         <div id='headerContainer'>
             <section>
-                <p>LOGO</p>
-                <?php if($_SESSION['isStaff'] === TRUE){
-                        echo 'add edit database';
-                    }?>
+                
+                <?php
+                    echo "<a href='mainPage.php'><p>Home</p></a>";
+                    echo "<a href='index.php'><p>Logout</p></a>";
+                
+                if($_SESSION['isStaff'] === TRUE){
+                    echo "<a href='editLibrary.php'><p>Edit Library</p></a>";                       
+                    }
+                if($_SESSION['isStaff'] === FALSE){
+                    echo "<a href='profile.php'><p>Edit Profile</p></a>";
+                }?>
             </section>
         </div>
     </body>

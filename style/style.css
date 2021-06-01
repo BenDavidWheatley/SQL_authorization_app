@@ -27,8 +27,12 @@
 /******** HEADER AND FOOTER ********/
 
 #headerContainer, #footerContainer {
-    background-color: #810000;
+    background-color: #EC8F00;
     height: 100px;
+}
+#headerContainer img {
+    height: 200px;
+    width: auto;
 }
 #footerContainer {
     position: absolute;

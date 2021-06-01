@@ -39,9 +39,21 @@ $mysqli->query($sql);
                         if(isset($_POST['searchAuthorSubmit'])){
                             $newAuthor->searchAuthor();               
                         }; 
+                        if(isset($_POST['editAuthor'])){
+                            $newAuthor->editAuthor();
+                        }
+                        if(isset($_POST['submitAuthorEdit'])){
+                            $newAuthor->submitAuthorEdit();
+                        }
                         if (isset($_POST['viewBooks'])){
                             $newAuthor->viewAuthorsBooks();
                         }; 
+                        if(isset($_POST['deleteAuthor'])){
+                            $newAuthor->deleteAuthorWarning();
+                        }
+                        if(isset($_POST['confirmDeleteAuthor'])){
+                            $newAuthor->deleteAuthorFromDatabase();
+                        }
                         if(isset($_POST['submitAuthor'])){
                            $newAuthor->addAuthorToDatabase();
                         };                 
@@ -71,7 +83,53 @@ $mysqli->query($sql);
                         <?php 
                             if (isset($_POST['searchBook'])) {
                                 $newAuthor->searchBook();                    
-                            }; ?>
+                            }; 
+                            if (isset($_POST['sortByIdAsc'])){
+                                $_SESSION['sortBy'] = 'book_id';
+                                $newAuthor->sortAscending();
+                            }else if (isset($_POST['sortByTitleAsc'])){
+                                $_SESSION['sortBy'] = 'book_title';
+                                $newAuthor->sortAscending();
+                            }else if(isset($_POST['sortByAuthorAsc'])){
+                                $_SESSION['sortBy'] = 'author_name';
+                                $newAuthor->sortAscending();
+                            }else if(isset($_POST['sortByYearAsc'])){
+                                $_SESSION['sortBy'] = 'year_released';
+                                $newAuthor->sortAscending();
+                            }else if(isset($_POST['sortByGenreAsc'])){
+                                $_SESSION['sortBy'] = 'book_genre';
+                                $newAuthor->sortAscending();
+                            }else if(isset($_POST['sortByAgeAsc'])){
+                                $_SESSION['sortBy'] = 'age';
+                                $newAuthor->sortAscending();
+                            }else if(isset($_POST['sortByCheckedOutAsc'])){
+                                $_SESSION['sortBy'] = 'is_checked_out';
+                                $newAuthor->sortAscending();
+                            }else if (isset($_POST['sortByIdDesc'])){
+                                $_SESSION['sortBy'] = 'book_id';
+                                $newAuthor->sortDescending();
+                            }
+                            else if (isset($_POST['sortByTitleDesc'])){
+                                $_SESSION['sortBy'] = 'book_title';
+                                $newAuthor->sortDescending();
+                            }else if(isset($_POST['sortByAuthorDesc'])){
+                                $_SESSION['sortBy'] = 'author_name';
+                                $newAuthor->sortDescending();
+                            }else if(isset($_POST['sortByYearDesc'])){
+                                $_SESSION['sortBy'] = 'year_released';
+                                $newAuthor->sortDescending();
+                            }else if(isset($_POST['sortByGenreDesc'])){
+                                $_SESSION['sortBy'] = 'book_genre';
+                                $newAuthor->sortDescending();
+                            }else if(isset($_POST['sortByAgeDesc'])){
+                                $_SESSION['sortBy'] = 'age';
+                                $newAuthor->sortDescending();
+                            }else if(isset($_POST['sortByCheckedOutDesc'])){
+                                $_SESSION['sortBy'] = 'is_checked_out';
+                                $newAuthor->sortDescending();
+                            }
+                            
+                            ?>
                     </div>
                     <div id='editContainer'>
                         <?php

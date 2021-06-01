@@ -15,7 +15,7 @@ class LibraryDatabase {
 
 // ******** METHODS ********  
 
-// 1 -  This function will search the database for all or a particular author.
+// This function will search the database for all or a particular author.
 
     public function searchAuthor(){
         echo "<h3>Your author search result is - </h3>";
@@ -37,6 +37,8 @@ class LibraryDatabase {
                             <td>                      
                             <form method='post'>
                                 <button id=" . $author["author_id"] . " type='submit' name='viewBooks' value=" . $author["author_id"] . ">View books</button> 
+                                <button type='submit' name='editAuthor' value=" . $author["author_id"] . ">Edit Author</button>
+                                <button class='delete' id=" . $author["author_id"] . "type='submit' name='deleteAuthor' value=" . $author["author_id"] . ">Delete Author</button>
                                 <button onClick='window.location.href=window.location.href'>Cancel</button>
                             </form>    
                             </td>
@@ -69,9 +71,9 @@ class LibraryDatabase {
                     </form>
                 </div>";
             };   
-        }  
+    }  
 
-// This function will add a new author tho the database
+// This function will add a new author to the database
 
     public function addAuthorToDatabase(){
         $authorsName = strtolower($_POST['authorsName']);
@@ -84,6 +86,50 @@ class LibraryDatabase {
                 } else {
                     echo "Error: " . $authorName . "<br>" .  $mysqli->error;
                     }       
+    }
+    public function editAuthor(){
+        $id = $_POST['editAuthor'];
+        echo $id;
+        
+        $sql = "SELECT * FROM authors WHERE author_id = '$id'"; 
+        global $mysqli;                               
+        $author = $mysqli->query($sql);                                           
+        $rows = $author->fetch_assoc();
+
+        echo "<div id='formContainerAuthor'>
+                    <form id='authorFormContainer' method='post'>
+                        <label for='authorsName'>Authors Name</label>
+                        <input id='authorsName' name='authorsNameEdit' type='text' pattern='[a-z A-Z]+' value='" . $rows['author_name'] . "' required>
+
+                        <label for='authorsAge'>Authors Age</label>
+                        <input id='authorsAge' name='authorsAgeEdit' type='text' pattern='[0-9]+' value='" . $rows['age'] . "' required>
+
+                        <label for='mainGenre'>Main Genre</label>
+                        <select id='mainGenre' name='mainGenreEdit' required>
+                            <option>" . $rows['genre'] . "</option>
+                            <option>Fiction</option>
+                            <option>Non-fiction</option>
+                        </select>
+
+                        <button type='submit' name='submitAuthorEdit' value='" . $id . "'>Submit Edit</button>
+                        <button onClick='window.location.href=window.location.href'>Cancel</button>
+                    </form>
+                </div>";
+    }
+    public function submitAuthorEdit(){
+        $id = $_POST['submitAuthorEdit'];    
+        $authorName = strtolower($_POST['authorsNameEdit']);        
+        $age = $_POST['authorsAgeEdit'];
+        $genre = $_POST['mainGenreEdit'];      
+        $sql = "UPDATE authors
+        SET author_name = '$authorName', age = '$age', genre = '$genre'
+        WHERE author_id = $id";   
+        global $mysqli;    
+            if ($mysqli->query($sql) === TRUE) {
+                echo "Record '" . $authorName . "' updated successfully";
+            } else {
+                echo "Error deleting record: " . $mysqli->error;
+        }
     }
 
 // This function allows you to view all the authors books after searching for the author.
@@ -167,7 +213,8 @@ class LibraryDatabase {
                             <option value='18+'>18 +</option>
                         </select>
 
-                        <button type='submit' name='submitBook' value=" . $id . ">Submit</button>     
+                        <button type='submit' name='submitBook' value=" . $id . ">Submit</button>  
+                        <button onClick='window.location.href=window.location.href'>Cancel</button>   
                     </form>
                 </div>";
     }
@@ -188,18 +235,43 @@ class LibraryDatabase {
                 }
     }   
     public function searchBook(){
-        $result = '%'.strtolower($_POST['searchDatabase']).'%';               
+        $result = '%'.strtolower($_POST['searchDatabase']).'%';  
+        $_SESSION['search'] = $result;           
         echo "<h3>Your search result is - </h3>";
         $sqls = "SELECT * FROM books LEFT OUTER JOIN authors ON books.author_id = authors.author_id 
         WHERE book_title LIKE '$result'";
         global $mysqli;
-        $searchResult = $mysqli->query($sqls);               
+        $searchResult = $mysqli->query($sqls); 
+                echo "<form method='post'>
+                        <h5>ID</h5>
+                        <button id='sortById' type='submit' name='sortByIdAsc' value='sortById'>Asc</button>
+                        <button id='sortById' type='submit' name='sortByIdDesc' value='sortById'>Desc</button>
+                        <h5>Title</h5>
+                        <button id='sortByTitle' type='submit' name='sortByTitleAsc' value='sortByTitle'>Asc</button>
+                        <button id='sortByTitle' type='submit' name='sortByTitleDesc' value='sortByTitle'>Desc</button>
+                        <h5>Author</h5>
+                        <button id='sortByAuthor' type='submit' name='sortByAuthorAsc' value='sortByAuthor'>Asc</button>
+                        <button id='sortByAuthor' type='submit' name='sortByAuthorDesc' value='sortByAuthor'>Desc</button>
+                        <h5>Year</h5>
+                        <button id='sortBuYear' type='submit' name='sortByYearAsc' value='sortByYear'>Asc</button>
+                        <button id='sortBuYear' type='submit' name='sortByYearDesc' value='sortByYear'>Desc</button>  
+                        <h5>Genre</h5>                     
+                        <button id='sortByGenre' type='submit' name='sortByGenreAsc' value='sortByGenre'>Asc</button>   
+                        <button id='sortByGenre' type='submit' name='sortByGenreDesc' value='sortByGenre'>Desc</button> 
+                        <h5>Age Group</h5>
+                        <button id='sortByAge' type='submit' name='sortByAgeAsc' value='sortByAge'>Asc</button>
+                        <button id='sortByAge' type='submit' name='sortByAgeDesc' value='sortByAge'>Desc</button>
+                        <h5>Checked Out</h5>
+                        <button id='isCheckedOut' type='submit' name='sortByCheckedOutAsc' value='isCheckedOut'>Asc</button>
+                        <button id='isCheckedOut' type='submit' name='sortByCheckedOutDesc' value='isCheckedOut'>Desc</button>
+                    </form>";          
             while($rows = $searchResult->fetch_assoc()){                          
-                echo "<table id='searchContainer'>
+                echo "<table id='searchContainer'> 
                         <tr class='searchTable'>
                             <td>" . $rows["book_id"]. "</td>
                             <td>" . $rows["book_title"]. "</td>
                             <td>" . $rows["author_name"] . "</td>
+                            <td>" . $rows["year_released"] . "</td>
                             <td>" . $rows["book_genre"]. "</td>
                             <td>" . $rows["age_group"]. "</td>
                             <td>";
@@ -219,6 +291,126 @@ class LibraryDatabase {
                     </table>";
         }
     }
+
+// The following functions sort the information
+
+    public function sortAscending(){
+        $result = $_SESSION['search'];
+        $sortBy = $_SESSION['sortBy'];               
+        echo "<h3>Your search result is - </h3>";
+        $sqls = "SELECT * FROM books LEFT OUTER JOIN authors ON books.author_id = authors.author_id 
+        WHERE book_title LIKE '$result' ORDER BY `{$sortBy}` ASC";
+        global $mysqli;
+        $searchResult = $mysqli->query($sqls); 
+                echo "<form method='post'>
+                        <h5>ID</h5>
+                        <button id='sortById' type='submit' name='sortByIdAsc' value='sortById'>Asc</button>
+                        <button id='sortById' type='submit' name='sortByIdDesc' value='sortById'>Desc</button>
+                        <h5>Title</h5>
+                        <button id='sortByTitle' type='submit' name='sortByTitleAsc' value='sortByTitle'>Asc</button>
+                        <button id='sortByTitle' type='submit' name='sortByTitleDesc' value='sortByTitle'>Desc</button>
+                        <h5>Author</h5>
+                        <button id='sortByAuthor' type='submit' name='sortByAuthorAsc' value='sortByAuthor'>Asc</button>
+                        <button id='sortByAuthor' type='submit' name='sortByAuthorDesc' value='sortByAuthor'>Desc</button>
+                        <h5>Year</h5>
+                        <button id='sortBuYear' type='submit' name='sortByYearAsc' value='sortByYear'>Asc</button>
+                        <button id='sortBuYear' type='submit' name='sortByYearDesc' value='sortByYear'>Desc</button>  
+                        <h5>Genre</h5>                     
+                        <button id='sortByGenre' type='submit' name='sortByGenreAsc' value='sortByGenre'>Asc</button>   
+                        <button id='sortByGenre' type='submit' name='sortByGenreDesc' value='sortByGenre'>Desc</button> 
+                        <h5>Age Group</h5>
+                        <button id='sortByAge' type='submit' name='sortByAgeAsc' value='sortByAge'>Asc</button>
+                        <button id='sortByAge' type='submit' name='sortByAgeDesc' value='sortByAge'>Desc</button>
+                        <h5>Checked Out</h5>
+                        <button id='isCheckedOut' type='submit' name='sortByCheckedOutAsc' value='isCheckedOut'>Asc</button>
+                        <button id='isCheckedOut' type='submit' name='sortByCheckedOutDesc' value='isCheckedOut'>Desc</button>
+                    </form>";          
+            while($rows = $searchResult->fetch_assoc()){                          
+                echo "<table id='searchContainer'> 
+                        <tr class='searchTable'>
+                            <td>" . $rows["book_id"]. "</td>
+                            <td>" . $rows["book_title"]. "</td>
+                            <td>" . $rows["author_name"] . "</td>
+                            <td>" . $rows["year_released"] . "</td>
+                            <td>" . $rows["book_genre"]. "</td>
+                            <td>" . $rows["age_group"]. "</td>
+                            <td>";
+                                if($rows["is_checked_out"] === "1"){                            
+                                    echo 'yes';
+                                } else {
+                                    echo 'no';
+                                };                                                     
+                            echo "</td>  
+                            <td>                      
+                            <form method='post' onsubmit='editlibrary.php'>
+                                <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button> 
+                                <button>Cancel</button>  
+                            </form>    
+                            </td>
+                        <tr>     
+                    </table>";
+        }
+    }
+    public function sortDescending(){
+        $result = $_SESSION['search'];
+        $sortBy = $_SESSION['sortBy'];               
+        echo "<h3>Your search result is - </h3>";
+        $sqls = "SELECT * FROM books LEFT OUTER JOIN authors ON books.author_id = authors.author_id 
+        WHERE book_title LIKE '$result' ORDER BY `{$sortBy}` DESC";
+        global $mysqli;
+        $searchResult = $mysqli->query($sqls); 
+                echo "<form method='post'>
+                        <h5>ID</h5>
+                        <button id='sortById' type='submit' name='sortByIdAsc' value='sortById'>Asc</button>
+                        <button id='sortById' type='submit' name='sortByIdDesc' value='sortById'>Desc</button>
+                        <h5>Title</h5>
+                        <button id='sortByTitle' type='submit' name='sortByTitleAsc' value='sortByTitle'>Asc</button>
+                        <button id='sortByTitle' type='submit' name='sortByTitleDesc' value='sortByTitle'>Desc</button>
+                        <h5>Author</h5>
+                        <button id='sortByAuthor' type='submit' name='sortByAuthorAsc' value='sortByAuthor'>Asc</button>
+                        <button id='sortByAuthor' type='submit' name='sortByAuthorDesc' value='sortByAuthor'>Desc</button>
+                        <h5>Year</h5>
+                        <button id='sortBuYear' type='submit' name='sortByYearAsc' value='sortByYear'>Asc</button>
+                        <button id='sortBuYear' type='submit' name='sortByYearDesc' value='sortByYear'>Desc</button>  
+                        <h5>Genre</h5>                     
+                        <button id='sortByGenre' type='submit' name='sortByGenreAsc' value='sortByGenre'>Asc</button>   
+                        <button id='sortByGenre' type='submit' name='sortByGenreDesc' value='sortByGenre'>Desc</button> 
+                        <h5>Age Group</h5>
+                        <button id='sortByAge' type='submit' name='sortByAgeAsc' value='sortByAge'>Asc</button>
+                        <button id='sortByAge' type='submit' name='sortByAgeDesc' value='sortByAge'>Desc</button>
+                        <h5>Checked Out</h5>
+                        <button id='isCheckedOut' type='submit' name='sortByCheckedOutAsc' value='isCheckedOut'>Asc</button>
+                        <button id='isCheckedOut' type='submit' name='sortByCheckedOutDesc' value='isCheckedOut'>Desc</button>
+                    </form>";           
+            while($rows = $searchResult->fetch_assoc()){                          
+                echo "<table id='searchContainer'> 
+                        <tr class='searchTable'>
+                            <td>" . $rows["book_id"]. "</td>
+                            <td>" . $rows["book_title"]. "</td>
+                            <td>" . $rows["author_name"] . "</td>
+                            <td>" . $rows["year_released"] . "</td>
+                            <td>" . $rows["book_genre"]. "</td>
+                            <td>" . $rows["age_group"]. "</td>
+                            <td>";
+                                if($rows["is_checked_out"] === "1"){                            
+                                    echo 'yes';
+                                } else {
+                                    echo 'no';
+                                };                                                     
+                            echo "</td>  
+                            <td>                      
+                            <form method='post' onsubmit='editlibrary.php'>
+                                <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button> 
+                                <button>Cancel</button>  
+                            </form>    
+                            </td>
+                        <tr>     
+                    </table>";
+        }
+    }
+
+// The following functions allow edits to the datebase tables
+
     public function editBook(){
         $editId = strtolower($_POST['edit']);
         $sqls = "SELECT * FROM books WHERE book_id = '$editId'"; 
@@ -322,7 +514,6 @@ class LibraryDatabase {
         $book = $mysqli->query($sql);
         $bookToDelete = $book->fetch_assoc();
 
-        echo $id;
         echo "<h3 id='warning'> WARNING - You about to permanently delete " . $bookToDelete['book_title']. " from the database? </h3>
 
         <form method='post'>
@@ -340,6 +531,37 @@ class LibraryDatabase {
             if($mysqli->query($sql) === TRUE){
                 echo $deleteBook['book_title'] . " has been succesfully deleted from the database";
             }
+    }
+    public function deleteAuthorWarning() {
+        $id = $_POST['deleteAuthor'];
+        $sql = "SELECT author_name FROM authors WHERE author_id = '$id'";
+        global $mysqli;
+        $author = $mysqli->query($sql);
+        $authorToDelete = $author->fetch_assoc();
+
+        echo "<h3 id='warning'> WARNING - You about to permanently delete " . $authorToDelete['author_name']. " from the database, and all associated books! </h3>
+
+        <form method='post'>
+            <button type='submit' name='confirmDeleteAuthor' value=" . $id . ">Delete Author</button>
+            <button onclick='cancelEdit()'>Cancel</button>
+        </form>";
+    }
+    public function deleteAuthorFromDatabase() {
+        $id = $_POST['confirmDeleteAuthor'];
+
+        $author = "SELECT * FROM authors WHERE author_id = '$id'";
+        global $mysqli;
+        echo $id;
+        $authorToDelete = $mysqli->query($author);
+        $deleteAuthor = $authorToDelete->fetch_assoc();
+        $author = $deleteAuthor['author_name'];
+        $sql = "DELETE FROM books WHERE author_id = '$id'";
+        $mysqli->query($sql);
+        $sqled = "DELETE FROM authors WHERE author_id = '$id'";
+            if ($mysqli->query($sqled) === TRUE) {
+                echo $author . " has been succesfully deleted from the database";
+            }
+
     }
 }
 

@@ -16,13 +16,11 @@ $mysqli->query($sql);
   </head>
 
   <body>
-    <header>
-        <?php include('header.php')?>
-    <header>
 
     <!-- LOGIN BUTTONS -->
     <div class='pageContainer'>
         <div class='mainContainer'>
+            
             <section id='loginTypeContainer'>
                 <div> 
                     <button onclick='member("memberContainer")'>Member</button>

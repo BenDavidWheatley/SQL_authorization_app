@@ -1,6 +1,7 @@
 <?php 
 session_start();
 include('membersClassOOP.php');
+include('libraryClassOOP.php');
 include('login.php');
 ?>
 
@@ -21,6 +22,23 @@ include('login.php');
                     <?php include('header.php')?>
                 <header>
                     <p>THIS IS THE MAIN PAGE</p>
+                    <section id='searchLibrary'>
+                        <div>
+                            <form method='post'>
+                                <label for='searchDatabase'>Search Book</label>
+                                <input id='searchDatabase' name='searchDatabase' type='text'>
+                                <button type='submit' name='searchBook'>Search Database</button>
+                            </form>   
+                        </div>
+                    </section>
+                    <section>
+                        <?php 
+                            if(isset($_POST['searchBook'])){
+                                $newAuthor->searchBook();
+                            } ?>
+                    </section>
+                   
+
                     
 
                 <footer>

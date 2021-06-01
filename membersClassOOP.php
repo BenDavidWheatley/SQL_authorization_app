@@ -101,7 +101,7 @@ class NewMember {
         global $mysqli;                
         $memberInfo = $mysqli->query($sql);
         $memberCheck = $memberInfo->fetch_assoc();    
-        $_SESSION['isStaff'] = FALSEe;           
+        $_SESSION['isStaff'] = FALSE;           
             if($memberCheck['username'] === $userName && $memberCheck['user_password'] === $password){
                 header("Location: mainPage.php");
                 exit();
@@ -118,7 +118,7 @@ class NewMember {
         $validateStaff = $staff->fetch_assoc();
         $_SESSION['isStaff'] = TRUE;
             if($validateStaff['staff_number'] === $staffNumber && $validateStaff['user_password'] === $password){              
-                header("Location: mainPage.php");                              
+                header("Location: editLibrary.php");                              
             } else {
                 echo 'The staff number or password is incorrect';
             }
