@@ -26,7 +26,6 @@ class LibraryDatabase {
             while($author = $doesAuthorExist->fetch_assoc()){;                              
                 echo "<table id='searchAuthorContainer'>
                         <tr class='searchTable'>
-                            <td>" . $author["author_id"]. "</td>
                             <td>" . $author["author_name"]. "</td>
                             <td>" . $author["age"]. "</td>
                             <td>" . $author["genre"]. "</td>
@@ -102,7 +101,7 @@ class LibraryDatabase {
                         <input id='authorsName' name='authorsNameEdit' type='text' pattern='[a-z A-Z]+' value='" . $rows['author_name'] . "' required>
 
                         <label for='authorsAge'>Authors Age</label>
-                        <input id='authorsAge' name='authorsAgeEdit' type='text' pattern='[0-9]+' value='" . $rows['age'] . "' required>
+                        <input id='authorsAge' name='authorsAgeEdit' type='text' min='0' max='150' pattern='[0-9]+' value='" . $rows['age'] . "' required>
 
                         <label for='mainGenre'>Main Genre</label>
                         <select id='mainGenre' name='mainGenreEdit' required>
@@ -144,7 +143,7 @@ class LibraryDatabase {
                     "<table> 
                         <tr>
                             <td>" . $author["book_title"] . "</td>
-                            <td>" . $author["year_release"] . "</td>
+                            <td>" . $author["year_released"] . "</td>
                             <td>" . $author["book_genre"] . "</td> 
                             <td>" . $author["age_group"] . "</td>                               
                         </tr>                              
@@ -158,13 +157,13 @@ class LibraryDatabase {
     public function addBookForm() {
         $id = $_POST['addBookToDatabase'];
         echo    "<div id='formContainerBook'>      
-                    <form id='bookFormContainer' method='post'>
+                    <form id='bookFormContainer' method='post'  enctype='multipart/form-data'>
                         <h2>Create a new book or author entry into the libraries database</h2>
                         <label for='bookTitle'>Book Title</label>
                         <input id='bookTitle' name='bookTitle' type='text' required>
                     
                         <label for='yearReleased'>Year released</label>
-                        <input id='yearReleased' name='yearReleased' type='date' required>
+                        <input id='yearReleased' name='yearReleased' type='text' pattern='[0-9]+' required>
 
                         <label for='genre'>Genre</label>
                         <select id='genre' name='genre' required>
@@ -213,6 +212,9 @@ class LibraryDatabase {
                             <option value='18+'>18 +</option>
                         </select>
 
+                        <label for='file'>Upload Book Image</label>
+                        <input type='file' name='file' required>
+
                         <button type='submit' name='submitBook' value=" . $id . ">Submit</button>  
                         <button onClick='window.location.href=window.location.href'>Cancel</button>   
                     </form>
@@ -223,17 +225,45 @@ class LibraryDatabase {
         $bookTitle = strtolower($_POST['bookTitle']);                   
         $yearReleased = $_POST['yearReleased'];
         $genre = $_POST['genre'];
-        $ageGroup = $_POST['ageGroup'];                     
-        $book = "INSERT INTO books (book_title, year_released, book_genre, age_group, author_id)
-        VALUES ('$bookTitle', '$yearReleased', '$genre', '$ageGroup', '$id')";
-        global $mysqli;
+        $ageGroup = $_POST['ageGroup'];    
 
-            if ($mysqli->query($book) === TRUE) {
-                echo "New record created successfully";
+        $fileName = $_FILES['file']['name'];
+        $fileTmpName = $_FILES['file']['tmp_name'];
+        $fileSize = $_FILES['file']['size'];
+        $fileError = $_FILES['file']['error'];
+        $fileType = $_FILES['file']['type'];
+
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        $allowed = array('jpg', 'jpeg', 'png');
+        if (in_array($fileActualExt, $allowed)) {
+            if ($fileError === 0){
+                if ($fileSize < 5000000){
+                    $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                    $fileDestination = 'assets/books/' . $fileNameNew;
+                    move_uploaded_file($fileTmpName, $fileDestination);
+
+                    $book = "INSERT INTO books (book_title, year_released, book_genre, age_group, author_id, images)
+                    VALUES ('$bookTitle', '$yearReleased', '$genre', '$ageGroup', '$id', '$fileNameNew')";
+                    global $mysqli;
+
+                        if ($mysqli->query($book) === TRUE) {
+                            echo "New record created successfully";
+                            } else {
+                                echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
+                            }                
                 } else {
-                    echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
+                    echo "Your file is too big";
                 }
+            } else {
+                echo 'There was an error uploading your file';
+            }
+        } else {
+            echo 'You cannot upload files of this type';
+        };     
     }   
+
     public function searchBook(){
         $result = '%'.strtolower($_POST['searchDatabase']).'%';  
         $_SESSION['search'] = $result;           
@@ -243,9 +273,7 @@ class LibraryDatabase {
         global $mysqli;
         $searchResult = $mysqli->query($sqls); 
                 echo "<form method='post'>
-                        <h5>ID</h5>
-                        <button id='sortById' type='submit' name='sortByIdAsc' value='sortById'>Asc</button>
-                        <button id='sortById' type='submit' name='sortByIdDesc' value='sortById'>Desc</button>
+                        
                         <h5>Title</h5>
                         <button id='sortByTitle' type='submit' name='sortByTitleAsc' value='sortByTitle'>Asc</button>
                         <button id='sortByTitle' type='submit' name='sortByTitleDesc' value='sortByTitle'>Desc</button>
@@ -268,7 +296,7 @@ class LibraryDatabase {
             while($rows = $searchResult->fetch_assoc()){                          
                 echo "<table id='searchContainer'> 
                         <tr class='searchTable'>
-                            <td>" . $rows["book_id"]. "</td>
+                            <img class='image' src='assets/books/" . $rows['images'] . "'>
                             <td>" . $rows["book_title"]. "</td>
                             <td>" . $rows["author_name"] . "</td>
                             <td>" . $rows["year_released"] . "</td>
@@ -419,14 +447,14 @@ class LibraryDatabase {
         $rows = $bookToEdit->fetch_assoc();
 
         echo "<div id='editFormContainer'>
-                <form method='post' id=editForm>
+                <form method='post' id=editForm enctype='multipart/form-data'>
                     <h2>Edit A Book Entry</h2>
                     <h4>You about to edit book ID " . $rows["book_id"] . " - " . $rows['book_title'] . " by " . "placeholderAuthor" . ".</h4>
                     <label for='editBookTitle'>Edit Book Title</label>
                     <input id='editBookTitle' name='editBookTitle' type='text' value='" . $rows['book_title'] . "'>
 
                     <label for='editGenre'>Edit Year Released</label>
-                    <input id='editYearReleased' name='editYearReleased' type='date' value='" . $rows['year_released'] . "'>
+                    <input id='editYearReleased' name='editYearReleased' type='text' value='" . $rows['year_released'] . "'>
 
                     <label for='editGenre'>Edit Genre</label>
                     <select id='editGenre' name='editGenre' type='text'>
@@ -473,6 +501,9 @@ class LibraryDatabase {
                         <option value='14-18'>14 - 18</option>
                         <option value='18+'>18 +</option>
                     </select>
+                    
+                    <label for='imageEdit'>Change Image</label>
+                    <input type='file' name='imageEdit'>
 
                     <button type='submit' name='editSubmit' value=" . $editId . ">Edit task</button>     
                     <button onclick='cancelEdit()'>Cancel</button>
@@ -496,10 +527,67 @@ class LibraryDatabase {
         echo $genreEdit . "<br>";
         echo $ageGroupEdit . "<br>";
 
-        $sql = "UPDATE books
-        SET book_title = '$bookTitleEdit', year_released = '$yearReleasedEdit', book_genre = '$genreEdit', age_group = '$ageGroupEdit'
-        WHERE book_id = $bookId";   
-        global $mysqli;    
+        $sqlImage = "SELECT images FROM books WHERE book_id = '$bookId'";
+        global $mysqli;
+        $mysqli->query($sqlImage);
+        $fetch = $mysqli->query($sqlImage);   
+        echo 'testOne';  
+        $test = $fetch->fetch_assoc();
+        $num = $test['images'];
+        
+       
+        $fileName = $_FILES['imageEdit']['name'];
+        $fileTmpName = $_FILES['imageEdit']['tmp_name'];
+        $fileSize = $_FILES['imageEdit']['size'];
+        $fileError = $_FILES['imageEdit']['error'];
+        $fileType = $_FILES['imageEdit']['type'];
+
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        $allowed = array('jpg', 'jpeg', 'png');
+        if (in_array($fileActualExt, $allowed)) {
+            if ($fileError === 0){
+                if ($fileSize < 5000000){
+                    $fileNameNew = $num;
+                    $fileDestination = 'assets/books/' . $fileNameNew;
+                    move_uploaded_file($fileName, $fileDestination);
+
+                    
+                    $sql = "UPDATE books
+                    SET book_title = '$bookTitleEdit', year_released = '$yearReleasedEdit', book_genre = '$genreEdit', age_group = '$ageGroupEdit'
+                    WHERE book_id = '$bookId' ";   
+                    global $mysqli;  
+
+                        if ($mysqli->query($book) === TRUE) {
+                            echo "New record created successfully";
+                            } else {
+                                echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
+                            }                
+                } else {
+                    echo "Your file is too big";
+                }
+            } else {
+                echo 'There was an error uploading your file';
+            }
+        } else {
+            echo 'You cannot upload files of this type';
+        };  
+
+
+
+
+
+
+
+
+       
+         
+
+        
+
+
+
             if ($mysqli->query($sql) === TRUE) {
                 echo "Record '" . $bookTitleEdit . "' updated successfully";
             } else {
