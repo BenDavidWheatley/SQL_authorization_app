@@ -18,6 +18,7 @@ class LibraryDatabase {
 // This function will search the database for all or a particular author.
 
     public function searchAuthor(){
+        $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
         echo "<h3>Your author search result is - </h3>";
         $authorName = '%'.strtolower($_POST['searchAuthor']).'%'; 
         $sql = "SELECT * FROM authors  WHERE author_name LIKE '$authorName'";
@@ -25,20 +26,21 @@ class LibraryDatabase {
         $doesAuthorExist = $mysqli->query($sql);    
             while($author = $doesAuthorExist->fetch_assoc()){;                              
                 echo "<table id='searchAuthorContainer'>
-                        <tr class='searchTable'>
-                            <td>" . $author["author_name"]. "</td>
+                        <tr class='searchTable'>";                        
+                        if ($curPageName === 'mainPage.php'){
+                            echo "<img class='image' src='assets/authors/" . $author['author_image'] . "'>";
+                        }      
+                echo       "<td>" . $author["author_name"]. "</td>
                             <td>" . $author["age"]. "</td>
-                            <td>" . $author["genre"]. "</td>
-                            <td>" . $author["book_title"] . "</td>
-                            <td>" . $author["year_release"] . "</td>
-                            <td>" . $author["book_genre"] . "</td> 
-                            <td>" . $author["age_group"] . "</td>                                                                 
+                            <td>" . $author["genre"]. "</td>                                                               
                             <td>                      
                             <form method='post'>
-                                <button id=" . $author["author_id"] . " type='submit' name='viewBooks' value=" . $author["author_id"] . ">View books</button> 
-                                <button type='submit' name='editAuthor' value=" . $author["author_id"] . ">Edit Author</button>
-                                <button class='delete' id=" . $author["author_id"] . "type='submit' name='deleteAuthor' value=" . $author["author_id"] . ">Delete Author</button>
-                                <button onClick='window.location.href=window.location.href'>Cancel</button>
+                                <button id=" . $author["author_id"] . " type='submit' name='viewBooks' value=" . $author["author_id"] . ">View books</button> ";
+                                    if ($curPageName === 'editLibrary.php') {
+                                        echo "<button type='submit' name='editAuthor' value=" . $author["author_id"] . ">Edit Author</button>
+                                              <button class='delete' id=" . $author["author_id"] . "type='submit' name='deleteAuthor' value=" . $author["author_id"] . ">Delete Author</button>";
+                                    }
+                                echo "<button onClick='window.location.href=window.location.href'>Cancel</button>
                             </form>    
                             </td>
                         <tr>     
@@ -51,7 +53,7 @@ class LibraryDatabase {
             create author input</h4>';
 
             echo "<div id='formContainerAuthor'>
-                    <form id='authorFormContainer' method='post'>
+                    <form id='authorFormContainer' method='post' enctype='multipart/form-data'>
                         <label for='authorsName'>Authors Name</label>
                         <input id='authorsName' name='authorsName' type='text' pattern='[a-z A-Z]+' required>
 
@@ -64,6 +66,12 @@ class LibraryDatabase {
                             <option>Fiction</option>
                             <option>Non-fiction</option>
                         </select>
+
+                        <label for='authorBio'>Add a bio of the author</label>
+                        <input name='authorBio' type='textarea'  pattern='[0-9 a-z A-Z]+'>
+
+                        <label for='authorImage'>Upload Authors Image</label>
+                        <input type='file' name='authorImage'>                   
 
                         <input type='submit' name='submitAuthor' value='submit'> 
                         <button onClick='window.location.href=window.location.href'>Cancel</button>
@@ -78,13 +86,55 @@ class LibraryDatabase {
         $authorsName = strtolower($_POST['authorsName']);
         $authorsAge = $_POST['authorsAge'];
         $mainGenre = $_POST['mainGenre'];
-        $sql = "INSERT INTO authors (author_name, age, genre) VALUE ('$authorsName', '$authorsAge', '$mainGenre')";
-        global $mysqli;
-            if ($mysqli->query($sql) === TRUE) {
-                echo "New author added to database";
-                } else {
-                    echo "Error: " . $authorName . "<br>" .  $mysqli->error;
-                    }       
+        $authorBio = $_POST['authorBio'];
+        $authorImage = $_FILES['authorImage'];
+
+                    if ($_FILES['authorImage']['error'] === 0){
+                        $fileName = $_FILES['authorImage']['name'];
+                        $fileTmpName = $_FILES['authorImage']['tmp_name'];
+                        $fileSize = $_FILES['authorImage']['size'];
+                        $fileError = $_FILES['authorImage']['error'];
+                        $fileType = $_FILES['authorImage']['type'];
+            
+                        $fileExt = explode('.', $fileName);
+                        $fileActualExt = strtolower(end($fileExt));
+                     
+                        $allowed = array('jpg', 'jpeg', 'png');
+                        if (in_array($fileActualExt, $allowed)) {
+                            if ($fileError === 0){
+                                if ($fileSize < 5000000){
+                                    $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                                    $fileDestination = 'assets/authors/' . $fileNameNew;
+                                    move_uploaded_file($fileTmpName, $fileDestination);
+                                    $author = "INSERT INTO authors (author_name, age, genre, author_bio, author_image) VALUE ('$authorsName', '$authorsAge', '$mainGenre', '$authorBio', '$fileNameNew')";
+                                    global $mysqli;
+            
+                                        if ($mysqli->query($author) === TRUE) {
+                                            echo "New record created successfully";
+                                            } else {
+                                                echo "Error <br>" .  $mysqli->error;
+                                            }                
+                                } else {
+                                    echo "Your file is too big, image must be less then 5mb";
+                                }
+                            } else {
+                                echo 'There was an error uploading your file';
+                            }
+                        } else {
+                            echo 'You cannot upload files of this type, file must be either jpeg, jpg or png';
+                        };  
+                    } else {
+                        $sql = "INSERT INTO authors (author_name, age, genre, author_bio) VALUE ('$authorsName', '$authorsAge', '$mainGenre', '$authorBio')";
+                        global $mysqli;
+                                 
+                        if ($mysqli->query($sql) === TRUE) {
+                            echo "New author added to database";
+                            } else {
+                                echo "Error: " . $authorName . "<br>" .  $mysqli->error;
+                                }    
+                    } 
+
+        
     }
     public function editAuthor(){
         $id = $_POST['editAuthor'];
@@ -96,7 +146,7 @@ class LibraryDatabase {
         $rows = $author->fetch_assoc();
 
         echo "<div id='formContainerAuthor'>
-                    <form id='authorFormContainer' method='post'>
+                    <form id='authorFormContainer' method='post' enctype='multipart/form-data'>
                         <label for='authorsName'>Authors Name</label>
                         <input id='authorsName' name='authorsNameEdit' type='text' pattern='[a-z A-Z]+' value='" . $rows['author_name'] . "' required>
 
@@ -110,6 +160,12 @@ class LibraryDatabase {
                             <option>Non-fiction</option>
                         </select>
 
+                        <label for='editAuthorBio'>Edit the Author Bio</label>
+                        <input type='textarea' name='editAuthorBio'>
+
+                        <label for='authorImageEdit'>Change Image</label>
+                        <input type='file' name='authorImageEdit'>
+
                         <button type='submit' name='submitAuthorEdit' value='" . $id . "'>Submit Edit</button>
                         <button onClick='window.location.href=window.location.href'>Cancel</button>
                     </form>
@@ -119,16 +175,70 @@ class LibraryDatabase {
         $id = $_POST['submitAuthorEdit'];    
         $authorName = strtolower($_POST['authorsNameEdit']);        
         $age = $_POST['authorsAgeEdit'];
-        $genre = $_POST['mainGenreEdit'];      
+        $genre = $_POST['mainGenreEdit'];   
+        $authorBio = $_POST['editAuthorBio'];   
         $sql = "UPDATE authors
-        SET author_name = '$authorName', age = '$age', genre = '$genre'
-        WHERE author_id = $id";   
+                SET author_name = '$authorName', age = '$age', genre = '$genre', author_bio = '$authorBio'
+                WHERE author_id = $id";   
         global $mysqli;    
             if ($mysqli->query($sql) === TRUE) {
                 echo "Record '" . $authorName . "' updated successfully";
             } else {
                 echo "Error deleting record: " . $mysqli->error;
         }
+
+
+        if ($_FILES['authorImageEdit']['error'] === 0) {  
+            echo "yes"    ;      
+            $sqlImage = "SELECT author_image FROM authors WHERE author_id = '$id'";          
+            global $mysqli;
+            $mysqli->query($sqlImage);
+            $fetch = $mysqli->query($sqlImage);    
+            $getImage = $fetch->fetch_assoc();
+            $oldImage = $getImage['author_image'];             
+            $path = "assets/authors/" . $oldImage;
+                if (file_exists($path)){
+                    unlink($path);
+                    $sqlImage = "UPDATE authors SET author_image = NULL WHERE author_id = '$id'";
+                        global $mysqli;
+                        $mysqli->query($sqlImage);
+                }                                     
+                
+                $fileName = $_FILES['authorImageEdit']['name'];
+                $fileTmpName = $_FILES['authorImageEdit']['tmp_name'];
+                $fileSize = $_FILES['authorImageEdit']['size'];
+                $fileError = $_FILES['authorImageEdit']['error'];
+                $fileType = $_FILES['authorImageEdit']['type'];
+                $fileExt = explode('.', $fileName);
+                $fileActualExt = strtolower(end($fileExt));       
+                $allowed = array('jpg', 'jpeg', 'png');
+
+                    if (in_array($fileActualExt, $allowed)) {
+                        if ($fileError === 0){
+                            if ($fileSize < 5000000){
+                                $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                                $fileDestination = 'assets/authors/' . $fileNameNew;
+                                    move_uploaded_file($fileTmpName, $fileDestination);                              
+                                $sql= "UPDATE authors SET author_image = '$fileNameNew' WHERE author_id = '$id'";
+
+                                global $mysqli;
+                                    if ($mysqli->query($sql) === TRUE) {
+                                        echo "New record created successfully";
+                                        } else {
+                                            echo "Error: " .  $mysqli->error;
+                                        }                
+                            } else {
+                                echo "Your file is too big, image should be less the 5mb";
+                            }
+                        } else {
+                            echo 'There was an error uploading your file';
+                        }
+                    } else {
+                        echo 'You cannot upload files of this type, file must be either jpeg, jpg or png';
+                    };                         
+        } else { 
+            echo "image not edited";
+        };
     }
 
 // This function allows you to view all the authors books after searching for the author.
@@ -213,7 +323,7 @@ class LibraryDatabase {
                         </select>
 
                         <label for='file'>Upload Book Image</label>
-                        <input type='file' name='file' required>
+                        <input type='file' name='file'>
 
                         <button type='submit' name='submitBook' value=" . $id . ">Submit</button>  
                         <button onClick='window.location.href=window.location.href'>Cancel</button>   
@@ -227,41 +337,53 @@ class LibraryDatabase {
         $genre = $_POST['genre'];
         $ageGroup = $_POST['ageGroup'];    
 
-        $fileName = $_FILES['file']['name'];
-        $fileTmpName = $_FILES['file']['tmp_name'];
-        $fileSize = $_FILES['file']['size'];
-        $fileError = $_FILES['file']['error'];
-        $fileType = $_FILES['file']['type'];
+        if ($_FILES['file']['error'] === 0){
+            $fileName = $_FILES['file']['name'];
+            $fileTmpName = $_FILES['file']['tmp_name'];
+            $fileSize = $_FILES['file']['size'];
+            $fileError = $_FILES['file']['error'];
+            $fileType = $_FILES['file']['type'];
 
-        $fileExt = explode('.', $fileName);
-        $fileActualExt = strtolower(end($fileExt));
+            $fileExt = explode('.', $fileName);
+            $fileActualExt = strtolower(end($fileExt));
 
-        $allowed = array('jpg', 'jpeg', 'png');
-        if (in_array($fileActualExt, $allowed)) {
-            if ($fileError === 0){
-                if ($fileSize < 5000000){
-                    $fileNameNew = uniqid('', true) . "." . $fileActualExt;
-                    $fileDestination = 'assets/books/' . $fileNameNew;
-                    move_uploaded_file($fileTmpName, $fileDestination);
+            $allowed = array('jpg', 'jpeg', 'png');
+            if (in_array($fileActualExt, $allowed)) {
+                if ($fileError === 0){
+                    if ($fileSize < 5000000){
+                        $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                        $fileDestination = 'assets/books/' . $fileNameNew;
+                        move_uploaded_file($fileTmpName, $fileDestination);
 
-                    $book = "INSERT INTO books (book_title, year_released, book_genre, age_group, author_id, images)
-                    VALUES ('$bookTitle', '$yearReleased', '$genre', '$ageGroup', '$id', '$fileNameNew')";
-                    global $mysqli;
+                        $book = "INSERT INTO books (book_title, year_released, book_genre, age_group, author_id, images)
+                        VALUES ('$bookTitle', '$yearReleased', '$genre', '$ageGroup', '$id', '$fileNameNew')";
+                        global $mysqli;
 
-                        if ($mysqli->query($book) === TRUE) {
-                            echo "New record created successfully";
-                            } else {
-                                echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
-                            }                
+                            if ($mysqli->query($book) === TRUE) {
+                                echo "New record created successfully";
+                                } else {
+                                    echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
+                                }                
+                    } else {
+                        echo "Your file is too big, image must be less then 5mb";
+                    }
                 } else {
-                    echo "Your file is too big";
+                    echo 'There was an error uploading your file';
                 }
             } else {
-                echo 'There was an error uploading your file';
-            }
+                echo 'You cannot upload files of this type, file must be either jpeg, jpg or png';
+            };  
         } else {
-            echo 'You cannot upload files of this type';
-        };     
+            $sql = "INSERT INTO books (book_title, year_released, book_genre, age_group, author_id)
+            VALUES ('$bookTitle', '$yearReleased', '$genre', '$ageGroup', '$id')";
+            global $mysqli;
+
+                if ($mysqli->query($sql) === TRUE) {
+                    echo "New record created successfully";
+                    } else {
+                        echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
+                    } 
+        } 
     }   
 
     public function searchBook(){
@@ -356,6 +478,7 @@ class LibraryDatabase {
             while($rows = $searchResult->fetch_assoc()){                          
                 echo "<table id='searchContainer'> 
                         <tr class='searchTable'>
+                            <img class='image' src='assets/books/" . $rows['images'] . "'>
                             <td>" . $rows["book_id"]. "</td>
                             <td>" . $rows["book_title"]. "</td>
                             <td>" . $rows["author_name"] . "</td>
@@ -413,6 +536,7 @@ class LibraryDatabase {
             while($rows = $searchResult->fetch_assoc()){                          
                 echo "<table id='searchContainer'> 
                         <tr class='searchTable'>
+                            <img class='image' src='assets/books/" . $rows['images'] . "'>
                             <td>" . $rows["book_id"]. "</td>
                             <td>" . $rows["book_title"]. "</td>
                             <td>" . $rows["author_name"] . "</td>
@@ -515,85 +639,74 @@ class LibraryDatabase {
             </div>";
     }
     public function submitEdit(){
-        echo $rows['book_title'];
         $bookId = $_POST['editSubmit'];
         $bookTitleEdit = strtolower($_POST['editBookTitle']);
         $yearReleasedEdit = $_POST['editYearReleased'];
         $genreEdit = $_POST['editGenre'];
         $ageGroupEdit = $_POST['editAgeGroup'];
-        echo $bookId . "<br>";
-        echo $bookTitleEdit . "<br>";
-        echo $yearReleasedEdit . "<br>";
-        echo $genreEdit . "<br>";
-        echo $ageGroupEdit . "<br>";
-
-        $sqlImage = "SELECT images FROM books WHERE book_id = '$bookId'";
-        global $mysqli;
-        $mysqli->query($sqlImage);
-        $fetch = $mysqli->query($sqlImage);   
-        echo 'testOne';  
-        $test = $fetch->fetch_assoc();
-        $num = $test['images'];
-        
-       
-        $fileName = $_FILES['imageEdit']['name'];
-        $fileTmpName = $_FILES['imageEdit']['tmp_name'];
-        $fileSize = $_FILES['imageEdit']['size'];
-        $fileError = $_FILES['imageEdit']['error'];
-        $fileType = $_FILES['imageEdit']['type'];
-
-        $fileExt = explode('.', $fileName);
-        $fileActualExt = strtolower(end($fileExt));
-
-        $allowed = array('jpg', 'jpeg', 'png');
-        if (in_array($fileActualExt, $allowed)) {
-            if ($fileError === 0){
-                if ($fileSize < 5000000){
-                    $fileNameNew = $num;
-                    $fileDestination = 'assets/books/' . $fileNameNew;
-                    move_uploaded_file($fileName, $fileDestination);
-
-                    
-                    $sql = "UPDATE books
-                    SET book_title = '$bookTitleEdit', year_released = '$yearReleasedEdit', book_genre = '$genreEdit', age_group = '$ageGroupEdit'
-                    WHERE book_id = '$bookId' ";   
-                    global $mysqli;  
-
-                        if ($mysqli->query($book) === TRUE) {
-                            echo "New record created successfully";
-                            } else {
-                                echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
-                            }                
-                } else {
-                    echo "Your file is too big";
-                }
-            } else {
-                echo 'There was an error uploading your file';
-            }
+    
+        $sql = "UPDATE books
+                SET book_title = '$bookTitleEdit', year_released = '$yearReleasedEdit', book_genre = '$genreEdit', age_group = '$ageGroupEdit'
+                WHERE book_id = '$bookId' ";   
+                global $mysqli; 
+        if ($mysqli->query($sql) === TRUE) {
+            echo "Record '" . $bookTitleEdit . "' updated successfully";
         } else {
-            echo 'You cannot upload files of this type';
-        };  
+            echo "Error deleting record: " . $mysqli->error;
+        }  
 
+        if ($_FILES['imageEdit']['error'] === 0) {            
+            $sqlImage = "SELECT images FROM books WHERE book_id = '$bookId'";          
+            global $mysqli;
+            $mysqli->query($sqlImage);
+            $fetch = $mysqli->query($sqlImage);    
+            $getImage = $fetch->fetch_assoc();
+            $oldImage = $getImage['images'];             
+            $path = "assets/books/" . $oldImage;
+                if (file_exists($path)){
+                    unlink($path);
+                    $sqlImage = "UPDATE books SET images = NULL WHERE book_id = '$bookId'";
+                        global $mysqli;
+                        $mysqli->query($sqlImage);
+                }                                     
+                
+                $fileName = $_FILES['imageEdit']['name'];
+                $fileTmpName = $_FILES['imageEdit']['tmp_name'];
+                $fileSize = $_FILES['imageEdit']['size'];
+                $fileError = $_FILES['imageEdit']['error'];
+                $fileType = $_FILES['imageEdit']['type'];
+                $fileExt = explode('.', $fileName);
+                $fileActualExt = strtolower(end($fileExt));       
+                $allowed = array('jpg', 'jpeg', 'png');
 
+                    if (in_array($fileActualExt, $allowed)) {
+                        if ($fileError === 0){
+                            if ($fileSize < 5000000){
+                                $fileNameNew = uniqid('', true) . "." . $fileActualExt;
+                                $fileDestination = 'assets/books/' . $fileNameNew;
+                                    move_uploaded_file($fileTmpName, $fileDestination);                              
+                                $sql= "UPDATE books SET images = '$fileNameNew' WHERE book_id = '$bookId'";
 
-
-
-
-
-
-       
-         
-
-        
-
-
-
-            if ($mysqli->query($sql) === TRUE) {
-                echo "Record '" . $bookTitleEdit . "' updated successfully";
-            } else {
-                echo "Error deleting record: " . $mysqli->error;
-        }
+                                global $mysqli;
+                                    if ($mysqli->query($sql) === TRUE) {
+                                        echo "New record created successfully";
+                                        } else {
+                                            echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
+                                        }                
+                            } else {
+                                echo "Your file is too big, image should be less the 5mb";
+                            }
+                        } else {
+                            echo 'There was an error uploading your file';
+                        }
+                    } else {
+                        echo 'You cannot upload files of this type, file must be either jpeg, jpg or png';
+                    };                         
+        } else { 
+            echo "image not edited";
+        };
     }
+
     public function deleteBookWarning(){
         $id = $_POST['deleteBook'];
         $sql = "SELECT book_title FROM books WHERE book_id = '$id'";

@@ -23,6 +23,16 @@ include('login.php');
                 <header>
                     <p>THIS IS THE MAIN PAGE</p>
                     <section id='searchLibrary'>
+                   
+                        <div>
+                            <h2>Seacrh for the author you wish to update</h2>
+                            <form id='searchAuthorForm' method='post'>
+                                <label>Search database for author</label>
+                                <input id='searchAuthor' name='searchAuthor' type='text'>
+
+                                <input type='submit' name='searchAuthorSubmit' value='search'>
+                            </form>                    
+                        </div>
                         <div>
                             <form method='post'>
                                 <label for='searchDatabase'>Search Book</label>
@@ -33,6 +43,9 @@ include('login.php');
                     </section>
                     <section>
                         <?php 
+                            if (isset($_POST['searchAuthorSubmit'])){
+                                $newAuthor->searchAuthor();
+                            }
                             if(isset($_POST['searchBook'])){
                                 $newAuthor->searchBook();
                             } ?>

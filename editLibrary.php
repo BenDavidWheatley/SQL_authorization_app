@@ -17,6 +17,7 @@ $mysqli->query($sql);
     </head>
 
     <body>
+   
         <div class='pageContainer'>  
             <div class='mainContainer'> 
                 <header>
@@ -100,7 +101,7 @@ $mysqli->query($sql);
                                 $_SESSION['sortBy'] = 'book_genre';
                                 $newAuthor->sortAscending();
                             }else if(isset($_POST['sortByAgeAsc'])){
-                                $_SESSION['sortBy'] = 'age';
+                                $_SESSION['sortBy'] = 'age_group';                            
                                 $newAuthor->sortAscending();
                             }else if(isset($_POST['sortByCheckedOutAsc'])){
                                 $_SESSION['sortBy'] = 'is_checked_out';
@@ -108,8 +109,7 @@ $mysqli->query($sql);
                             }else if (isset($_POST['sortByIdDesc'])){
                                 $_SESSION['sortBy'] = 'book_id';
                                 $newAuthor->sortDescending();
-                            }
-                            else if (isset($_POST['sortByTitleDesc'])){
+                            }else if (isset($_POST['sortByTitleDesc'])){
                                 $_SESSION['sortBy'] = 'book_title';
                                 $newAuthor->sortDescending();
                             }else if(isset($_POST['sortByAuthorDesc'])){
@@ -122,7 +122,7 @@ $mysqli->query($sql);
                                 $_SESSION['sortBy'] = 'book_genre';
                                 $newAuthor->sortDescending();
                             }else if(isset($_POST['sortByAgeDesc'])){
-                                $_SESSION['sortBy'] = 'age';
+                                $_SESSION['sortBy'] = 'age_group';
                                 $newAuthor->sortDescending();
                             }else if(isset($_POST['sortByCheckedOutDesc'])){
                                 $_SESSION['sortBy'] = 'is_checked_out';
