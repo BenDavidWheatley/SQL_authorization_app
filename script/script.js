@@ -1,3 +1,4 @@
+
 member = (x) => {
     if (x === 'memberContainer') {
         document.getElementById(x).style.display = 'block';
@@ -20,3 +21,25 @@ member = (x) => {
     }
 
 }
+
+showBox = (x) => {
+    document.getElementById(x).style.display = 'block';
+}
+
+hideBox = (x) => {
+    document.getElementById(x).style.display = 'none';
+}
+showPicBox = () => {
+    document.getElementById('editUserimage').style.display = 'block';
+}
+
+hidePicBox = () => {
+    document.getElementById('editUserimage').style.display = 'none';
+}
+
+addToCart = () => {
+    console.log("x");
+}
+
+
+

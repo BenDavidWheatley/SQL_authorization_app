@@ -38,25 +38,25 @@ $mysqli->query($sql);
                     <div>
                     <?php 
                         if(isset($_POST['searchAuthorSubmit'])){
-                            $newAuthor->searchAuthor();               
+                            $newEntry->searchAuthor();               
                         }; 
                         if(isset($_POST['editAuthor'])){
-                            $newAuthor->editAuthor();
+                            $newEntry->editAuthor();
                         }
                         if(isset($_POST['submitAuthorEdit'])){
-                            $newAuthor->submitAuthorEdit();
+                            $newEntry->submitAuthorEdit();
                         }
                         if (isset($_POST['viewBooks'])){
-                            $newAuthor->viewAuthorsBooks();
+                            $newEntry->viewAuthorsBooks();
                         }; 
                         if(isset($_POST['deleteAuthor'])){
-                            $newAuthor->deleteAuthorWarning();
+                            $newEntry->deleteAuthorWarning();
                         }
                         if(isset($_POST['confirmDeleteAuthor'])){
-                            $newAuthor->deleteAuthorFromDatabase();
+                            $newEntry->deleteAuthorFromDatabase();
                         }
                         if(isset($_POST['submitAuthor'])){
-                           $newAuthor->addAuthorToDatabase();
+                           $newEntry->addAuthorToDatabase();
                         };                 
                         ?>
                     </div>
@@ -65,10 +65,10 @@ $mysqli->query($sql);
                 <section id='bookAuthorForms'>             
                     <?php                    
                         if(isset($_POST['addBookToDatabase'])){
-                            $newAuthor->addBookForm();
+                            $newEntry->addBookForm();
                         };
                         if (isset($_POST['submitBook'])){
-                            $newAuthor->addBookToDatabase();
+                            $newEntry->addBookToDatabase();
                         };?>         
                 </section>
 
@@ -83,50 +83,50 @@ $mysqli->query($sql);
                     <div>
                         <?php 
                             if (isset($_POST['searchBook'])) {
-                                $newAuthor->searchBook();                    
+                                $newEntry->searchBook();                    
                             }; 
                             if (isset($_POST['sortByIdAsc'])){
                                 $_SESSION['sortBy'] = 'book_id';
-                                $newAuthor->sortAscending();
+                                $newEntry->sortAscending();
                             }else if (isset($_POST['sortByTitleAsc'])){
                                 $_SESSION['sortBy'] = 'book_title';
-                                $newAuthor->sortAscending();
+                                $newEntry->sortAscending();
                             }else if(isset($_POST['sortByAuthorAsc'])){
                                 $_SESSION['sortBy'] = 'author_name';
-                                $newAuthor->sortAscending();
+                                $newEntry->sortAscending();
                             }else if(isset($_POST['sortByYearAsc'])){
                                 $_SESSION['sortBy'] = 'year_released';
-                                $newAuthor->sortAscending();
+                                $newEntry->sortAscending();
                             }else if(isset($_POST['sortByGenreAsc'])){
                                 $_SESSION['sortBy'] = 'book_genre';
-                                $newAuthor->sortAscending();
+                                $newEntry->sortAscending();
                             }else if(isset($_POST['sortByAgeAsc'])){
                                 $_SESSION['sortBy'] = 'age_group';                            
-                                $newAuthor->sortAscending();
+                                $newEntry->sortAscending();
                             }else if(isset($_POST['sortByCheckedOutAsc'])){
                                 $_SESSION['sortBy'] = 'is_checked_out';
-                                $newAuthor->sortAscending();
+                                $newEntry->sortAscending();
                             }else if (isset($_POST['sortByIdDesc'])){
                                 $_SESSION['sortBy'] = 'book_id';
-                                $newAuthor->sortDescending();
+                                $newEntry->sortDescending();
                             }else if (isset($_POST['sortByTitleDesc'])){
                                 $_SESSION['sortBy'] = 'book_title';
-                                $newAuthor->sortDescending();
+                                $newEntry->sortDescending();
                             }else if(isset($_POST['sortByAuthorDesc'])){
                                 $_SESSION['sortBy'] = 'author_name';
-                                $newAuthor->sortDescending();
+                                $newEntry->sortDescending();
                             }else if(isset($_POST['sortByYearDesc'])){
                                 $_SESSION['sortBy'] = 'year_released';
-                                $newAuthor->sortDescending();
+                                $newEntry->sortDescending();
                             }else if(isset($_POST['sortByGenreDesc'])){
                                 $_SESSION['sortBy'] = 'book_genre';
-                                $newAuthor->sortDescending();
+                                $newEntry->sortDescending();
                             }else if(isset($_POST['sortByAgeDesc'])){
                                 $_SESSION['sortBy'] = 'age_group';
-                                $newAuthor->sortDescending();
+                                $newEntry->sortDescending();
                             }else if(isset($_POST['sortByCheckedOutDesc'])){
                                 $_SESSION['sortBy'] = 'is_checked_out';
-                                $newAuthor->sortDescending();
+                                $newEntry->sortDescending();
                             }
                             
                             ?>
@@ -134,16 +134,16 @@ $mysqli->query($sql);
                     <div id='editContainer'>
                         <?php
                             if (isset($_POST['edit'])){
-                                $newAuthor->editBook();
+                                $newEntry->editBook();
                             }
                             if (isset($_POST['editSubmit'])){
-                                $newAuthor->submitEdit();
+                                $newEntry->submitEdit();
                             }
                             if (isset($_POST['deleteBook'])){
-                                $newAuthor->deleteBookWarning(); 
+                                $newEntry->deleteBookWarning(); 
                             }
                             if (isset($_POST['confirmDeleteBook'])){
-                                $newAuthor->deleteBookFromDatabase();
+                                $newEntry->deleteBookFromDatabase();
                             }?>
                     </div>
                 </section>

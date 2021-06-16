@@ -57,3 +57,23 @@
     width: auto;
 }
 
+/******** Edit Profile ********/
+
+#editFirstName, #editSurname, #editUsername, #editEmail, #editPassword{
+    display: none;
+}
+#editUserimage {
+    display: none;
+}
+#userImageContainer {
+    background-color: #EC8F00;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+#userImageContainer img { 
+    height: auto;
+    width: 200px;  
+}
+

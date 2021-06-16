@@ -10,8 +10,30 @@ session_start();
 include('login.php');
 include('connect.php');
 include('editLibrary');
+include('memebersClassOOP.php');
 
 class LibraryDatabase {
+
+    public $numBooksInCart = 0;
+    private $currentlyCheckedOut = [];
+
+// ******** SETTERS ********
+
+    public function setNumInCart() {    
+        $id = $_SESSION['userId']; 
+        $sql = "SELECT COUNT(*) AS 'count' FROM cart WHERE users_id = '$id'";
+        global $mysqli;
+        $search = $mysqli->query($sql);
+        $result = $search->fetch_assoc();      
+        $this->numBooksInCart = $result['count'];
+    }
+    
+// ******** GETTERS ********
+
+    public function getNumInCart(){
+       
+        echo $this->numBooksInCart;  
+    }
 
 // ******** METHODS ********  
 
@@ -29,17 +51,16 @@ class LibraryDatabase {
                         <tr class='searchTable'>";                        
                         if ($curPageName === 'mainPage.php'){
                             echo "<img class='image' src='assets/authors/" . $author['author_image'] . "'>";
-                        }      
+                        }                          
                 echo       "<td>" . $author["author_name"]. "</td>
                             <td>" . $author["age"]. "</td>
-                            <td>" . $author["genre"]. "</td>                                                               
-                            <td>                      
+                            <td>" . $author["genre"]. "</td>                                                                                                                
                             <form method='post'>
                                 <button id=" . $author["author_id"] . " type='submit' name='viewBooks' value=" . $author["author_id"] . ">View books</button> ";
                                     if ($curPageName === 'editLibrary.php') {
                                         echo "<button type='submit' name='editAuthor' value=" . $author["author_id"] . ">Edit Author</button>
                                               <button class='delete' id=" . $author["author_id"] . "type='submit' name='deleteAuthor' value=" . $author["author_id"] . ">Delete Author</button>";
-                                    }
+                                    } 
                                 echo "<button onClick='window.location.href=window.location.href'>Cancel</button>
                             </form>    
                             </td>
@@ -48,10 +69,9 @@ class LibraryDatabase {
                 }                             
         $authorDoesNot = $mysqli->query($sql);
         $autDoesNot = $authorDoesNot->fetch_assoc();
-            if ($autDoesNot["author_name"] === NULL) {
+            if ($autDoesNot["author_name"] === NULL  &&  $curPageName === 'editLibrary.php') {
             echo '<h4>Author is not in the database.
             create author input</h4>';
-
             echo "<div id='formContainerAuthor'>
                     <form id='authorFormContainer' method='post' enctype='multipart/form-data'>
                         <label for='authorsName'>Authors Name</label>
@@ -77,6 +97,8 @@ class LibraryDatabase {
                         <button onClick='window.location.href=window.location.href'>Cancel</button>
                     </form>
                 </div>";
+            } else if ($autDoesNot["author_name"] === NULL  &&  $curPageName === 'mainPage.php'){
+                echo "Unfortuntalty the author you are looking for is not in our library";
             };   
     }  
 
@@ -94,12 +116,11 @@ class LibraryDatabase {
                         $fileTmpName = $_FILES['authorImage']['tmp_name'];
                         $fileSize = $_FILES['authorImage']['size'];
                         $fileError = $_FILES['authorImage']['error'];
-                        $fileType = $_FILES['authorImage']['type'];
-            
+                        $fileType = $_FILES['authorImage']['type'];           
                         $fileExt = explode('.', $fileName);
-                        $fileActualExt = strtolower(end($fileExt));
-                     
+                        $fileActualExt = strtolower(end($fileExt));                    
                         $allowed = array('jpg', 'jpeg', 'png');
+
                         if (in_array($fileActualExt, $allowed)) {
                             if ($fileError === 0){
                                 if ($fileSize < 5000000){
@@ -125,16 +146,13 @@ class LibraryDatabase {
                         };  
                     } else {
                         $sql = "INSERT INTO authors (author_name, age, genre, author_bio) VALUE ('$authorsName', '$authorsAge', '$mainGenre', '$authorBio')";
-                        global $mysqli;
-                                 
+                        global $mysqli;                               
                         if ($mysqli->query($sql) === TRUE) {
                             echo "New author added to database";
                             } else {
                                 echo "Error: " . $authorName . "<br>" .  $mysqli->error;
                                 }    
-                    } 
-
-        
+                    }       
     }
     public function editAuthor(){
         $id = $_POST['editAuthor'];
@@ -244,6 +262,7 @@ class LibraryDatabase {
 // This function allows you to view all the authors books after searching for the author.
 
     public function viewAuthorsBooks(){
+        $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
         $id = $_POST['viewBooks'];
         $sql = "SELECT * FROM books WHERE author_id = '$id'";
         global $mysqli;
@@ -259,10 +278,11 @@ class LibraryDatabase {
                         </tr>                              
                     </table>"; 
             }; 
-        echo 
-        "<form method='post'>
-        <button id=" . $id . " type='submit' name='addBookToDatabase' value=" . $id . ">add book</button>
-        </form>";
+        if($curPageName === 'editLibrary.php'){
+            echo "<form method='post'>
+                    <button id=" . $id . " type='submit' name='addBookToDatabase' value=" . $id . ">add book</button>
+                </form>";
+        }
     }
     public function addBookForm() {
         $id = $_POST['addBookToDatabase'];
@@ -384,9 +404,8 @@ class LibraryDatabase {
                         echo "Error: " . $bookTitle . "<br>" .  $mysqli->error;
                     } 
         } 
-    }   
-
-    public function searchBook(){
+    }  
+    public function searchBook(){        
         $result = '%'.strtolower($_POST['searchDatabase']).'%';  
         $_SESSION['search'] = $result;           
         echo "<h3>Your search result is - </h3>";
@@ -420,6 +439,7 @@ class LibraryDatabase {
                         <tr class='searchTable'>
                             <img class='image' src='assets/books/" . $rows['images'] . "'>
                             <td>" . $rows["book_title"]. "</td>
+                            <td>" . $rows["about_book"] . "</td>
                             <td>" . $rows["author_name"] . "</td>
                             <td>" . $rows["year_released"] . "</td>
                             <td>" . $rows["book_genre"]. "</td>
@@ -431,15 +451,248 @@ class LibraryDatabase {
                                     echo 'no';
                                 };                                                     
                             echo "</td>  
-                            <td>                      
-                            <form method='post' onsubmit='editlibrary.php'>
-                                <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button> 
-                                <button>Cancel</button>  
-                            </form>    
-                            </td>
+                            <td>";
+
+                            if ($_SESSION['isStaff'] === TRUE){
+                                echo    
+                                "<form method='post'>
+                                    <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button>";
+                                    if ($rows["is_checked_out"] != 1) {
+                                        echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " disabled>Checkin Book</button>";
+                                    }else {
+                                        echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " >Checkin Book</button>";
+                                    }
+                                    
+                                    echo "<button>Cancel</button>
+                                </form>"; 
+                            } else if ($rows["is_checked_out"] === "1" && $_SESSION['isStaff'] != TRUE) {
+                                echo     
+                                "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                    <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Add to Cart</button> 
+                                    <button>Cancel</button>
+                                </form>";                                  
+                            } else {
+                                echo     
+                                "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                    <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
+                                    <button>Cancel</button>
+                                </form>";   
+
+                            }
+                            echo "</td>
                         <tr>     
                     </table>";
         }
+    }
+    public function addToCart(){  
+        $this->searchBook();  
+        $bookId = $_POST['addToCart'];
+        $id = $_SESSION['userId'];       
+        $sql = "INSERT INTO cart (book_id, users_id) VALUES ('$bookId', '$id')";
+        $sqlTwo = "SELECT * FROM cart WHERE book_id = '$bookId' AND users_id = '$id'";
+        global $mysqli;
+        $search = $mysqli->query($sqlTwo);
+        $result = $search->fetch_assoc();
+            if($result === NULL){               
+                $mysqli->query($sql);
+                echo "<div>
+                        <p>book added to cart</p>";
+                    
+                        $this->setNumInCart();         
+            } else {
+                echo "<p>Book already added to the cart</p>";
+                $this->setNumInCart(); 
+            }    
+
+        echo $this->numBooksInCart . " items in cart";   
+        echo  "</div>";      
+    } 
+    public function availableAllowance() {
+        $id = $_SESSION['userId'];
+        $sql = "SELECT COUNT(book_id) AS 'count' FROM cart WHERE users_id = '$id'";
+        $sqlCheck = "SELECT COUNT(book_id) AS 'currentlyCheckedOut' FROM checkedOut WHERE users_id = '$id'";
+        global $mysqli;       
+        $toCheckOut = $mysqli->query($sql);        
+        $prevCheckedOut =  $mysqli->query($sqlCheck);
+        $resultToCheckout = $toCheckOut->fetch_assoc();
+        $resultPrevCheckout = $prevCheckedOut->fetch_assoc();
+        $calculation = $resultToCheckout['count'] + $resultPrevCheckout['currentlyCheckedOut'];
+        $canCheckOut = 6 - $resultPrevCheckout['currentlyCheckedOut'];
+
+        echo "<div>
+                <p>You currently have " . $resultPrevCheckout['currentlyCheckedOut'] . " books checked out.</p>
+                <p> You may check out up to " . $canCheckOut . " books on this occation</p>
+            </div>";
+    }
+    public function currentCheckOut(){
+        $id = $_SESSION['userId']; 
+        $sql= "SELECT * FROM checkedOut LEFT OUTER JOIN books ON checkedOut.book_id = books.book_id WHERE users_id = '$id'";
+        global $mysqli; 
+        $checkedOut = $mysqli->query($sql);  
+        $book = $checkedOut->fetch_assoc();       
+        if($book['book_id']=== NULL){
+            echo "<h2>You currently have nothing checked out</h2>";
+        } else {
+        Echo "<h2>You currently have the following checked out</h2>";           
+        }
+        $check = $mysqli->query($sql);
+        while($books = $check->fetch_assoc()){
+            echo "<div>
+                    <p>" . $books['book_title'] . "</p>
+                    <p>Due " . $books['due_date'] . "</p>              
+                </div>";
+        }
+    }
+    public function cart(){
+        $id = $_SESSION['userId']; 
+        $sql = "SELECT * FROM cart LEFT OUTER JOIN books ON cart.book_id = books.book_id WHERE users_id = '$id'";
+        global $mysqli;
+        $result = $mysqli->query($sql);
+            while($rows = $result->fetch_assoc()){  
+                echo    "<table id='cartContainer'> 
+                            <tr class='searchTable'>
+                                <td>
+                                    <img class='image' src='assets/books/" . $rows['images'] . "'>
+                                </td>
+                                <td>" . $rows["book_title"]. "</td>
+                                <td>" . $rows["about_book"] . "</td>
+                                <td>" . $rows["author_name"] . "</td>
+                                <td>" . $rows["year_released"] . "</td>
+                                <td>" . $rows["book_genre"]. "</td>
+                                <td>" . $rows["age_group"]. "</td>
+                                <td>
+                                <form method='post'>
+                                    <button type='submit' name='removeFromCart' value='" . $rows['book_id'] . "'>Remove from cart</button>
+                                </form>
+                                </td>
+                            </tr>
+                            
+                        </table>";
+            }
+    }
+    public function removeFromCart () {
+        $id = $_POST['removeFromCart'];      
+        $sql = "DELETE FROM cart WHERE book_id = '$id'";
+        global $mysqli;
+        $mysqli->query($sql);
+    }      
+    public function checkout(){
+        $id = $_SESSION['userId'];
+        $sql = "SELECT COUNT(book_id) AS 'count' FROM cart WHERE users_id = '$id'";
+        $sqlCheck = "SELECT COUNT(book_id) AS 'currentlyCheckedOut' FROM checkedOut WHERE users_id = '$id'";
+        global $mysqli;       
+        $toCheckOut = $mysqli->query($sql);        
+        $prevCheckedOut =  $mysqli->query($sqlCheck);
+        $resultToCheckout = $toCheckOut->fetch_assoc();
+        $resultPrevCheckout = $prevCheckedOut->fetch_assoc();
+        $calculation = $resultToCheckout['count'] + $resultPrevCheckout['currentlyCheckedOut'];
+        $canCheckOut = 6 - $resultPrevCheckout['currentlyCheckedOut'];
+
+            if($calculation <= 6){
+                $cart = "SELECT * FROM cart WHERE users_id = $id";
+                global $mysqli;
+                $fetch = $mysqli->query($cart);
+
+                while($books = $fetch->fetch_assoc()){ 
+                    $book = $books['book_id'];
+                    $checkOut = new DateTime();
+                    $today = $checkOut->format('y-m-d');
+                    $return = new DateTime();
+                    $return->modify('+28 day');
+                    $dueDate = $return->format('y-m-d');
+
+                    $updateCheckedOut = "INSERT INTO checkedOut (book_id, users_id, check_out_date, due_date) VALUES ('$book', '$id', '$today', '$dueDate')";
+                    $updateCart = "DELETE FROM cart WHERE book_id = '$book'";
+                    $updateBooks = "UPDATE books SET is_checked_out = 1, user_checked_out = '$id' WHERE book_id = $book";
+                    global $mysqli;
+                    $mysqli->query($updateCheckedOut);
+                    $mysqli->query($updateCart);
+                    $mysqli->query($updateBooks);
+                }    
+            } else {
+                echo "A maximum of 6 books are allowed to be checked out. You may check out up to " . $canCheckOut . " books on this occation</p>";
+            } 
+            echo "<script>window.location = 'confirmCheckOut.php'</script>";
+    }
+    public function confirmedCheckOut() {
+        $id = $_SESSION['userId'];
+        $sql= "SELECT * FROM checkedOut LEFT OUTER JOIN books ON checkedOut.book_id = books.book_id WHERE users_id = '$id'";
+        global $mysqli;
+        $check = $mysqli->query($sql);
+        echo "<div>";
+        while ($fetch = $check->fetch_assoc()){
+            echo "<p>" . $fetch['book_title'] . "</p>";
+        };
+        echo "</div>";
+    }
+    public function bookCheckin() {
+        $bookId = $_POST['checkIn'];    
+        $fine = "SELECT * FROM checkedOut WHERE book_id = '$bookId'";
+        global $mysqli;
+        $send = $mysqli->query($fine);
+        $fetch = $send->fetch_assoc();
+        $id = $fetch['users_id'];
+        $fineOnBook = $fetch['fine'];
+        $sqlFine = "SELECT fineTotal FROM users WHERE id =  '$id'";
+        $queryFine = $mysqli->query($sqlFine);
+        $getFine = $queryFine->fetch_assoc();     
+        $existingFines = $getFine['fine'];     
+        $updatedFine = $existingFines +  $fineOnBook;
+        $updateUserFine = "UPDATE users SET fine = '$updatedFine' WHERE id = '$id'";
+        $checkIn = "UPDATE books SET is_checked_out = 0, user_checked_out = 0 WHERE book_id = '$bookId'";
+        $removeFromUser = "DELETE FROM checkedOut WHERE book_id = '$bookId'";
+        $mysqli->query($updateUserFine);
+
+            if ($mysqli->query($checkIn) && $mysqli->query($removeFromUser)){
+                $sql = "SELECT * FROM books WHERE book_id = '$bookId'";
+                global $mysqli;
+                $confirm = $mysqli->query($sql);
+                $confirmBook = $confirm->fetch_assoc();
+                echo "<div>
+                        <p>" . $confirmBook['book_title'] . " has been checked back in</p>
+                    </div>";
+            } else {
+                echo "<div>
+                        <p>There was an error checking the book back in</p>
+                    </div>";
+            }
+    }
+    public function fine() {
+        $sql = "SELECT * FROM checkedOut";
+        $checkDate = new DateTime ();      
+        $today = 20 . $checkDate->format('y-m-d');     
+        global $mysqli;
+        $fine = $mysqli->query($sql);
+        while ($check = $fine->fetch_assoc()){
+            $id = $check['users_id'];
+            $dueDate = $check['due_date'];
+            $book = $check['book_id'];
+            $numOne = explode("-", $dueDate);
+            $numOne = implode('', $numOne);
+            $numOne = intval($numOne);      
+            $numTwo = explode("-", $today);
+            $numTwo = implode ('', $numTwo);
+            $numTwo = intval($numTwo);         
+            $fineDue = $numOne - $numTwo;          
+            if ($fineDue < 0){
+                $sqlFine = "UPDATE checkedOut SET fine = 10 WHERE book_id = '$book'";
+                global $mysqli;
+                $mysqli->query($sqlFine);
+            }          
+        }
+    }
+    public function payFine() {
+        $id = $_POST['payFine'];
+        $newCheckin = new DateTime();
+        $newCheckin->modify('+28 day');
+        $dueDate = $newCheckin->format('y-m-d');
+        $sql = "UPDATE users SET fineTotal = 0  WHERE id = '$id'";
+        global $mysqli;
+        if($mysqli->query($sql)){
+            echo "<div>
+                    <p>The fine has been paid</p>          
+                  </div>";
+        };
     }
 
 // The following functions sort the information
@@ -706,7 +959,6 @@ class LibraryDatabase {
             echo "image not edited";
         };
     }
-
     public function deleteBookWarning(){
         $id = $_POST['deleteBook'];
         $sql = "SELECT book_title FROM books WHERE book_id = '$id'";
@@ -766,6 +1018,8 @@ class LibraryDatabase {
     }
 }
 
-$newAuthor = new LibraryDatabase;
+$newEntry = new LibraryDatabase;
+
+    //$newEntry->setNumInCart();
 
 ?>

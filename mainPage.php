@@ -3,6 +3,8 @@ session_start();
 include('membersClassOOP.php');
 include('libraryClassOOP.php');
 include('login.php');
+
+
 ?>
 
 <!doctype html>
@@ -15,16 +17,31 @@ include('login.php');
     </head>
 
     <body>
+   
         <div class='pageContainer'>
             <div class='mainContainer'>
-                
+           
                 <header>
                     <?php include('header.php')?>
                 <header>
+                 <?php  if ($_SESSION['isStaff'] === FALSE) {
+                /*    echo "
+                    <section id='cartContainer'>
+                        <div>
+                            <p>Placeholder for image of cart</p>
+                            <p>Number of items in cart -</p>
+                            <p id='cart'>" . $newEntry->getNumInCart() . "</p>    
+                            <form method='POST' action='cart.php'>
+                                <button type='submit' name='viewCart'>View Cart</button>   
+                            </form>            
+                        </div>
+                    </section>";*/
+                }?>
                     <p>THIS IS THE MAIN PAGE</p>
                     <section id='searchLibrary'>
-                   
-                        <div>
+                        <?php  if($_SESSION['isStaff'] === TRUE){   
+                        
+                        echo "<div>
                             <h2>Seacrh for the author you wish to update</h2>
                             <form id='searchAuthorForm' method='post'>
                                 <label>Search database for author</label>
@@ -32,7 +49,9 @@ include('login.php');
 
                                 <input type='submit' name='searchAuthorSubmit' value='search'>
                             </form>                    
-                        </div>
+                        </div>";
+                        }
+                        ?>
                         <div>
                             <form method='post'>
                                 <label for='searchDatabase'>Search Book</label>
@@ -44,22 +63,75 @@ include('login.php');
                     <section>
                         <?php 
                             if (isset($_POST['searchAuthorSubmit'])){
-                                $newAuthor->searchAuthor();
+                                $newEntry->searchAuthor();
                             }
                             if(isset($_POST['searchBook'])){
-                                $newAuthor->searchBook();
-                            } ?>
+                                $newEntry->searchBook();
+                            }
+                            if (isset($_POST['addToCart'])){
+                                $newEntry->addToCart();  
+                                                                                                              
+                            }
+                            if (isset($_POST['checkIn'])){
+                                $newEntry->bookCheckin();
+                            }
+                            if (isset($_POST['viewBooks'])){
+                                $newEntry->viewAuthorsBooks();
+                            };  
+                            
+                           
+                            if (isset($_POST['sortByIdAsc'])){
+                                $_SESSION['sortBy'] = 'book_id';
+                                $newEntry->sortAscending();
+                            }else if (isset($_POST['sortByTitleAsc'])){
+                                $_SESSION['sortBy'] = 'book_title';
+                                $newEntry->sortAscending();
+                            }else if(isset($_POST['sortByAuthorAsc'])){
+                                $_SESSION['sortBy'] = 'author_name';
+                                $newEntry->sortAscending();
+                            }else if(isset($_POST['sortByYearAsc'])){
+                                $_SESSION['sortBy'] = 'year_released';
+                                $newEntry->sortAscending();
+                            }else if(isset($_POST['sortByGenreAsc'])){
+                                $_SESSION['sortBy'] = 'book_genre';
+                                $newEntry->sortAscending();
+                            }else if(isset($_POST['sortByAgeAsc'])){
+                                $_SESSION['sortBy'] = 'age_group';                            
+                                $newEntry->sortAscending();
+                            }else if(isset($_POST['sortByCheckedOutAsc'])){
+                                $_SESSION['sortBy'] = 'is_checked_out';
+                                $newEntry->sortAscending();
+                            }else if (isset($_POST['sortByIdDesc'])){
+                                $_SESSION['sortBy'] = 'book_id';
+                                $newEntry->sortDescending();
+                            }else if (isset($_POST['sortByTitleDesc'])){
+                                $_SESSION['sortBy'] = 'book_title';
+                                $newEntry->sortDescending();
+                            }else if(isset($_POST['sortByAuthorDesc'])){
+                                $_SESSION['sortBy'] = 'author_name';
+                                $newEntry->sortDescending();
+                            }else if(isset($_POST['sortByYearDesc'])){
+                                $_SESSION['sortBy'] = 'year_released';
+                                $newEntry->sortDescending();
+                            }else if(isset($_POST['sortByGenreDesc'])){
+                                $_SESSION['sortBy'] = 'book_genre';
+                                $newEntry->sortDescending();
+                            }else if(isset($_POST['sortByAgeDesc'])){
+                                $_SESSION['sortBy'] = 'age_group';
+                                $newEntry->sortDescending();
+                            }else if(isset($_POST['sortByCheckedOutDesc'])){
+                                $_SESSION['sortBy'] = 'is_checked_out';
+                                $newEntry->sortDescending();
+                            }                       
+                        ?>
+                            
                     </section>
-                   
-
-                    
-
                 <footer>
                     <?php include('footer.php') ?>
                 </footer>
             </div>
         </div>
 
-        <script src='script/script.js'></script>
+        <script src='script/script.js'></script> 
     </body> 
 </html>

@@ -4,6 +4,10 @@ include('membersClassOOP.php');
 include('login.php');
 include('connect.php');
 $mysqli->query($sql);
+
+if (isset($_POST['logOut'])){
+    $newUser->logout();
+}
 ?>
 
 <!doctype html>
@@ -45,7 +49,8 @@ $mysqli->query($sql);
                         <input id='memberPassword' name='memberPassword' type='text'>
 
                         <button type='submit' name='submitMember'>Login</button>
-                    </form>   
+                    </form>                     
+                        <a href='forgotPassword.php'><button>Forgot username or password</button></a>                   
                     <button onclick='member("cancelMember")'>Cancel</button>   
                 </div>
                 <?php
@@ -72,7 +77,7 @@ $mysqli->query($sql);
                     }
                     ?>
                 <div id='newMemberContainer'>
-                    <form id='newMemberForm'  method='post' >
+                    <form id='newMemberForm'  method='post' enctype='multipart/form-data'>
                         <label for='newMemberFirstName'>First Name</label>
                         <input id='newMemberFirstName' name='newMemberFirstName' type='text'>
 
@@ -88,6 +93,9 @@ $mysqli->query($sql);
                         <label for='NewMemberPassword'>Create Password</label>
                         <input id='newMemberPassword' name='newMemberPassword' type='text'>
 
+                        <label for='profilePic'>Upload a prfile pic</label>
+                        <input id='profilePic' name='profilePic' type='file'>
+
                         <button type='submit' name='newMemberSubmit' value='newMemberSubmit'>Create Account</button>              
                     </form>
                     <button onclick='member("cancelNewMember")'>Cancel</button>
@@ -95,7 +103,7 @@ $mysqli->query($sql);
                 <?php 
                     if(isset($_POST['newMemberSubmit'])){
                         $newUser->newUserAccount();
-                        header("Location: newAccount.php");
+                        //header("Location: newAccount.php");
                     }?>
             </section>
 

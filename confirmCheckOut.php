@@ -1,6 +1,7 @@
 <?php 
 session_start();
 include('membersClassOOP.php');
+include('libraryClassOOP.php');
 include('login.php');
 ?>
 
@@ -20,10 +21,18 @@ include('login.php');
                     <?php include('header.php')?>
                 <header>
 
+                <div>
+                    <p>Thank you for checkin out - </p>
+                    <?php $newEntry->confirmedCheckOut() ?>
+                    <p>We hope that you enjoy your reads</p>
+                </div>
+            
+                
                 <footer>
                     <?php include('footer.php') ?>
                 </footer>
                 <script src='script/script.js'></script>
+
             </div>
         </div>
 
