@@ -13,16 +13,20 @@
 4 - NEW MEMBER LOGIN
 
 ******** GENERAL STYLING ********/
+@font-face{
+    font-family: "DMSansReg";
+    src: url(../assets/fonts/DM_Sans/DMSans-Regular.ttf);
+}
 * {
     margin: 0px;
+    font-family: 'DMSansReg';
 }
+
 .pageContainer {
     position: relative;
     min-height: 100vh;
+  
   }
-.mainContainer {
-    padding-bottom: 100px;    /* Footer height */
-}
 
 /******** HEADER AND FOOTER ********/
 
@@ -34,20 +38,270 @@
     height: 200px;
     width: auto;
 }
+#headerContainer {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    align-items: center;
+}
+#headerTitles {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
 #footerContainer {
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 100px;  
 }   
+#niceTry{
+    width: 100%;
+    text-align:  center;
+    margin-top: 100px;
+}
+#niceTry button {
+    border: none;
+    width: 200px;
+    height: 30px;
+    background-color: #EC8F00;
+
+}
 
 /******** LOGIN PAGE *******/
 
 #memberContainer, #staffContainer, #newMemberContainer{
     display: none;
 }
+#loginPage {
+    display : grid;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+}
+#loginContainer {
+    margin: auto;
+    display: grid;
+    height: 400px;
+    grid-template-rows: 50% 50%;
+    align-items: center;
+    justify-items: center;
+    padding-right: 20%;
+}
+#loginTitle {  
+    grid-row-start: 1;
+    grid-row-end: 2;
+    text-align: center; 
+}
+#loginTypeContainer {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    align-items: center;
+    justify-content: center;
+}
+.form input {
+    margin-bottom: 10px;
+}
+#newMemberContainer {
+    margin-top: 70px;
+}
+.mainLoginContainers form{
+    display: grid;
+    margin-top: 300px;
+    grid-template-columns: 100%;
+    width: 300px;
+}
+#loginBody {
+    background-color: #EC8F00;
+}
+#loginImage{
+    width: auto;
+    height: 700px;    
+}
+.loginButtons {
+    width : 200px;   
+}
+
+.loginButtons button{
+    width: 100%;
+    height : 30px;
+    margin-top: 2em;
+}
+.loginButtons button, .loginButtons button:hover, .loginButtons button:disabled, .loginButtons button:disabled:hover {
+    border: none;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+}
+.loginButtons button, .login, .cancel, .forgot{
+    -o-transition: .4s;
+    -ms-transition: .4s;
+    -moz-transition: .4s;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.loginButtons button:hover {
+    -o-transition: 1s;
+    -ms-transition: 1s;
+    -moz-transition: 1s;
+    -webkit-transition: 1s;
+    transition: 1s;
+    border-radius: 20px;
+    height: 50px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -o-border-radius: 25px;
+    background-color: #292929;	
+    border-style: none;
+    color: white;
+}
+.login:hover, .cancel:hover, .forgot:hover, .sortButtons button:hover {
+    -o-transition: 1s;
+    -ms-transition: 1s;
+    -moz-transition: 1s;
+    -webkit-transition: 1s;
+    transition: 1s;
+    border-radius: 20px;
+    background-color: #292929; 
+    color: white;
+}
+.cancel:hover {
+    background-color: #420e07;	
+}
+
+#loginBody input {
+    border: none;
+    border-radius: 4px;
+    height: 30px;
+}
+.signin {
+    width: 100%;
+    height: 30px;
+    border: none;
+    margin-top: 20px;
+    border-radius: 4px;
+   
+} 
+.input {
+    margin-top: 50px;
+}
+
+  
+/*    #810000	- RED
+#420e07	- DARK RED 
+#002907	- GREEN 
+#ec8f00	- Orange
+#292929 - GREY */
+
 
 /******** NEW MEMBER LOGIN ********/
+
+/******** Search ********/
+
+
+.searchTable {
+    display: grid;
+    grid-template-columns: 15% 60% 25%;
+    grid-template-rows: 15% 35% 25% 25%;
+    height: 350px;
+}
+.bookImage {
+    height: 300px;
+    width: auto;
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.searchResultTitle {
+    text-align: center;
+    margin-bottom: 2%;
+}
+.bookSearchTitle, .bookSearchAbout {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+.bookSearchTitle {
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+.bookSearchAbout {
+    grid-row-start: 2;
+    grid-row-end: 5;
+}
+.bookSearchGenre, .bookSearchAge, .bookSearchCheckedin, .bookSearchButton{
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+.bookSearchGenre {
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+.bookSearchAge {
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+.bookSearchCheckedin {
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
+.bookSearchButton {
+    grid-row-start: 4;
+    grid-row-end: 5;
+}
+.horzontalBreak{
+    margin-bottom: 50px;
+}
+.orgnaiseSearchContainer{
+    width: 80%;
+    margin: auto;
+}
+.organiseSearch {
+    width: 100%;   
+    margin-top: 30px;
+    margin-bottom: 50px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 15% 15% 15% 15% 15% 15%;
+    grid-template-rows: auto auto;
+}
+.organiseSearch button {
+    border: none;
+    border-radius: 4px;
+    width: 60px;
+    margin: 5px;  
+}
+.sortButtons{
+    display: inline-flex;
+    margin: 5px 20px;
+}
+.sortHeading{
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+.sortTitle, #sortByTitle {
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.sortAuthor, #sortByAuthor{
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+.sortYear, #sortByYear {
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+.sortGenre, #sortByGenre {
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+.sortAge, #sortByAge {
+    grid-column-start: 5;
+    grid-column-end: 6;
+}
+.sortChecked, #isCheckedOut{
+    grid-column-start: 6;
+    grid-column-end: 7;
+}
 
 
 /******** Edit Library ********/

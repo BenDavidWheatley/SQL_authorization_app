@@ -25,19 +25,8 @@ include('login.php');
                     <?php include('header.php')?>
                 <header>
                  <?php  if ($_SESSION['isStaff'] === FALSE) {
-                /*    echo "
-                    <section id='cartContainer'>
-                        <div>
-                            <p>Placeholder for image of cart</p>
-                            <p>Number of items in cart -</p>
-                            <p id='cart'>" . $newEntry->getNumInCart() . "</p>    
-                            <form method='POST' action='cart.php'>
-                                <button type='submit' name='viewCart'>View Cart</button>   
-                            </form>            
-                        </div>
-                    </section>";*/
                 }?>
-                    <p>THIS IS THE MAIN PAGE</p>
+
                     <section id='searchLibrary'>
                         <?php  if($_SESSION['isStaff'] === TRUE){   
                         

@@ -26,8 +26,7 @@ include('login.php');
                     <?php $newEntry->confirmedCheckOut() ?>
                     <p>We hope that you enjoy your reads</p>
                 </div>
-            
-                
+                           
                 <footer>
                     <?php include('footer.php') ?>
                 </footer>

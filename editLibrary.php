@@ -57,7 +57,10 @@ $mysqli->query($sql);
                         }
                         if(isset($_POST['submitAuthor'])){
                            $newEntry->addAuthorToDatabase();
-                        };                 
+                        };   
+                        if(isset($_POST['checkIn'])){
+                            $newEntry->bookCheckin();
+                        }              
                         ?>
                     </div>
                 </section>

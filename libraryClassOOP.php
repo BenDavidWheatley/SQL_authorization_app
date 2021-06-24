@@ -4,9 +4,8 @@
 FUNCTIONS 
 line xx 
 */
-
 session_start();
-//include('membersClassOOP.php'); THIS BREAKS THE PAGE
+
 include('login.php');
 include('connect.php');
 include('editLibrary');
@@ -30,8 +29,7 @@ class LibraryDatabase {
     
 // ******** GETTERS ********
 
-    public function getNumInCart(){
-       
+    public function getNumInCart(){      
         echo $this->numBooksInCart;  
     }
 
@@ -42,7 +40,7 @@ class LibraryDatabase {
     public function searchAuthor(){
         $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
         echo "<h3>Your author search result is - </h3>";
-        $authorName = '%'.strtolower($_POST['searchAuthor']).'%'; 
+        $authorName = '%'. $_POST['searchAuthor'] .'%'; 
         $sql = "SELECT * FROM authors  WHERE author_name LIKE '$authorName'";
         global $mysqli;    
         $doesAuthorExist = $mysqli->query($sql);    
@@ -78,7 +76,7 @@ class LibraryDatabase {
                         <input id='authorsName' name='authorsName' type='text' pattern='[a-z A-Z]+' required>
 
                         <label for='authorsAge'>Authors Age</label>
-                        <input id='authorsAge' name='authorsAge' type='text' pattern='[0-9]+' required>
+                        <input id='authorsAge' name='authorsAge' type='text' pattern='[0-9 a-z A-Z]+' required>
 
                         <label for='mainGenre'>Main Genre</label>
                         <select id='mainGenre' name='mainGenre' required>
@@ -88,7 +86,7 @@ class LibraryDatabase {
                         </select>
 
                         <label for='authorBio'>Add a bio of the author</label>
-                        <input name='authorBio' type='textarea'  pattern='[0-9 a-z A-Z]+'>
+                        <input name='authorBio' type='textarea' >
 
                         <label for='authorImage'>Upload Authors Image</label>
                         <input type='file' name='authorImage'>                   
@@ -101,11 +99,10 @@ class LibraryDatabase {
                 echo "Unfortuntalty the author you are looking for is not in our library";
             };   
     }  
-
 // This function will add a new author to the database
 
     public function addAuthorToDatabase(){
-        $authorsName = strtolower($_POST['authorsName']);
+        $authorsName = $_POST['authorsName'];
         $authorsAge = $_POST['authorsAge'];
         $mainGenre = $_POST['mainGenre'];
         $authorBio = $_POST['authorBio'];
@@ -129,7 +126,7 @@ class LibraryDatabase {
                                     move_uploaded_file($fileTmpName, $fileDestination);
                                     $author = "INSERT INTO authors (author_name, age, genre, author_bio, author_image) VALUE ('$authorsName', '$authorsAge', '$mainGenre', '$authorBio', '$fileNameNew')";
                                     global $mysqli;
-            
+                                                
                                         if ($mysqli->query($author) === TRUE) {
                                             echo "New record created successfully";
                                             } else {
@@ -169,7 +166,7 @@ class LibraryDatabase {
                         <input id='authorsName' name='authorsNameEdit' type='text' pattern='[a-z A-Z]+' value='" . $rows['author_name'] . "' required>
 
                         <label for='authorsAge'>Authors Age</label>
-                        <input id='authorsAge' name='authorsAgeEdit' type='text' min='0' max='150' pattern='[0-9]+' value='" . $rows['age'] . "' required>
+                        <input id='authorsAge' name='authorsAgeEdit' type='text' min='0' max='150' pattern='[0-9 a-z A-Z]+' value='" . $rows['age'] . "' required>
 
                         <label for='mainGenre'>Main Genre</label>
                         <select id='mainGenre' name='mainGenreEdit' required>
@@ -191,18 +188,18 @@ class LibraryDatabase {
     }
     public function submitAuthorEdit(){
         $id = $_POST['submitAuthorEdit'];    
-        $authorName = strtolower($_POST['authorsNameEdit']);        
+        $authorName = $_POST['authorsNameEdit'];        
         $age = $_POST['authorsAgeEdit'];
         $genre = $_POST['mainGenreEdit'];   
         $authorBio = $_POST['editAuthorBio'];   
         $sql = "UPDATE authors
                 SET author_name = '$authorName', age = '$age', genre = '$genre', author_bio = '$authorBio'
-                WHERE author_id = $id";   
+                WHERE author_id = '$id'";   
         global $mysqli;    
             if ($mysqli->query($sql) === TRUE) {
                 echo "Record '" . $authorName . "' updated successfully";
             } else {
-                echo "Error deleting record: " . $mysqli->error;
+                echo "Error editing record: " . $mysqli->error;
         }
 
 
@@ -314,7 +311,10 @@ class LibraryDatabase {
                             <option value='memoir_and_autobiography'>Memoir and Autobiography</option>
                             <option value='mystery'>Mystery</option>
                             <option value='new_adult'>New Adult</option>
+                            <option value='novel'>Novel</option>
                             <option value='parenting_and_families'>Parenting & Families</option>
+                            <option value='poetry'>Poetry</option>
+                            <option value='psychology'>Psychology</option>
                             <option value='religion_and_spirituality'>Religion & Spirituality</option>
                             <option value='romance'>Romance</option>
                             <option value='science_and_technology'>Science & Technology</option>
@@ -331,15 +331,21 @@ class LibraryDatabase {
                         <select id='ageGroup' name='ageGroup' required>
                             <option hidden disabled selected value> -- select an option -- </option>
                             <option value='all ages'>All ages</option>
+                            <option value='childrenFiction'>Childrens Fiction</option>
+                            <option value='teenageFiction'>Teenage Fiction</option>
+                            <option value='adultFiction'>Adult Fiction</option>
                             <option value='0-1'>0 - 1</option>
                             <option value='0-2'>1 - 2</option>
                             <option value='3-5'>3 - 4</option>
                             <option value='5'>5</option>
                             <option value='6-7'>6 - 7</option>
                             <option value='8-10'>8 - 10</option>
-                            <option value='11-13'>11 - 13</option>
-                            <option value='14-18'>14 - 18</option>
-                            <option value='18+'>18 +</option>
+                            <option value='12-15'>11 - 13</option>
+                            <option value='12-17'>12 - 17</option>
+                            <option value='12+'>12 and above</option>
+                            <option value='14+'>14 and above</option>
+                            <option value='16+'>16 and above</option>
+                            <option value='18+'>18 and above</option>
                         </select>
 
                         <label for='file'>Upload Book Image</label>
@@ -352,7 +358,7 @@ class LibraryDatabase {
     }
     public function addBookToDatabase(){
         $id = ($_POST['submitBook']);
-        $bookTitle = strtolower($_POST['bookTitle']);                   
+        $bookTitle = $_POST['bookTitle'];                   
         $yearReleased = $_POST['yearReleased'];
         $genre = $_POST['genre'];
         $ageGroup = $_POST['ageGroup'];    
@@ -406,83 +412,95 @@ class LibraryDatabase {
         } 
     }  
     public function searchBook(){        
-        $result = '%'.strtolower($_POST['searchDatabase']).'%';  
+        $result = '%'. $_POST['searchDatabase'] .'%';  
         $_SESSION['search'] = $result;           
-        echo "<h3>Your search result is - </h3>";
+        echo "<h2 class='searchResultTitle'>Your search result is - </h2>";
         $sqls = "SELECT * FROM books LEFT OUTER JOIN authors ON books.author_id = authors.author_id 
         WHERE book_title LIKE '$result'";
         global $mysqli;
         $searchResult = $mysqli->query($sqls); 
-                echo "<form method='post'>
-                        
-                        <h5>Title</h5>
-                        <button id='sortByTitle' type='submit' name='sortByTitleAsc' value='sortByTitle'>Asc</button>
-                        <button id='sortByTitle' type='submit' name='sortByTitleDesc' value='sortByTitle'>Desc</button>
-                        <h5>Author</h5>
-                        <button id='sortByAuthor' type='submit' name='sortByAuthorAsc' value='sortByAuthor'>Asc</button>
-                        <button id='sortByAuthor' type='submit' name='sortByAuthorDesc' value='sortByAuthor'>Desc</button>
-                        <h5>Year</h5>
-                        <button id='sortBuYear' type='submit' name='sortByYearAsc' value='sortByYear'>Asc</button>
-                        <button id='sortBuYear' type='submit' name='sortByYearDesc' value='sortByYear'>Desc</button>  
-                        <h5>Genre</h5>                     
-                        <button id='sortByGenre' type='submit' name='sortByGenreAsc' value='sortByGenre'>Asc</button>   
-                        <button id='sortByGenre' type='submit' name='sortByGenreDesc' value='sortByGenre'>Desc</button> 
-                        <h5>Age Group</h5>
-                        <button id='sortByAge' type='submit' name='sortByAgeAsc' value='sortByAge'>Asc</button>
-                        <button id='sortByAge' type='submit' name='sortByAgeDesc' value='sortByAge'>Desc</button>
-                        <h5>Checked Out</h5>
-                        <button id='isCheckedOut' type='submit' name='sortByCheckedOutAsc' value='isCheckedOut'>Asc</button>
-                        <button id='isCheckedOut' type='submit' name='sortByCheckedOutDesc' value='isCheckedOut'>Desc</button>
-                    </form>";          
-            while($rows = $searchResult->fetch_assoc()){                          
-                echo "<table id='searchContainer'> 
-                        <tr class='searchTable'>
-                            <img class='image' src='assets/books/" . $rows['images'] . "'>
-                            <td>" . $rows["book_title"]. "</td>
-                            <td>" . $rows["about_book"] . "</td>
-                            <td>" . $rows["author_name"] . "</td>
-                            <td>" . $rows["year_released"] . "</td>
-                            <td>" . $rows["book_genre"]. "</td>
-                            <td>" . $rows["age_group"]. "</td>
-                            <td>";
-                                if($rows["is_checked_out"] === "1"){                            
-                                    echo 'yes';
-                                } else {
-                                    echo 'no';
-                                };                                                     
-                            echo "</td>  
-                            <td>";
-
-                            if ($_SESSION['isStaff'] === TRUE){
-                                echo    
-                                "<form method='post'>
-                                    <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button>";
-                                    if ($rows["is_checked_out"] != 1) {
-                                        echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " disabled>Checkin Book</button>";
-                                    }else {
-                                        echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " >Checkin Book</button>";
+                echo "<div class='orgnaiseSearchContainer'>               
+                        <form class='organiseSearch' method='post'>                       
+                            <h3 class='sortHeading sortTitle'>Title</h3>
+                            <div id='sortByTitle' class='sortButtons'>
+                                <button type='submit' name='sortByTitleAsc' value='sortByTitle'>Asc</button>
+                                <button type='submit' name='sortByTitleDesc' value='sortByTitle'>Desc</button>
+                            </div>
+                            <h3 class='sortHeading sortAuthor'>Author</h3>
+                            <div id='sortByAuthor' class='sortButtons'>
+                                <button  type='submit' name='sortByAuthorAsc' value='sortByAuthor'>Asc</button>
+                                <button  type='submit' name='sortByAuthorDesc' value='sortByAuthor'>Desc</button>
+                            </div>                            
+                            <h3 class='sortHeading sortYear'>Year</h3>
+                            <div id='sortByYear' class='sortButtons'>
+                                <button  type='submit' name='sortByYearAsc' value='sortByYear'>Asc</button>
+                                <button  type='submit' name='sortByYearDesc' value='sortByYear'>Desc</button>  
+                            </div>
+                            <h3 class='sortHeading sortGenre'>Genre</h3>   
+                            <div id='sortByGenre' class='sortButtons'>                 
+                                <button type='submit' name='sortByGenreAsc' value='sortByGenre'>Asc</button>   
+                                <button type='submit' name='sortByGenreDesc' value='sortByGenre'>Desc</button> 
+                            </div>
+                            <h3 class='sortHeading sortAge'>Age Group</h3>
+                            <div id='sortByAge' class='sortButtons'> 
+                                <button type='submit' name='sortByAgeAsc' value='sortByAge'>Asc</button>
+                                <button type='submit' name='sortByAgeDesc' value='sortByAge'>Desc</button>
+                            </div>
+                            <h3 class='sortHeading sortChecked'>Checked Out</h3>
+                            <div id='isCheckedOut' class='sortButtons'> 
+                                <button type='submit' name='sortByCheckedOutAsc' value='isCheckedOut'>Asc</button>
+                                <button type='submit' name='sortByCheckedOutDesc' value='isCheckedOut'>Desc</button>
+                            </div>
+                        </form>
+                    </div>";          
+                    while($rows = $searchResult->fetch_assoc()){                          
+                        echo "<table class='searchContainer'> 
+                                <tr class='searchTable'>
+                                    <td><img class='bookImage' src='assets/books/" . $rows['images'] . "'></td>
+                                    <td class='bookSearchTitle'><h2>" . $rows["book_title"]. "</h2><h4> by " . $rows["author_name"] . " (" .  $rows["year_released"] . ")</h4></td>
+                                    <td class='bookSearchAbout'>" . $rows["about_book"] . "</td>
+                                    <td class='bookSearchGenre'>Genre - " . $rows["book_genre"]. "</td>
+                                    <td class='bookSearchAge'>Age Group -" . $rows["age_group"]. "</td>
+                                    <td class='bookSearchCheckedin'>Available - ";
+                                        if($rows["is_checked_out"] === "1"){                            
+                                            echo 'yes';
+                                        } else {
+                                            echo 'no';
+                                        };                                                     
+                                    echo "</td>  
+                                    <td class='bookSearchButton'>";
+        
+                                    if ($_SESSION['isStaff'] === TRUE){
+                                        echo    
+                                        "<form   method='post'>
+                                            <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button>";
+                                            if ($rows["is_checked_out"] != 1) {
+                                                echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " disabled>Checkin Book</button>";
+                                            }else {
+                                                echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " >Checkin Book</button>";
+                                            }
+                                            
+                                            echo "<button>Cancel</button>
+                                        </form>"; 
+                                    } else if ($rows["is_checked_out"] === "1" && $_SESSION['isStaff'] != TRUE) {
+                                        echo     
+                                        "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                            <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Currently Unavailable</button> 
+                                            <button >Cancel</button>
+                                        </form>";                                  
+                                    } else {
+                                        echo     
+                                        "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                            <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
+                                            <button>Cancel</button>
+                                        </form>";   
+        
                                     }
-                                    
-                                    echo "<button>Cancel</button>
-                                </form>"; 
-                            } else if ($rows["is_checked_out"] === "1" && $_SESSION['isStaff'] != TRUE) {
-                                echo     
-                                "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
-                                    <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Add to Cart</button> 
-                                    <button>Cancel</button>
-                                </form>";                                  
-                            } else {
-                                echo     
-                                "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
-                                    <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
-                                    <button>Cancel</button>
-                                </form>";   
-
-                            }
-                            echo "</td>
-                        <tr>     
-                    </table>";
-        }
+                                    echo "</td>
+                                <tr>     
+                            </table>
+                            <hr class='horzontalBreak'>";
+                }
     }
     public function addToCart(){  
         $this->searchBook();  
@@ -519,10 +537,8 @@ class LibraryDatabase {
         $calculation = $resultToCheckout['count'] + $resultPrevCheckout['currentlyCheckedOut'];
         $canCheckOut = 6 - $resultPrevCheckout['currentlyCheckedOut'];
 
-        echo "<div>
-                <p>You currently have " . $resultPrevCheckout['currentlyCheckedOut'] . " books checked out.</p>
-                <p> You may check out up to " . $canCheckOut . " books on this occation</p>
-            </div>";
+        echo   "<p>You currently have " . $resultPrevCheckout['currentlyCheckedOut'] . " books checked out.</p>
+                <p> You may check out up to " . $canCheckOut . " books on this occation</p>";
     }
     public function currentCheckOut(){
         $id = $_SESSION['userId']; 
@@ -555,11 +571,7 @@ class LibraryDatabase {
                                     <img class='image' src='assets/books/" . $rows['images'] . "'>
                                 </td>
                                 <td>" . $rows["book_title"]. "</td>
-                                <td>" . $rows["about_book"] . "</td>
-                                <td>" . $rows["author_name"] . "</td>
-                                <td>" . $rows["year_released"] . "</td>
-                                <td>" . $rows["book_genre"]. "</td>
-                                <td>" . $rows["age_group"]. "</td>
+                               
                                 <td>
                                 <form method='post'>
                                     <button type='submit' name='removeFromCart' value='" . $rows['book_id'] . "'>Remove from cart</button>
@@ -611,6 +623,8 @@ class LibraryDatabase {
                 }    
             } else {
                 echo "A maximum of 6 books are allowed to be checked out. You may check out up to " . $canCheckOut . " books on this occation</p>";
+                // back to cart button
+                die;
             } 
             echo "<script>window.location = 'confirmCheckOut.php'</script>";
     }
@@ -628,16 +642,19 @@ class LibraryDatabase {
     public function bookCheckin() {
         $bookId = $_POST['checkIn'];    
         $fine = "SELECT * FROM checkedOut WHERE book_id = '$bookId'";
+        echo "test";
         global $mysqli;
         $send = $mysqli->query($fine);
         $fetch = $send->fetch_assoc();
         $id = $fetch['users_id'];
         $fineOnBook = $fetch['fine'];
         $sqlFine = "SELECT fineTotal FROM users WHERE id =  '$id'";
+        echo "test";
         $queryFine = $mysqli->query($sqlFine);
         $getFine = $queryFine->fetch_assoc();     
         $existingFines = $getFine['fine'];     
         $updatedFine = $existingFines +  $fineOnBook;
+
         $updateUserFine = "UPDATE users SET fine = '$updatedFine' WHERE id = '$id'";
         $checkIn = "UPDATE books SET is_checked_out = 0, user_checked_out = 0 WHERE book_id = '$bookId'";
         $removeFromUser = "DELETE FROM checkedOut WHERE book_id = '$bookId'";
@@ -705,10 +722,7 @@ class LibraryDatabase {
         WHERE book_title LIKE '$result' ORDER BY `{$sortBy}` ASC";
         global $mysqli;
         $searchResult = $mysqli->query($sqls); 
-                echo "<form method='post'>
-                        <h5>ID</h5>
-                        <button id='sortById' type='submit' name='sortByIdAsc' value='sortById'>Asc</button>
-                        <button id='sortById' type='submit' name='sortByIdDesc' value='sortById'>Desc</button>
+                echo "<form method='post'>                      
                         <h5>Title</h5>
                         <button id='sortByTitle' type='submit' name='sortByTitleAsc' value='sortByTitle'>Asc</button>
                         <button id='sortByTitle' type='submit' name='sortByTitleDesc' value='sortByTitle'>Desc</button>
@@ -728,32 +742,53 @@ class LibraryDatabase {
                         <button id='isCheckedOut' type='submit' name='sortByCheckedOutAsc' value='isCheckedOut'>Asc</button>
                         <button id='isCheckedOut' type='submit' name='sortByCheckedOutDesc' value='isCheckedOut'>Desc</button>
                     </form>";          
-            while($rows = $searchResult->fetch_assoc()){                          
-                echo "<table id='searchContainer'> 
-                        <tr class='searchTable'>
-                            <img class='image' src='assets/books/" . $rows['images'] . "'>
-                            <td>" . $rows["book_id"]. "</td>
-                            <td>" . $rows["book_title"]. "</td>
-                            <td>" . $rows["author_name"] . "</td>
-                            <td>" . $rows["year_released"] . "</td>
-                            <td>" . $rows["book_genre"]. "</td>
-                            <td>" . $rows["age_group"]. "</td>
-                            <td>";
-                                if($rows["is_checked_out"] === "1"){                            
-                                    echo 'yes';
-                                } else {
-                                    echo 'no';
-                                };                                                     
-                            echo "</td>  
-                            <td>                      
-                            <form method='post' onsubmit='editlibrary.php'>
-                                <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button> 
-                                <button>Cancel</button>  
-                            </form>    
-                            </td>
-                        <tr>     
-                    </table>";
-        }
+                    while($rows = $searchResult->fetch_assoc()){                          
+                        echo "<table class='searchContainer'> 
+                                <tr class='searchTable'>
+                                    <td><img class='bookImage' src='assets/books/" . $rows['images'] . "'></td>
+                                    <td class='bookSearchTitle'><h2>" . $rows["book_title"]. "</h2><h4> by " . $rows["author_name"] . " (" .  $rows["year_released"] . ")</h4></td>
+                                    <td class='bookSearchAbout'>" . $rows["about_book"] . "</td>
+                                    <td class='bookSearchGenre'>Genre - " . $rows["book_genre"]. "</td>
+                                    <td class='bookSearchAge'>Age Group -" . $rows["age_group"]. "</td>
+                                    <td class='bookSearchCheckedin'>Available - ";
+                                        if($rows["is_checked_out"] === "1"){                            
+                                            echo 'yes';
+                                        } else {
+                                            echo 'no';
+                                        };                                                     
+                                    echo "</td>  
+                                    <td>";
+        
+                                    if ($_SESSION['isStaff'] === TRUE){
+                                        echo    
+                                        "<form method='post'>
+                                            <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button>";
+                                            if ($rows["is_checked_out"] != 1) {
+                                                echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " disabled>Checkin Book</button>";
+                                            }else {
+                                                echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " >Checkin Book</button>";
+                                            }
+                                            
+                                            echo "<button>Cancel</button>
+                                        </form>"; 
+                                    } else if ($rows["is_checked_out"] === "1" && $_SESSION['isStaff'] != TRUE) {
+                                        echo     
+                                        "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                            <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Currently Unavailable</button> 
+                                            <button>Cancel</button>
+                                        </form>";                                  
+                                    } else {
+                                        echo     
+                                        "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                            <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
+                                            <button>Cancel</button>
+                                        </form>";   
+        
+                                    }
+                                    echo "</td>
+                                <tr>     
+                            </table>";
+                }
     }
     public function sortDescending(){
         $result = $_SESSION['search'];
@@ -763,10 +798,7 @@ class LibraryDatabase {
         WHERE book_title LIKE '$result' ORDER BY `{$sortBy}` DESC";
         global $mysqli;
         $searchResult = $mysqli->query($sqls); 
-                echo "<form method='post'>
-                        <h5>ID</h5>
-                        <button id='sortById' type='submit' name='sortByIdAsc' value='sortById'>Asc</button>
-                        <button id='sortById' type='submit' name='sortByIdDesc' value='sortById'>Desc</button>
+                echo "<form method='post'>                      
                         <h5>Title</h5>
                         <button id='sortByTitle' type='submit' name='sortByTitleAsc' value='sortByTitle'>Asc</button>
                         <button id='sortByTitle' type='submit' name='sortByTitleDesc' value='sortByTitle'>Desc</button>
@@ -786,32 +818,53 @@ class LibraryDatabase {
                         <button id='isCheckedOut' type='submit' name='sortByCheckedOutAsc' value='isCheckedOut'>Asc</button>
                         <button id='isCheckedOut' type='submit' name='sortByCheckedOutDesc' value='isCheckedOut'>Desc</button>
                     </form>";           
-            while($rows = $searchResult->fetch_assoc()){                          
-                echo "<table id='searchContainer'> 
-                        <tr class='searchTable'>
-                            <img class='image' src='assets/books/" . $rows['images'] . "'>
-                            <td>" . $rows["book_id"]. "</td>
-                            <td>" . $rows["book_title"]. "</td>
-                            <td>" . $rows["author_name"] . "</td>
-                            <td>" . $rows["year_released"] . "</td>
-                            <td>" . $rows["book_genre"]. "</td>
-                            <td>" . $rows["age_group"]. "</td>
-                            <td>";
-                                if($rows["is_checked_out"] === "1"){                            
-                                    echo 'yes';
-                                } else {
-                                    echo 'no';
-                                };                                                     
-                            echo "</td>  
-                            <td>                      
-                            <form method='post' onsubmit='editlibrary.php'>
-                                <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button> 
-                                <button>Cancel</button>  
-                            </form>    
-                            </td>
-                        <tr>     
-                    </table>";
-        }
+                    while($rows = $searchResult->fetch_assoc()){                          
+                        echo "<table class='searchContainer'> 
+                                <tr class='searchTable'>
+                                    <td><img class='bookImage' src='assets/books/" . $rows['images'] . "'></td>
+                                    <td class='bookSearchTitle'><h2>" . $rows["book_title"]. "</h2><h4> by " . $rows["author_name"] . " (" .  $rows["year_released"] . ")</h4></td>
+                                    <td class='bookSearchAbout'>" . $rows["about_book"] . "</td>
+                                    <td class='bookSearchGenre'>Genre - " . $rows["book_genre"]. "</td>
+                                    <td class='bookSearchAge'>Age Group -" . $rows["age_group"]. "</td>
+                                    <td class='bookSearchCheckedin'>Available - ";
+                                        if($rows["is_checked_out"] === "1"){                            
+                                            echo 'yes';
+                                        } else {
+                                            echo 'no';
+                                        };                                                     
+                                    echo "</td>  
+                                    <td>";
+        
+                                    if ($_SESSION['isStaff'] === TRUE){
+                                        echo    
+                                        "<form method='post'>
+                                            <button id=" . $rows["book_id"] . " type='submit' name='edit' value=" . $rows["book_id"] . ">Edit</button>";
+                                            if ($rows["is_checked_out"] != 1) {
+                                                echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " disabled>Checkin Book</button>";
+                                            }else {
+                                                echo "<button type='submit' name='checkIn' value=" . $rows["book_id"] . " >Checkin Book</button>";
+                                            }
+                                            
+                                            echo "<button>Cancel</button>
+                                        </form>"; 
+                                    } else if ($rows["is_checked_out"] === "1" && $_SESSION['isStaff'] != TRUE) {
+                                        echo     
+                                        "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                            <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Currently Unavailable</button> 
+                                            <button>Cancel</button>
+                                        </form>";                                  
+                                    } else {
+                                        echo     
+                                        "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                            <button id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
+                                            <button>Cancel</button>
+                                        </form>";   
+        
+                                    }
+                                    echo "</td>
+                                <tr>     
+                            </table>";
+                }
     }
 
 // The following functions allow edits to the datebase tables

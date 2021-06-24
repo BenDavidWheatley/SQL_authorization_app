@@ -84,14 +84,6 @@ class NewMember {
         $newMemberPassword = $this->password;
         $defaultImage = $this->default; 
 
-        echo $newMemberName . "<br>";
-        echo $newMemberSurname  . "<br>";
-        echo $newMemberEmail . "<br>";
-        echo $newMemberUserName  . "<br>";
-        echo gettype($newMemberPassword) . "<br>";
-        echo gettype($defaultImage) . "<br>";
-        echo $newMemberName . "<br>";
-
         $sql = "SELECT * FROM users WHERE username = '$newMemberUserName'";
             global $mysqli;
         $checkUserName = $mysqli->query($sql);
@@ -133,7 +125,9 @@ class NewMember {
                                         global $mysqli;
             
                                         if ($mysqli->query($newUser) === TRUE) {
-                                            echo "New record created successfully";
+                                            echo "<script>window.location.href='newAccount.php';</script>";
+
+
                                             } else {
                                                 echo "Error <br>" .  $mysqli->error;
                                             }                

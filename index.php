@@ -19,39 +19,48 @@ if (isset($_POST['logOut'])){
     <title>Library App</title>
   </head>
 
-  <body>
-
-    <!-- LOGIN BUTTONS -->
-    <div class='pageContainer'>
-        <div class='mainContainer'>
+  <body id='loginBody'>
+    <section id='loginPage'>
+        <section id='loginImageContainer'>
+            <img id='loginImage' src='assets/logo.png'>
+        </section>
+        
+        <!-- LOGIN BUTTONS -->
+        <section id='loginContainer'>              
+            <section  class='transform'  id='loginTitle'>
+                <h2>Welcome to the Inner City Library</h2>
+                <h5>Sign up or login to view library content</h5>
+            </section>
             
-            <section id='loginTypeContainer'>
-                <div> 
-                    <button onclick='member("memberContainer")'>Member</button>
+            <section class='box transform' id='loginTypeContainer'>
+                <div class='loginButtons'> 
+                    <button class='loginButtons' id='memberButton' onclick="setTimeout(member, 500, 'memberContainer');">Member</button>
                 </div>
-                <div>
-                    <button onclick='member("staffContainer")'>Staff</button>
+                <div class='loginButtons'>
+                    <button class='loginButtons' onclick="setTimeout(member, 500, 'staffContainer');">Staff</button>
                 </div>
-                <div>
-                    <button onclick='member("newMemberContainer")'>Create Account</botton>
+                <div class='loginButtons'>
+                    <button class='loginButtons' onclick="setTimeout(member, 500, 'newMemberContainer');">Create Account</botton>
                 </div>
             </section>
 
-            <!-- LOGIN INPUT -->
+                    <!-- LOGIN INPUT -->
 
-            <section id='login'>
-                <div id='memberContainer'>           
-                    <form id='memberLoginForm' method='post' >
+            <section>
+                
+                <div class="mainLoginContainers" id='memberContainer'>           
+                    <form class='form' id='memberLoginForm' method='post' >
+                        
                         <label for='member'>Member ID</label>
                         <input id='memberLogin' name='member' type='text'>
                         
                         <label for='memberPassword'>Password</label>
-                        <input id='memberPassword' name='memberPassword' type='text'>
+                        <input id='memberPassword' name='memberPassword' type='password'>
 
-                        <button type='submit' name='submitMember'>Login</button>
-                    </form>                     
-                        <a href='forgotPassword.php'><button>Forgot username or password</button></a>                   
-                    <button onclick='member("cancelMember")'>Cancel</button>   
+                        <button class='signin input login'  type='submit' name='submitMember'>Login</button>
+                    </form>                                           
+                    <a href='forgotPassword.php'><button class='signin forgot' >Forgot username or password</button></a>                   
+                    <button class='signin cancel'  onclick='member("cancelMember")'>Cancel</button>   
                 </div>
                 <?php
                     if(isset($_POST['submitMember'])){
@@ -59,25 +68,25 @@ if (isset($_POST['logOut'])){
                     }
                     ?>
 
-                <div id='staffContainer'>
-                    <form id='staffLoginForm' method='post'>
+                <div class="mainLoginContainers" id='staffContainer'>
+                    <form class='form'  id='staffLoginForm' method='post'>
                         <label for='staffMember'>Staff ID</label>
                         <input id='staffMember' name='staffNumber' type='text'>
 
                         <label for='staffPassword'>Password</label>
-                        <input id='staffPassword' name='staffPassword' type='text'>
+                        <input id='staffPassword' name='staffPassword' type='password'>
 
-                        <button type='submit' name='staffLogin'>Login</button>                
+                        <button class='signin input login' type='submit' name='staffLogin'>Login</button>                
                     </form>
-                    <button onclick='member("cancelStaff")'>Cancel</button>
+                    <button class='signin cancel' onclick='member("cancelStaff")'>Cancel</button>
                 </div>
                 <?php 
                     if(isset($_POST['staffLogin'])){
                         $newUser->staffLogin();
                     }
                     ?>
-                <div id='newMemberContainer'>
-                    <form id='newMemberForm'  method='post' enctype='multipart/form-data'>
+                <div  class="mainLoginContainers" id='newMemberContainer'>
+                    <form  class='form' id='newMemberForm'  method='post' enctype='multipart/form-data'>
                         <label for='newMemberFirstName'>First Name</label>
                         <input id='newMemberFirstName' name='newMemberFirstName' type='text'>
 
@@ -91,27 +100,31 @@ if (isset($_POST['logOut'])){
                         <input id='newMemberUserName' name='newMemberUserName' type='text'>
 
                         <label for='NewMemberPassword'>Create Password</label>
-                        <input id='newMemberPassword' name='newMemberPassword' type='text'>
+                        <input id='newMemberPassword' name='newMemberPassword' type='password'>
 
-                        <label for='profilePic'>Upload a prfile pic</label>
+                        <label for='repeatMemberPassword'>Repeat Password</label>
+                        <input id='newMemberPassword' name='repeatMemberPassword' type='password'>
+
+                        <label for='profilePic'>Upload a profile pic</label>
                         <input id='profilePic' name='profilePic' type='file'>
 
-                        <button type='submit' name='newMemberSubmit' value='newMemberSubmit'>Create Account</button>              
+                        <button class='signin input login'  type='submit' name='newMemberSubmit' value='newMemberSubmit'>Create Account</button>              
                     </form>
-                    <button onclick='member("cancelNewMember")'>Cancel</button>
+                    <button class='signin cancel' onclick='member("cancelNewMember")'>Cancel</button>
                 </div> 
                 <?php 
                     if(isset($_POST['newMemberSubmit'])){
-                        $newUser->newUserAccount();
-                        //header("Location: newAccount.php");
+                        if ($_POST['newMemberPassword'] === $_POST['repeatMemberPassword']) {
+                            $newUser->newUserAccount();
+                            header("Location: newAccount.php");
+                        } else {
+                            echo "<p>The passwords do not match</p>";
+                        }
                     }?>
-            </section>
-
-            <footer>
-                <?php include('footer.php') ?>
-            </footer>
-        </div>
-    </div>
+            </section>           
+        </section>
+    </section>
+    
     <script src='script/script.js'></script>
   </body>
 </html>

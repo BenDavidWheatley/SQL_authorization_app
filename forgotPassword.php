@@ -20,12 +20,22 @@ $mysqli->query($sql);
    
         <div class='pageContainer'>  
             <div>
-                <form method='POST'>
+                <h1>Reset your password</h1>
+                <p>An email will be sent to you with instruction on how to reset your password</p>
+                <form action='reset.php' method='POST'>
                     <label for='resetEmail'>Enter email Address</label>
-                    <input type='text' name='resetEmail'>
+                    <input type='text' name='resetEmail' placeholder="Enter your email address">
 
-                    <input type='submit' name='requestPassword'>
+                    <button type='submit' name='requestRequestSubmit'>Recieve new password by e-mail</button>
                 </form>
+
+                <?php 
+                    if(isset($_GET['reset'])){
+                        if($_GET['reset'] === 'success'){
+                            echo "<p class='signUpSuccess'>Check your email</p>";
+                        }
+                    }
+                ?>
                     <a href='index.php'><button>Back to login</button></a>
             </div>
     

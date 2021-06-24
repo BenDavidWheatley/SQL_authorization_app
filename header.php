@@ -1,8 +1,9 @@
 <?php  $newEntry->fine(); 
 if ($_SESSION['loggedIn'] != 1){
-    echo "<h2>You must be logged in to view this page</h2>
-            <a href='index.php'><p>Back to login</p></a>";
-
+    echo "<div id='niceTry'>   
+            <h2>You must be logged in to view this page</h2>
+            <a href='index.php'><button class='input cancel'>Back to login</button></a>
+        </div>";
 die;
 }?>
 <!doctype html>
@@ -14,17 +15,14 @@ die;
         <title>Library App</title>
     </head>
 
-    <body>
+    <body id='headerBody'>
         <div id='headerContainer'>
-            <section>    
-                           
-                <?php     
-                                 
+            <section id='headerTitles'>                             
+                <?php                                    
                     echo "<a href='mainPage.php'><p>Home</p></a>";
-                    echo "
-                    <form method='post' action='index.php'>
-                        <button type='submit' name='logOut'>Log out</button>
-                    </form>";               
+                    echo "<form method='post' action='index.php'>
+                            <button type='submit' name='logOut'>Log out</button>
+                          </form>";               
                 if($_SESSION['isStaff'] === TRUE){
                     echo "<a href='editLibrary.php'><p>Edit Library</p></a>";   
                     echo "<a href='searchUser.php'><p>Search User</p></a>";                
@@ -33,19 +31,19 @@ die;
                     echo "<a href='profile.php'><p>Account</p></a>";
                 }
                 echo "<form method='POST' action='cart.php'>
-                <button type='submit' name='viewCart'>View Cart</button>   
-                </form>";  
+                        <button type='submit' name='viewCart'>View Cart</button>   
+                     </form>";  
                 ?>              
             </section>
-        </div>
-        <div>
-            <?php
-                 $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
-                
-                if($_SESSION['isStaff'] != TRUE && $curPageName != 'confirmCheckOut.php'){
-                $newEntry->availableAllowance();
-                }
-            ?>
+            <section id='allowance'>
+                <?php
+                    $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
+                    
+                    if($_SESSION['isStaff'] != TRUE && $curPageName != 'confirmCheckOut.php'){
+                    $newEntry->availableAllowance();
+                    }
+                ?>
+            </section>
         </div>
         <script src='script/script.js'></script>
     </body>
