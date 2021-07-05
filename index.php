@@ -5,9 +5,10 @@ include('login.php');
 include('connect.php');
 $mysqli->query($sql);
 
-if (isset($_POST['logOut'])){
+if (isset($_POST['logout_x'])){
     $newUser->logout();
 }
+
 ?>
 
 <!doctype html>
@@ -32,16 +33,18 @@ if (isset($_POST['logOut'])){
                 <h5>Sign up or login to view library content</h5>
             </section>
             
+            
             <section class='box transform' id='loginTypeContainer'>
-                <div class='loginButtons'> 
+                <div> 
                     <button class='loginButtons' id='memberButton' onclick="setTimeout(member, 500, 'memberContainer');">Member</button>
                 </div>
-                <div class='loginButtons'>
+                <div>
                     <button class='loginButtons' onclick="setTimeout(member, 500, 'staffContainer');">Staff</button>
                 </div>
-                <div class='loginButtons'>
+                <div>
                     <button class='loginButtons' onclick="setTimeout(member, 500, 'newMemberContainer');">Create Account</botton>
                 </div>
+                
             </section>
 
                     <!-- LOGIN INPUT -->
@@ -57,16 +60,17 @@ if (isset($_POST['logOut'])){
                         <label for='memberPassword'>Password</label>
                         <input id='memberPassword' name='memberPassword' type='password'>
 
-                        <button class='signin input login'  type='submit' name='submitMember'>Login</button>
-                    </form>                                           
-                    <a href='forgotPassword.php'><button class='signin forgot' >Forgot username or password</button></a>                   
-                    <button class='signin cancel'  onclick='member("cancelMember")'>Cancel</button>   
+                        <button class='loginButtons'  type='submit' name='submitMember'>Login</button>
+                         
+                    </form>   
+                    <div>
+                        <a href='forgotPassword.php'><button class='loginButtons' >Forgot username or password</button></a> 
+                    </div>                                   
+                    <div>           
+                        <button class='loginButtons cancel'  onclick='member("cancelMember")'>Cancel</button>   
+                    </div>  
                 </div>
-                <?php
-                    if(isset($_POST['submitMember'])){
-                        $newUser->login();
-                    }
-                    ?>
+                
 
                 <div class="mainLoginContainers" id='staffContainer'>
                     <form class='form'  id='staffLoginForm' method='post'>
@@ -76,14 +80,17 @@ if (isset($_POST['logOut'])){
                         <label for='staffPassword'>Password</label>
                         <input id='staffPassword' name='staffPassword' type='password'>
 
-                        <button class='signin input login' type='submit' name='staffLogin'>Login</button>                
+                        <button class='loginButtons' type='submit' name='staffLogin'>Login</button>                
                     </form>
-                    <button class='signin cancel' onclick='member("cancelStaff")'>Cancel</button>
+                    <button class='loginButtons cancel' onclick='member("cancelStaff")'>Cancel</button>
                 </div>
                 <?php 
-                    if(isset($_POST['staffLogin'])){
+                    if(isset($_POST['staffLogin'])){                      
                         $newUser->staffLogin();
-                    }
+                    }                 
+                    if(isset($_POST['submitMember'])){                     
+                        $newUser->login();
+                    }                 
                     ?>
                 <div  class="mainLoginContainers" id='newMemberContainer'>
                     <form  class='form' id='newMemberForm'  method='post' enctype='multipart/form-data'>
@@ -108,17 +115,20 @@ if (isset($_POST['logOut'])){
                         <label for='profilePic'>Upload a profile pic</label>
                         <input id='profilePic' name='profilePic' type='file'>
 
-                        <button class='signin input login'  type='submit' name='newMemberSubmit' value='newMemberSubmit'>Create Account</button>              
+                        <button class='loginButtons'  type='submit' name='newMemberSubmit' value='newMemberSubmit'>Create Account</button>              
                     </form>
-                    <button class='signin cancel' onclick='member("cancelNewMember")'>Cancel</button>
+                    <button class='loginButtons cancel' onclick='member("cancelNewMember")'>Cancel</button>
                 </div> 
+              
+                
+             
                 <?php 
                     if(isset($_POST['newMemberSubmit'])){
                         if ($_POST['newMemberPassword'] === $_POST['repeatMemberPassword']) {
                             $newUser->newUserAccount();
-                            header("Location: newAccount.php");
+                            
                         } else {
-                            echo "<p>The passwords do not match</p>";
+                            echo "<h2 id='textError' class='textError'>The passwords do not match</h2>";
                         }
                     }?>
             </section>           

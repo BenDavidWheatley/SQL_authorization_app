@@ -17,16 +17,27 @@
     font-family: "DMSansReg";
     src: url(../assets/fonts/DM_Sans/DMSans-Regular.ttf);
 }
+@font-face{
+    font-family: "DMSansBold";
+    src: url(../assets/fonts/DM_Sans/DMSans-Bold.ttf);
+}
 * {
     margin: 0px;
     font-family: 'DMSansReg';
+    color: #292929;
 }
-
+button {
+    border-radius: 4px;
+    cursor:pointer;
+}
+input:hover, select:hover{
+    background-color: #f2f2f2;
+}
 .pageContainer {
     position: relative;
-    min-height: 100vh;
-  
+    min-height: 100vh; 
   }
+
 
 /******** HEADER AND FOOTER ********/
 
@@ -44,26 +55,68 @@
     align-items: center;
 }
 #headerTitles {
+    margin-left: 20%;
     display: grid;
     grid-template-columns: auto auto auto auto;
+    width: 80%;
 }
 #footerContainer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 100px;  
-}   
+    height: 300px;  
+}  
+.footer {
+    transform: translate(0px, 200px);
+} 
+.footerTopBanner {
+    background-color: #c1c1c1;
+    height: 50px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+
+}
 #niceTry{
+    height: 100vh;
     width: 100%;
     text-align:  center;
     margin-top: 100px;
+    background-color: white;
 }
 #niceTry button {
     border: none;
+    margin-top: 30px;
     width: 200px;
     height: 30px;
+}
+#headerTitles button {
+    border: none;
     background-color: #EC8F00;
+    font-size: 20px;
 
+}
+#headerTitles button:hover {
+    color: white;
+    text-decoration: underline;
+    -o-transition: .4s;
+    -ms-transition: .4s;
+    -moz-transition: .4s;
+    -webkit-transition: .4s;
+}    
+.allowance {
+    background-color: white;
+    padding: 10px;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+.libraryLogo {
+    height: 20px;
+    width: auto;
+}
+.headerImage {
+    height: 60px;
+    width: auto;
+    padding-left: 0px;
 }
 
 /******** LOGIN PAGE *******/
@@ -71,6 +124,7 @@
 #memberContainer, #staffContainer, #newMemberContainer{
     display: none;
 }
+
 #loginPage {
     display : grid;
     grid-template-columns: 50% 50%;
@@ -101,15 +155,14 @@
 .form input {
     margin-bottom: 10px;
 }
-#newMemberContainer {
-    margin-top: 70px;
-}
+
 .mainLoginContainers form{
     display: grid;
     margin-top: 300px;
     grid-template-columns: 100%;
     width: 300px;
 }
+
 #loginBody {
     background-color: #EC8F00;
 }
@@ -117,30 +170,33 @@
     width: auto;
     height: 700px;    
 }
-.loginButtons {
-    width : 200px;   
-}
-
-.loginButtons button{
+.loginButtons, .authorButtons button, .addBook{
     width: 100%;
     height : 30px;
     margin-top: 2em;
 }
-.loginButtons button, .loginButtons button:hover, .loginButtons button:disabled, .loginButtons button:disabled:hover {
+.loginButtons {
+    width : 300px;   
+}
+.searchButton {
+    width: 30%;
+    height: 20px;
+}
+.searchButton, .loginButtons, .loginButtons:hover, .loginButtons:disabled, .loginButtons:disabled:hover, .addBook:hover, .addBook:disabled{
     border: none;
     border-radius: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
 }
-.loginButtons button, .login, .cancel, .forgot{
+.searchButton, .loginButtons, .login, .cancel, .forgot, .addBook{
     -o-transition: .4s;
     -ms-transition: .4s;
     -moz-transition: .4s;
     -webkit-transition: .4s;
     transition: .4s;
-}
-.loginButtons button:hover {
+} 
+.loginButtons:hover, .login:hover, #userProfileContainer button:hover, .authorButtons button:hover, buttons, .addBook:hover{
     -o-transition: 1s;
     -ms-transition: 1s;
     -moz-transition: 1s;
@@ -155,7 +211,7 @@
     border-style: none;
     color: white;
 }
-.login:hover, .cancel:hover, .forgot:hover, .sortButtons button:hover {
+.searchButton:hover, .login:hover, .cancel:hover, .forgot:hover, .sortButtons button:hover {
     -o-transition: 1s;
     -ms-transition: 1s;
     -moz-transition: 1s;
@@ -164,56 +220,274 @@
     border-radius: 20px;
     background-color: #292929; 
     color: white;
+} 
+.searchAuthor:hover {
+    background-color: #c1c1c1;
 }
 .cancel:hover {
     background-color: #420e07;	
 }
-
 #loginBody input {
     border: none;
     border-radius: 4px;
     height: 30px;
+    margin-bottom: 30px;
+    margin-top: 10px;
 }
 .signin {
     width: 100%;
     height: 30px;
     border: none;
     margin-top: 20px;
-    border-radius: 4px;
-   
+    border-radius: 4px;  
 } 
 .input {
     margin-top: 50px;
 }
 
-  
-/*    #810000	- RED
-#420e07	- DARK RED 
-#002907	- GREEN 
-#ec8f00	- Orange
-#292929 - GREY */
+.textError {
+    color: #292929;
+    background-color: #efefef;
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    width: 260px;
+    text-align: center;
+}
+/******** forgotpassword ********/
+
+.forgotContainer {
+    padding-top: 250px;
+}
+.forgotContainer h1 {
+    padding-bottom: 20px;
+}
+.forgotContainer form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: auto;
+}
+.forgotContainer label {
+    margin-top: 40px;
+}
+
+.forgotContainer input {
+    border: solid 1px #292929;
+    border-radius: 4px;
+    height: 30px;
+}
+.forgotInput {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/******** newAccount.php ********/
+
+.newAccountImage {
+    background-image: url(../assets/logo.png);
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-color: #EC8F00;
+    display: flex;
+    justify-content: center;
+}
+#newAccountPagContainer{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+#newAccountContainer {
+    background-color: white;
+    padding: 5%;
+    border-radius: 8px;
+    transform: translate(50%);
+}
+#newAccountContainer h2 {
+
+    margin-bottom: 5%;
+}
 
 
-/******** NEW MEMBER LOGIN ********/
+.userInfo {
+    font-family: 'DMSansBold' ;
+}
 
+/******** User search ********/
+
+.libraryUsers {
+    width: 100%;
+    padding-top: 50px;
+    min-height: 120vh;
+    max-height: auto;
+    background-color: white;
+}
+.searchUserContainer {
+    width: 90%;
+    margin: auto;
+}
+.searchUserContainer th, .selectUserTable th{ 
+    font-family: "DMSansBold";
+    font-size: 1.5em;
+}
+.selectUserTable th{
+    text-align: left;
+}
+.tableHeaders h4, .selectUserTable h4{
+    margin-bottom: 30px;
+}
+.searchUserTable {
+    text-align: center;
+}
+.selecteUserDetails {
+    width: 90%;
+    margin: auto;
+    margin-bottom: 50px;
+    padding-top: 50px;
+}
+.searchUserContainer button{
+    margin: auto;
+}
+.selectUserContainer {
+    width: 100%;
+    height: 120vh;
+    background-color: white;
+}
+.selectUserTable{
+    width: 90%;
+    margin: auto;
+}
+.nothingCheckedOut {
+    width: 90%;
+    margin: auto;
+}
+/******** fine ********/
+
+.container{
+    width: 100%;
+    background-color: white;
+    height: 120vh;
+    text-align: center;
+ /*   transform: translate(0px, -32px);   */ 
+}
+.container h2 {
+    font-family: "DMSansBold";
+    padding-top: 50px;
+}
 /******** Search ********/
 
+.searchDatabaseContainer{
+    height: 60px;
+    width: 100%;
+    background-color: #292929;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+.searchDatabaseContainer form {
+    width: 30%;
+    display: flex;
+}
+.searchDatabase input{
+   
+    width: 100%;
+    height: 30px; 
+    border: none;
+    border-radius: 5px 0px 0px 5px;
+    padding-left: 10px;
+}
+.searchDatabase button, .searchDatabase img {
+    width: 60px;
+    height: 32px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    border-radius: 0px 5px 5px 0px;
+}
+.searchDatabase button {
+    background-color: white;
+    transform: translate(-4px, 0px);  
+}
+.searchDatabase img {
+    border-radius: 5px;
+}
+.spacer {
+    width: 10%;
+}
+
+
+
+#seachBook, #searchAuthorForm{
+    background-color: #292929;
+    display: grid;
+    grid-template-columns: 15% 15% 35% 25% 15%;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    margin-bottom: 40px;
+    margin-bottom: 0px;
+    margin-top: 2px;
+}
+#searchAuthorForm {
+    margin-bottom: 0px;
+    margin-top: 2px;
+}
+#seachBook label, #searchAuthorForm label {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+#searchAuthorForm  label {
+    color: #c1c1c1;
+}
+#seachBook {
+    background-color: #c1c1c1;
+}
+#seachBook input, #searchAuthorForm input {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    width: 400px;
+    height: 30px;
+    margin: 0px 20px;
+    border: none;
+    border-radius: 5px;
+}
+#seachBook button, #searchAuthorForm button {
+    grid-column-start: 4;
+    grid-column-end: 5;
+    height: 30px;
+    width: 100%;
+}
+#searchLibraryContainer{
+    height: auto;
+    min-height: 700px;
+    width: 100%;
+    margin: auto;
+    padding-top:50px;
+    background-color: white;   
+}
 
 .searchTable {
     display: grid;
     grid-template-columns: 15% 60% 25%;
-    grid-template-rows: 15% 35% 25% 25%;
-    height: 350px;
+    grid-template-rows: 25% 25% 25% 25%;
+    height: 200px;
+    padding: 20px;
+    width: 90%;
+    margin: auto;
 }
 .bookImage {
-    height: 300px;
-    width: auto;
+    height: auto;
+    width: 100%;
     grid-column-start: 1;
     grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 5;
 }
 .searchResultTitle {
     text-align: center;
-    margin-bottom: 2%;
+    padding: 5px
 }
 .bookSearchTitle, .bookSearchAbout {
     grid-column-start: 2;
@@ -222,12 +496,23 @@
 .bookSearchTitle {
     grid-row-start: 1;
     grid-row-end: 2;
+    padding-left: 5%;
 }
 .bookSearchAbout {
     grid-row-start: 2;
-    grid-row-end: 5;
+    grid-row-end: 6;
+    margin-left: 5%;
+    margin-top: 20px;
+    padding: 2%;
+    border-radius: 5px;
+    overflow: scroll;
+    height: 200px;
+}
+.bookSearchAbout:hover{
+    background-color: #29292911;
 }
 .bookSearchGenre, .bookSearchAge, .bookSearchCheckedin, .bookSearchButton{
+    text-align: center;
     grid-column-start: 3;
     grid-column-end: 4;
 }
@@ -244,30 +529,69 @@
     grid-row-end: 4;
 }
 .bookSearchButton {
+    
     grid-row-start: 4;
     grid-row-end: 5;
 }
 .horzontalBreak{
-    margin-bottom: 50px;
+    margin: auto;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    width: 70%;
+}
+.organiseSearch div {
+    display: flex;
 }
 .orgnaiseSearchContainer{
-    width: 80%;
-    margin: auto;
+    text-align: center;
+    height: auto;
+    width: 100%;
+    background-color: white; 
+    padding-bottom: 30px;
+}
+.orgnaiseSearchContainer h2{
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.orgnaiseSearchContainer h4 {
+    padding-bottom: 20px;
 }
 .organiseSearch {
-    width: 100%;   
-    margin-top: 30px;
-    margin-bottom: 50px;
+    width: 90%; 
+    height: auto; 
+    margin: auto; 
     text-align: center;
-    display: grid;
-    grid-template-columns: 15% 15% 15% 15% 15% 15%;
-    grid-template-rows: auto auto;
+    display: flex;
+    justify-content: center;
 }
-.organiseSearch button {
+.sortImage{
+    width: 20px;
+    height: auto;
+}
+.bookInfoTitle {
+    font-family: "DMSansBold";
+}
+.organiseSearch button, .searchbutton{
     border: none;
     border-radius: 4px;
-    width: 60px;
-    margin: 5px;  
+    width: 20px;
+    height: auto;
+    margin: auto;  
+}
+.orgnaiseSearchContainer h5 {
+    margin-top: 2px;
+}
+.sortContainer{
+    margin-right: 5%;
+}
+.orgnaiseSearchContainer button {
+    background-color: white;
+    margin: 10px;
+    margin-top: 0px;
+}
+.searchbutton{
+    width: 150px;
+    height: 40px;
 }
 .sortButtons{
     display: inline-flex;
@@ -277,7 +601,6 @@
     grid-row-start: 1;
     grid-row-end: 2;
 }
-
 .sortTitle, #sortByTitle {
     grid-column-start: 1;
     grid-column-end: 2;
@@ -303,6 +626,364 @@
     grid-column-end: 7;
 }
 
+.offsetSort {
+    transform: translate(0px, -30px);
+}
+
+
+
+/******** Authors ********/
+
+#searchAuthorContainer {
+    background-color: white;
+    width: 100%;
+    margin: auto;
+    height: auto;
+    min-height: 900px;
+    overflow: scroll;
+    align-content: center;
+    background-color: white;
+    border-radius: 5px;
+   
+}
+.authorSearchTitle{
+    padding: 2%;
+    text-align: center;
+}
+.searchAuthorTableContainer{
+    width: 100%;
+    padding: 2%;
+    height: auto;
+    margin: auto;
+}
+.authorSearchTable span{
+    font-family: "DMSansBold" ;
+}
+.authorSearchTable{
+    width: 90%;
+    height: 400px; 
+    margin: auto;   
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 20% 60% auto;
+    grid-template-rows: 10% 10% 10% auto 10%;   
+}     
+.authorImageConatainer{
+    width: 100%;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 5;
+}
+.authorImage{
+    width: 100%;
+    flex-shrink: 1;
+    height: auto;
+    border-radius: 5px;
+  
+}
+.authorName, .authorAge, .authorGenre, .authorBio{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    padding-left: 20px;
+}
+.authorName{
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+.authorAge{
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+.authorGenre{
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
+.authorBio{
+    overflow: scroll;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    padding: 20px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    -o-transition: 1s;
+    -ms-transition: 1s;
+    -moz-transition: 1s;
+    -webkit-transition: 1s;
+    transition: 1s;
+}
+
+.authorBio:hover, .bookSearchAbout:hover{
+    -o-transition: 1s;
+    -ms-transition: 1s;
+    -moz-transition: 1s;
+    -webkit-transition: 1s;
+    transition: 1s;
+    border-radius: 5px;
+    background-color: #292929;
+    color: white;
+}
+
+.authorButtons {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 4;
+}
+.authorHrBreak {
+    width: 80%;
+    margin: auto;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 5;
+    grid-row-end: 6;
+}
+/******** Edit Author ********/
+
+.labelEdit {
+    text-align: center;
+    font-family: "DMSansBold";
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.inputEdit{
+    width: 300px;
+    height: 30px;
+    margin: auto;
+    border-radius: 5px;
+    border: 1px solid #292929;
+    padding-left: 5px;
+}
+.inputEdit:hover{
+    border: 1px solid #292929;
+
+}
+#authorFormContainer button {
+    margin: auto;
+    margin-bottom: 20px;
+}
+.offsetAuthor{
+  /*  transform: translate(0px, -80px); */
+}
+
+/******* Authors books ********/
+.offset {
+ 
+    height: 900px;
+}
+.authorsBookContainerTitle {
+    font-family: "DMSansBold";
+    margin: 3%;
+    text-align: center;
+    
+}
+.addButtonForm{
+    width: 60%;
+    margin: auto;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.addBook{
+    height: 30px;
+    width: 200px;
+    margin: auto;
+    margin-top: 3%;
+}
+.authorsBookContainer{
+    width: 70%;
+    margin: auto;
+    margin-top: 3%;
+    text-align: left;
+}
+.authorsBookContainer th{ 
+    font-family: "DMSansBold";
+    font-size: 1.5em;
+}
+.authorBookInfo {
+    text-align: center; 
+}
+
+/******** Add book *******/
+
+#FormContainerBook, #formContainerAuthor {
+    width: 100%;
+    display: block;
+}
+#addBookFormContainer, #authorFormContainer {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: auto;
+}
+#formContainerAuthor h2 {
+    font-family: "DMSansBold";
+    margin: 30px;
+    text-align: center;
+}
+#addBookFormContainer span {
+    font-family: "DMSansBold";
+} 
+#addBookFormContainer h2 {
+    font-family: "DMSansReg";
+}
+#addBookFormContainer button {
+    margin: auto;
+    margin-bottom: 30px;
+}
+.inputSignin {
+    margin: 10px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #212121;
+}
+.inputSignin:hover {
+    background-color: #fafafa;
+}
+.inputUpload{
+    width: 200px;
+    margin: auto;
+    margin-top:5px;
+    margin-bottom: 50px;
+}
+/******** Edit Books ********/
+
+#editFormContainer {  
+    background-color: white;
+}
+#editFormContainer h2 {
+    margin-bottom: 30px;
+}
+#editFormContainer h4{
+    margin-bottom: 30px;
+}
+#editFormContainer span {
+    font-family: "DMSansBold";
+}
+#editFormContainer label {
+    margin-bottom: 10px;
+    font-family: "DMSansBold";
+}
+
+.editInput {
+    height: 30px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    border: solid 1px #292929;
+}
+#editFormContainer form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: auto;
+}
+
+
+/******** WARNINGS ********/
+
+.warningContainer {
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    padding-top: 10%;
+}
+.warning span {
+    color: red;
+    font-family: "DMSansBold";
+}
+#deleteEntry:hover{
+    background-color: #810000
+}
+
+/******** Cart ********/
+
+.bodyImage{
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 0px 154px;  
+}
+#viewCartContainer {
+    background-color: #ffffff;
+    width: 70%;
+    height: auto;
+    margin: auto;   
+    padding: 20px;
+    border-radius: 10px;
+    padding-bottom: 200px; 
+}
+#viewCartContainer h1 {
+    text-align: center;
+    margin-bottom: 5%;
+}
+#emptyCartContainer, #fullCartContainer {  
+    
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  /*  transform: translate(0px, -50px); */
+}
+#emptyCartContainer{
+    height: 10vh;
+    width: 100%;  
+    transform: translate(0px, 200px); 
+}
+#cartContainer {
+    width: 80%;
+    margin: auto;
+    
+}
+.cartTable {
+    display: grid;
+    grid-template-columns: 40% 40% 20%;
+    margin-right: 30px;
+    margin-bottom: 40px;
+    margin-top: 40px;
+   
+}
+
+.cartTableForm {
+    width: 100%;
+}
+#emtpyMessage, #fullCartMessage, #authorDoesNotExist{
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+    text-align: center;
+}
+#authorDoesNotExist {
+    width: 50%;
+    height: 200px;
+    margin: auto;
+}
+.notInLibrary{
+    margin-top: 80px;
+    width: 300px;
+    height: 30px;
+}
+#userEdit {
+    background-color: white;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+}
+#emtpyMessage {
+    height: 200px;
+}
+#emtpyMessage h1, #fullCartMessage h1{
+    margin-bottom: 15px;
+}
+#emtpyMessage p, #fullCartMessage p{
+    margin-bottom: 30px;
+}
+#checkout {
+    text-align: center;
+    width: 100%;
+    margin: auto;   
+    margin-top: 40px; 
+}
 
 /******** Edit Library ********/
 
@@ -313,11 +994,48 @@
 
 /******** Edit Profile ********/
 
+#profileContainer{
+    background-color: white;
+    height: 1000px;
+    width: 80%;
+    margin: auto;
+    margin-top: 50px;
+    padding: 30px;  
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: 50% 50%;
+}
+#profileInformation{
+    margin: auto;
+    margin-top: 0px;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+#accountBookInformation, .editAccount{
+    margin: auto;
+    margin-top: 0px;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+#accountBookInformation {
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+.editAccount {
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
 #editFirstName, #editSurname, #editUsername, #editEmail, #editPassword{
     display: none;
 }
-#editUserimage {
+#editUserImage {
     display: none;
+}
+#editUserImage input{
+    border: none;
 }
 #userImageContainer {
     background-color: #EC8F00;
@@ -325,9 +1043,88 @@
     width: 200px;
     border-radius: 100%;
     overflow: hidden;
+    margin-bottom: 30px;
 }
 #userImageContainer img { 
-    height: auto;
-    width: 200px;  
+    height: 200px;
+    width: auto;  
+    transform: translate(-50px, 0px);
 }
-
+#userProfileContainer button, .profileImg{
+    border: none;
+    height: 30px;
+    width: 200px;
+}
+#userProfileContainer button, #changeImageButton {
+    margin-bottom: 30px;
+}
+#userProfileContainer h4{
+    font-family: "DMSansBold";
+}
+#userProfileContainer span, #accountsBookContainer h3 {
+    font-family: "DMSansReg";
+}
+#accountsBookContainer {
+    width: 100%;
+    text-align: center; 
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+#accountsBookContainer p {
+    line-height: 2em;
+    
+}
+#bookTitleOwn {
+    text-align: left;
+}
+#due {
+    text-align: center;
+}
+.profileBookTitle {
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.profileBookDue {
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+.checkedOutTitle {
+    margin-bottom: 20px;
+}
+.subtitle {
+    margin-bottom: 10px;
+}
+#changeImageButton{
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+.userDetails {
+    margin-bottom: 25px;
+}
+.userDetails h4 {
+    margin-bottom: 10px; 
+}
+.bottomButton{
+    margin-bottom: 10px;
+}
+.editProfileForm {
+    width: 300px;
+    display: grid;
+    grid-template-columns: auto;
+}
+.editProfileForm label{
+    margin: auto;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.editProfileForm label, .editProfileForm input, .editProfileForm button{
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.editProfileForm input {
+    height: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #292929;
+}

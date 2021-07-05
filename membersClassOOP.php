@@ -96,10 +96,10 @@ class NewMember {
                                         VALUES ('$newMemberUserName', '$newMemberPassword', '$newMemberName', '$newMemberSurname', '$newMemberEmail', '$defaultImage', 0)";
                     global $mysqli;
                         if ($mysqli->query($newUserNoImage)) {
-                            echo 'New user created' . "<br>";
-
+                            echo "<script>window.location.href='newAccount.php';</script>";
+                            exit;
                         } else {
-                            echo "There was an error creating the account";
+                            echo "There was an error creating the account: Username or email already exists";                         
                         };    
 
                 }else if ($_FILES['profilePic']['error'] === 0){
@@ -126,8 +126,6 @@ class NewMember {
             
                                         if ($mysqli->query($newUser) === TRUE) {
                                             echo "<script>window.location.href='newAccount.php';</script>";
-
-
                                             } else {
                                                 echo "Error <br>" .  $mysqli->error;
                                             }                
@@ -148,18 +146,18 @@ class NewMember {
     public function login() {
         $_SESSION['loggedIn'] = true;
         $userName = $_POST['member'];
-        $password = $_POST['memberPassword'];
+        $password = $_POST['memberPassword'];     
         $sql = "SELECT * FROM users WHERE username = '$userName'";  
         global $mysqli;                
         $memberInfo = $mysqli->query($sql);
-        $memberCheck = $memberInfo->fetch_assoc();    
+        $memberCheck = $memberInfo->fetch_assoc();     
         $_SESSION['isStaff'] = FALSE;           
             if($memberCheck['username'] === $userName && $memberCheck['user_password'] === $password){
-                header("Location: mainPage.php");
                 $_SESSION['userId'] = $memberCheck['id'];
-                exit();
+                header("Location: mainPage.php"); 
+                
             } else {
-                echo 'The username or password is incorrect';
+                echo "<h3 id='textError' class='textError'>The username or password is incorrect</h3>";
             } 
     }
     public function staffLogin(){
@@ -174,11 +172,13 @@ class NewMember {
             if($validateStaff['staff_number'] === $staffNumber && $validateStaff['user_password'] === $password){              
                 header("Location: mainPage.php");                              
             } else {
-                echo 'The staff number or password is incorrect';
+                echo "<h3 id='textError' class='textError'>The staff number or password is incorrect</h3>";
             }
         return $_SESSION['isStaff'];
     }
     public function logout () {
+    
+        header("Location: index.php");
         $_SESSION['loggedIn'] = false;
     }
     public function editUser(){
@@ -306,7 +306,12 @@ class NewMember {
                 echo "<script>window.location.href='profile.php';</script>";
                 exit; 
             } else {
-                echo "Username already exists";
+                echo "<div class='container offsetBook'>
+                            <h2>Username already exists</h2>
+                            <form method='post'>
+                                <button class='loginButtons'>Back</button>
+                            </form>
+                        </div>";
             }
     }
     public function editEmail(){
@@ -331,48 +336,75 @@ class NewMember {
     }
     public function searchUser(){        
         if (isset($_POST['searchUsername'])){
-            $search = '%' . strtolower($_POST['searchUsername']) . '%'; 
-            
-            $sqlUsername = "SELECT * FROM users WHERE username LIKE '$search'";
+            $search = '%' . strtolower($_POST['searchUsername']) . '%';            
+            $sqlUsername = "SELECT * FROM users WHERE username LIKE '$search' ORDER BY user_surname ASC";
                 global $mysqli;
                 $user = $mysqli->query($sqlUsername);
-                while($userDetails = $user->fetch_assoc()){
-                    echo "<table id='searchContainer'> 
-                                <tr class='searchTable'>
+                echo "<section class='libraryUsers'>
+                        <table class='searchUserContainer'>
+                            <tr class='tableHeaders'>    
+                                <th><h4>Name</h4></th>
+                                <th><h4>ID</h4></th>
+                                <th><h4>Username</h4></th>
+                                <th><h4>Email</h4></th>
+                                <th><h4>Fines</h4></th>
+                                <th><h4>Select User</h4></th>                          
+                            </tr>";
+                while($userDetails = $user->fetch_assoc()){                   
+                        echo "<tr class='searchUserTable'>
+                                    <td>" . $userDetails['user_first_name']  . " " .  $userDetails['user_surname'] . "</td>
                                     <td>" . $userDetails['id'] . "</td>
-                                    <td>" . $userDetails['username'] . "</td>
-                                    <td>" . $userDetails['user_first_name']  . "</td>
-                                    <td>" . $userDetails['user_surname'] . "</td>
+                                    <td>" . $userDetails['username'] . "</td>                                  
                                     <td>" . $userDetails['user_email'] . "</td>   
-                                    <td>" . $userDetails['fine'] . "</td>                        
+                                    <td>" . $userDetails['fine'] . "</td> 
+                                    <td>    <form method='post'>
+                                                <button class='searchbutton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
+                                            </form>
+                                    </td>
+                                    
                                 </tr>
-                            </table>
-                            <form method='post'>
-                                <button type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
-                            </form>";                         
+                                <tr>
+                                    <td><hr></td>
+                                </tr> ";                                                                           
             }
+            echo "</table> 
+            </section>"; 
         }
         if (isset($_POST['searchSurname'])) {
             $search = '%' . strtolower($_POST['searchSurname']) . '%';
                 $sqlSurname = "SELECT * FROM users WHERE user_surname LIKE '$search'";
                 global $mysqli;
                 $user = $mysqli->query($sqlSurname);
+                echo "<section class='libraryUsers'>
+                <table class='searchUserContainer'>
+                    <tr class='tableHeaders'>    
+                        <th><h4>Name</h4></th>
+                        <th><h4>ID</h4></th>
+                        <th><h4>Username</h4></th>
+                        <th><h4>Email</h4></th>
+                        <th><h4>Fines</h4></th>
+                        <th><h4>Select User</h4></th>                         
+                    </tr>";
 
             while($userDetails = $user->fetch_assoc()){
-                echo "<table id='searchContainer'> 
-                            <tr class='searchTable'>
-                                <td>" . $userDetails['id'] . "</td>
-                                <td>" . $userDetails['username'] . "</td>
-                                <td>" . $userDetails['user_first_name']  . "</td>
-                                <td>" . $userDetails['user_surname'] . "</td>
-                                <td>" . $userDetails['user_email'] . "</td>                           
-                            </tr>
-                        </table>
-                                    
-                        <form method='post'>
-                            <button type='submit' name='selectThisUser' value='" . $userDetails['id'] . "'>Select User</button>
-                        </form>";
+                echo "<tr class='searchUserTable'>
+                            <td>" . $userDetails['user_first_name']  . " " .  $userDetails['user_surname'] . "</td>
+                            <td>" . $userDetails['id'] . "</td>
+                            <td>" . $userDetails['username'] . "</td>                                  
+                            <td>" . $userDetails['user_email'] . "</td>   
+                            <td>" . $userDetails['fine'] . "</td> 
+                            <td>    <form method='post'>
+                                        <button class='searchbutton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
+                                    </form>
+                            </td>
+                    
+                        </tr>
+                        <tr>
+                            <td><hr></td>
+                        </tr>";                      
             }
+            echo "</table> 
+            </section>"; 
         }
     }
     public function selectThisUser() {
@@ -382,41 +414,58 @@ class NewMember {
         $sqlTwo = "SELECT * FROM users WHERE id = '$id'";
         $userFineInfo = $mysqli->query($sqlTwo);
         $userFine = $userFineInfo->fetch_assoc();    
-
-            echo"<div>
-                    <p> User - " . $userFine['user_first_name'] . " " . $userFine['user_surname'] . "</p>
-                    <p>Fines to pay -  " . $userFine['fineTotal'] . " pounds</p>";       
+            echo"<section class='selectUserContainer'>
+                    <div class='selecteUserDetails'>
+                        <h3> User - " . $userFine['user_first_name'] . " " . $userFine['user_surname'] . "</h3>
+                        <h3>Fines to pay -  " . $userFine['fineTotal'] . " pounds</h3>";       
             if ($userFine['fineTotal'] > 0){
                 echo 
-                "<form method='post'>
-                    <button type='submit' name='payFine' value='" . $userFine['id'] . "'>Pay fine</button>                  
-                </form>";
+                        "<form method='post'>
+                            <button class='searchbutton addBook' type='submit' name='payFine' value='" . $userFine['id'] . "'>Pay fine</button>                  
+                        </form>";
             }
-            echo "</div>";
+                echo "</div>";
+                   
        
         $sql = "SELECT * FROM users LEFT OUTER JOIN checkedOut ON users.id = checkedOut.users_id WHERE users.id = '$id'";
+        $sqlTwo = "SELECT * FROM users LEFT OUTER JOIN checkedOut ON users.id = checkedOut.users_id WHERE users.id = '$id'";
+
         $user = $mysqli->query($sql);
+        $userTwo = $mysqli->query($sqlTwo);
+        $usersTwo = $userTwo->fetch_assoc();
+  
+
+        if (!$usersTwo['book_id']){
+            echo "<td><h2 class='nothingCheckedOut'>You currently have nothing checked out</h2></td>";
+        } else {
+        echo "<table class='selectUserTable'>
+                <tr>
+                    <th><h4>Book</h4></th>
+                    <th><h4>Checked out on:</h4></th>
+                    <th><h4>Due back on:</h4></th>
+                    <th><h4>Fine</h4></th>
+                </tr>";
         while($rows = $user->fetch_assoc()){
             $bookId = $rows["book_id"];
             $book = "SELECT * FROM books WHERE book_id = '$bookId'";
             $queryBook = $mysqli->query($book);
             $fetchBook = $queryBook->fetch_assoc();        
-            echo "  <table>
-                        <tr>
-                            <td>" . $rows['user_first_name'] . "</td>
-                            <td>" . $rows['user_surname'] . "</td>";
-                            if ($fetchBook['book_title']){
-                            echo 
-                            "<td>" . $fetchBook['book_title'] . "</td>
-                            <td>" . $rows['check_out_date'] . "</td>
-                            <td>" . $rows['due_date'] . "</td>
-                            <td>" . $rows['fineTotal'] . "</td>";
-                            } else {
-                            echo "You currently have nothing checked out";
-                            }    
-                        "</tr>            
-                    </table>";                
-        }                    
+            echo    "<tr>
+                        <td>" . $fetchBook['book_title'] . "</td>
+                        <td>" . $rows['check_out_date'] . "</td>
+                        <td>" . $rows['due_date'] . "</td>
+                        <td>";  if($rows['fine']){
+                            echo $rows['fine'];
+                        } else {
+                            echo 0;
+                        } echo "</td>
+                    </tr>";
+        }                                                 
+        echo "</table>
+            </section>";
+                    
+                        
+                        }                      
     }
 }; 
 
@@ -425,9 +474,8 @@ $newUser = new NewMember;
     $newUser->setName($_SESSION['newMemberName']);
     $newUser->setSurname($_SESSION['newMemberSurname']);
     $newUser->setFullName();
-    $newUser->setEmail($_POST['newMemberEmail']);
-    $newUser->setUserName($_POST['newMemberUserName']);
-    $newUser->setPassword($_POST['newMemberPassword']);
-
+    $newUser->setEmail($_SESSION['newMemberEmail']);
+    $newUser->setUserName($_SESSION['newMemberUserName']);
+    $newUser->setPassword($_SESSION['newMemberPassword']);
 
 

@@ -8,9 +8,12 @@
     </head>
 
     <body>
-        <div id='footerContainer'>
+        
+        
+        <div class='footer' id='footerContainer'>
             <section>
-                <p>LOGO</p>
+                 
+
             </section>
         </div>
     </body>

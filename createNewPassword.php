@@ -1,10 +1,10 @@
 <?php 
-session_start();
-include('membersClassOOP.php');
-include('libraryClassOOP.php');
-include('login.php');
-include('connect.php');
-$mysqli->query($sql);
+    session_start();
+    include('membersClassOOP.php');
+    include('libraryClassOOP.php');
+    include('login.php');
+    include('connect.php');
+    $mysqli->query($sql);
 ?>
 
 <!doctype html>
@@ -17,7 +17,6 @@ $mysqli->query($sql);
     </head>
 
     <body>
-
         <div class='pageContainer'>  
             <section>
                 <?php
@@ -29,23 +28,17 @@ $mysqli->query($sql);
                     } else {
                         if (ctype_xdigit($selector) !== FALSE && ctype_xdigit($validator) !== FALSE ) {
                             ?>
-                            <form action='reset.php' method='post'>
-                                <input type='hidden' name='selector' value='<?php echo $selector ?>'>
-                                <input type='hidden' name='validator' value='<?php echo $validator ?>'>
-                                <input type='password' name='pwd' placeholder='Enter a new password'>
-                                <input type='password' name='pwdRepeat' placeholder='Repeat a new password'>
-                                <button type='submit' name='resetPasswordSubmit'>Reset Button</button>
-                            </form>
-
-
-
-
+                                <form action='reset.php' method='post'>
+                                    <input type='hidden' name='selector' value='<?php echo $selector ?>'>
+                                    <input type='hidden' name='validator' value='<?php echo $validator ?>'>
+                                    <input type='password' name='pwd' placeholder='Enter a new password'>
+                                    <input type='password' name='pwdRepeat' placeholder='Repeat a new password'>
+                                    <button type='submit' name='resetPasswordSubmit'>Reset Button</button>
+                                </form>
                             <?php
                         }
                     }
-
                 ?>
-
             </section>             
         </div>
 

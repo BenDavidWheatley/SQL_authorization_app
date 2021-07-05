@@ -1,50 +1,61 @@
 
 member = (x) => {
-    if (x === 'memberContainer') {
-        document.getElementById(x).style.display = 'block';
         document.getElementById('staffContainer').style.display = 'none';
         document.getElementById('newMemberContainer').style.display = 'none';
         document.getElementById('loginTypeContainer').style.display = 'none'; 
         document.getElementById('loginTitle').style.display = 'none';
+        document.getElementById('memberContainer').style.display = 'none';      
+
+    if (x === 'memberContainer') {
+        document.getElementById(x).style.display = 'block';       
     } else if (x === 'staffContainer'){
         document.getElementById(x).style.display = 'block';
-        document.getElementById('memberContainer').style.display = 'none'; 
-        document.getElementById('newMemberContainer').style.display = 'none';
-        document.getElementById('loginTypeContainer').style.display = 'none';
-        document.getElementById('loginTitle').style.display = 'none';
     } else if (x === 'newMemberContainer') {
         document.getElementById(x).style.display = 'block';
-        document.getElementById('memberContainer').style.display = 'none'; 
-        document.getElementById('staffContainer').style.display = 'none';
-        document.getElementById('loginTypeContainer').style.display = 'none';
-        document.getElementById('loginTitle').style.display = 'none';
-    } else if (x === 'cancelMember'){
-        document.getElementById('memberContainer').style.display = 'none'; 
+    } else if (x === 'cancelMember'){       
         document.getElementById('loginTypeContainer').style.display = 'block';
         document.getElementById('loginTitle').style.display = 'block';
-    } else if (x === 'cancelStaff'){
-        document.getElementById('staffContainer').style.display = 'none';
+    } else if (x === 'cancelStaff'){       
         document.getElementById('loginTypeContainer').style.display = 'block';
         document.getElementById('loginTitle').style.display = 'block';
     } else if (x === 'cancelNewMember'){
-        document.getElementById('newMemberContainer').style.display = 'none';
         document.getElementById('loginTypeContainer').style.display = 'block';
         document.getElementById('loginTitle').style.display = 'block';
     }
 }
 showBox = (x) => {
-    document.getElementById(x).style.display = 'block';
+    document.getElementById('editFirstName').style.display = 'none';
+    document.getElementById('editSurname').style.display = 'none';
+    document.getElementById('editUsername').style.display = 'none';
+    document.getElementById('editEmail').style.display = 'none';
+    document.getElementById('editPassword').style.display = 'none';
+    document.getElementById('editUserImage').style.display = 'none';
+
+    if (x === 'editFirstName'){
+        document.getElementById(x).style.display = 'block';
+    } else if (x === 'editSurname') {
+        document.getElementById(x).style.display = 'block';
+    } else if (x === 'editUsername') {
+        document.getElementById(x).style.display = 'block';
+    } else if (x === 'editEmail') {
+        document.getElementById(x).style.display = 'block';
+    } else if (x === 'editPassword') {
+        document.getElementById(x).style.display = 'block';
+    } else if (x === 'editUserImage') {
+        document.getElementById(x).style.display = 'block';
+    }   
 }
 hideBox = (x) => {
     document.getElementById(x).style.display = 'none';
 }
-showPicBox = () => {
-    document.getElementById('editUserimage').style.display = 'block';
+
+mainPage = () => {
+    window.location = 'mainPage.php'
 }
-hidePicBox = () => {
-    document.getElementById('editUserimage').style.display = 'none';
+cart= () => {
+    window.location = 'cart.php'
 }
-addToCart = () => {
-    console.log("x");
+display = () => {
+    document.getElementById('viewCartContainer').style.display = 'none';
 }
 

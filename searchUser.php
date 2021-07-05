@@ -14,32 +14,29 @@ include('login.php');
         <title>Library App</title>
     </head>
 
-    <body>
+    <body class='bodyImage'>
         <div class='pageContainer'>
             <div class='mainContainer'>       
                 <header>
                     <?php include('header.php')?>
                 <header>
-                
-                <div>
-                    <section>
-                        <p>Search by username</p>
-                        <form method='POST'>
-                            <label for='searchUsername'>Username</label>
-                            <input type='text' name='searchUsername'>
-
-                            <button type='submit' name='searchUser'>Submit</button>
-                        </form> 
-
-                        <p>Search by surname</p>
-                        <form method='POST'>
-
-                            <label for='searchSurname'>Surname</label>
-                            <input type='text' name='searchSurname'>
-
-                            <button type='submit' name='searchUser'>Submit</button>
-                        </form> 
+                       
+                <div >
+                    <section id='searchLibrary'>
+                        <div class='searchDatabaseContainer'>
+                            <form class='searchDatabase' method='post'>
+                                <input  name='searchUsername' type='text' placeholder='search user by username'>
+                                <button  type='submit' name='searchUser' ><img src='assets/header-logos/searchIcon.png'></button>
+                            </form>
+                                <div class='spacer'>
+                                </div>
+                            <form class='searchDatabase' method='post'>   
+                                <input id='searchAuthor' name='searchSurname' type='text' placeholder='search user by surname'>
+                                <button type='submit' name='searchUser' value='search'><img src='assets/header-logos/searchIcon.png'></button>     
+                            </form>                                                                 
+                        </div>
                     </section>
+
                     <section>
                         <?php 
                             if (isset($_POST['searchUser'])){                          

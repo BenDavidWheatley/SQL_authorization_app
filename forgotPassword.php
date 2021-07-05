@@ -19,14 +19,14 @@ $mysqli->query($sql);
     <body>
    
         <div class='pageContainer'>  
-            <div>
+            <div class='container forgotContainer'>
                 <h1>Reset your password</h1>
                 <p>An email will be sent to you with instruction on how to reset your password</p>
                 <form action='reset.php' method='POST'>
-                    <label for='resetEmail'>Enter email Address</label>
-                    <input type='text' name='resetEmail' placeholder="Enter your email address">
+                    <label class='label' for='resetEmail'>Enter email Address</label>
+                    <input class='forgotInput' type='text' name='resetEmail' placeholder="Enter your email address">
 
-                    <button type='submit' name='requestRequestSubmit'>Recieve new password by e-mail</button>
+                    <button class='loginButtons' type='submit' name='requestRequestSubmit'>Recieve new password by email</button>
                 </form>
 
                 <?php 
@@ -36,7 +36,7 @@ $mysqli->query($sql);
                         }
                     }
                 ?>
-                    <a href='index.php'><button>Back to login</button></a>
+                    <a href='index.php'><button class='loginButtons'>Back to login</button></a>
             </div>
     
             

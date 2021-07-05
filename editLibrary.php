@@ -24,70 +24,63 @@ $mysqli->query($sql);
                     <?php include('header.php')?>
                 <header>
             
-                <section id='searchAuthorContainer'>
-                    <div>
-                        <h2>Seacrh for the author you wish to update</h2>
-                        <form id='searchAuthorForm' method='post'>
-                            <label>Search database for author</label>
-                            <input id='searchAuthor' name='searchAuthor' type='text'>
-
-                            <input type='submit' name='searchAuthorSubmit' value='search'>
-                        </form>                    
-                    </div>
-
-                    <div>
-                    <?php 
-                        if(isset($_POST['searchAuthorSubmit'])){
-                            $newEntry->searchAuthor();               
-                        }; 
-                        if(isset($_POST['editAuthor'])){
-                            $newEntry->editAuthor();
-                        }
-                        if(isset($_POST['submitAuthorEdit'])){
-                            $newEntry->submitAuthorEdit();
-                        }
-                        if (isset($_POST['viewBooks'])){
-                            $newEntry->viewAuthorsBooks();
-                        }; 
-                        if(isset($_POST['deleteAuthor'])){
-                            $newEntry->deleteAuthorWarning();
-                        }
-                        if(isset($_POST['confirmDeleteAuthor'])){
-                            $newEntry->deleteAuthorFromDatabase();
-                        }
-                        if(isset($_POST['submitAuthor'])){
-                           $newEntry->addAuthorToDatabase();
-                        };   
-                        if(isset($_POST['checkIn'])){
-                            $newEntry->bookCheckin();
-                        }              
-                        ?>
-                    </div>
-                </section>
-
-                <section id='bookAuthorForms'>             
-                    <?php                    
-                        if(isset($_POST['addBookToDatabase'])){
-                            $newEntry->addBookForm();
-                        };
-                        if (isset($_POST['submitBook'])){
-                            $newEntry->addBookToDatabase();
-                        };?>         
-                </section>
-
                 <section>
-                    <div id=searchBook>
-                        <form method='post'>
-                            <label for='searchDatabase'>Search Book</label>
-                            <input id='searchDatabase' name='searchDatabase' type='text'>
-                            <button type='submit' name='searchBook'>Search Database</button>
-                        </form>           
-                    </div>
-                    <div>
+                    <section id='searchLibrary'>
+                        <div class='searchDatabaseContainer'>
+                            <form class='searchDatabase' method='post'>
+                                <input  name='searchDatabase' type='text' placeholder='search for a book to edit'>
+                                <button  type='submit' name='searchBook' ><img src='assets/header-logos/searchIcon.png'></button>
+                            </form>
+                            <?php  if($_SESSION['isStaff'] === TRUE){                          
+                        echo "
+                                <div class='spacer'>
+                                </div>
+                            <form class='searchDatabase' method='post'>   
+                                <input id='searchAuthor' name='searchAuthor' type='text' placeholder='search for an author edit'>
+                                <button type='submit' name='searchAuthorSubmit' value='search'><img src='assets/header-logos/searchIcon.png'></button>     
+                            </form>                                         
+                        ";
+                        }?>
+                            
+                        </div>
+                    </section>
+                    
+                    <section>
                         <?php 
-                            if (isset($_POST['searchBook'])) {
-                                $newEntry->searchBook();                    
+                            if(isset($_POST['searchAuthorSubmit'])){
+                                $newEntry->searchAuthor();               
                             }; 
+                            if(isset($_POST['editAuthor'])){
+                                $newEntry->editAuthor();
+                            }
+                            if(isset($_POST['submitAuthorEdit'])){
+                                $newEntry->submitAuthorEdit();
+                            }
+                            if (isset($_POST['viewBooks'])){
+                                $newEntry->viewAuthorsBooks();
+                            }; 
+                            if(isset($_POST['deleteAuthor'])){
+                                $newEntry->deleteAuthorWarning();
+                            }
+                            if(isset($_POST['confirmDeleteAuthor'])){
+                                $newEntry->deleteAuthorFromDatabase();
+                            }
+                            if(isset($_POST['submitAuthor'])){
+                            $newEntry->addAuthorToDatabase();
+                            };   
+                            if(isset($_POST['checkIn'])){
+                                $newEntry->bookCheckin();
+                            }                                           
+                            if(isset($_POST['addBookToDatabase'])){
+                                $newEntry->addBookForm();
+                            };
+                            if (isset($_POST['submitBook'])){
+                                $newEntry->addBookToDatabase();
+                            };
+                            if(isset($_POST['searchBook'])){ 
+                                $_SESSION['search'] = '%'. $_POST['searchDatabase'] .'%'; 
+                                $newEntry->searchBook();
+                            }
                             if (isset($_POST['sortByIdAsc'])){
                                 $_SESSION['sortBy'] = 'book_id';
                                 $newEntry->sortAscending();
@@ -131,11 +124,6 @@ $mysqli->query($sql);
                                 $_SESSION['sortBy'] = 'is_checked_out';
                                 $newEntry->sortDescending();
                             }
-                            
-                            ?>
-                    </div>
-                    <div id='editContainer'>
-                        <?php
                             if (isset($_POST['edit'])){
                                 $newEntry->editBook();
                             }
@@ -148,7 +136,10 @@ $mysqli->query($sql);
                             if (isset($_POST['confirmDeleteBook'])){
                                 $newEntry->deleteBookFromDatabase();
                             }?>
-                    </div>
+                        </section>
+                        <section id='eventsAndInfoContainer'>
+                        <h1>This is the Edits section</h1>
+                    </section>
                 </section>
             </div> 
         

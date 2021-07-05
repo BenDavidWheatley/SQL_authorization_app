@@ -21,6 +21,29 @@ include('login.php');
                     <?php include('header.php')?>
                 <header>
 
+                <section id='searchLibrary'>
+                    <?php  if($_SESSION['isStaff'] === TRUE){   
+                    
+                    echo "<div>
+                        <h2>Search for the author you wish to update</h2>
+                        <form id='searchAuthorForm' method='post' action='mainPage.php'>
+                            <label>Search database for author</label>
+                            <input id='searchAuthor' name='searchAuthor' type='text'>
+
+                            <input type='submit' name='searchAuthorSubmit' value='search'>
+                        </form>                    
+                    </div>";
+                    }
+                    ?>
+                    <div>
+                        <form id='seachBook' method='post' action='mainPage.php'>
+                            <label for='searchDatabase'>Use the search field to look for a book</label>
+                            <input id='searchDatabase' name='searchDatabase' type='text'>
+                            <button class='searchButton' type='submit' name='searchBook' onclick='clearEventsInfo()'>Search Database</button>
+                        </form>   
+                    </div>
+                </section>
+
                 <div>
                     <p>Thank you for checkin out - </p>
                     <?php $newEntry->confirmedCheckOut() ?>

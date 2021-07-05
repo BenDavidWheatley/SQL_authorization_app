@@ -16,7 +16,7 @@ include('login.php');
         <title>Library App</title>
     </head>
 
-    <body>
+    <body class='bodyImage'>
    
         <div class='pageContainer'>
             <div class='mainContainer'>
@@ -24,51 +24,51 @@ include('login.php');
                 <header>
                     <?php include('header.php')?>
                 <header>
-                 <?php  if ($_SESSION['isStaff'] === FALSE) {
-                }?>
-
                     <section id='searchLibrary'>
-                        <?php  if($_SESSION['isStaff'] === TRUE){   
-                        
-                        echo "<div>
-                            <h2>Seacrh for the author you wish to update</h2>
-                            <form id='searchAuthorForm' method='post'>
-                                <label>Search database for author</label>
-                                <input id='searchAuthor' name='searchAuthor' type='text'>
-
-                                <input type='submit' name='searchAuthorSubmit' value='search'>
-                            </form>                    
-                        </div>";
-                        }
-                        ?>
-                        <div>
-                            <form method='post'>
-                                <label for='searchDatabase'>Search Book</label>
-                                <input id='searchDatabase' name='searchDatabase' type='text'>
-                                <button type='submit' name='searchBook'>Search Database</button>
-                            </form>   
+                        <div class='searchDatabaseContainer'>
+                            <form class='searchDatabase' method='post'>
+                                <input  name='searchDatabase' type='text' placeholder='search for a book'>
+                                <button  type='submit' name='searchBook' ><img src='assets/header-logos/searchIcon.png'></button>
+                            </form>
+                            <?php  if($_SESSION['isStaff'] === TRUE){                          
+                        echo "
+                                <div class='spacer'>
+                                </div>
+                            <form class='searchDatabase' method='post'>   
+                                <input id='searchAuthor' name='searchAuthor' type='text' placeholder='search for an author'>
+                                <button type='submit' name='searchAuthorSubmit' value='search'><img src='assets/header-logos/searchIcon.png'></button>     
+                            </form>                                         
+                        ";
+                        }?>
+                            
                         </div>
                     </section>
+
                     <section>
                         <?php 
+
                             if (isset($_POST['searchAuthorSubmit'])){
                                 $newEntry->searchAuthor();
                             }
-                            if(isset($_POST['searchBook'])){
+                            if(isset($_POST['searchBook'])){ 
+                                $_SESSION['search'] = '%'. $_POST['searchDatabase'] .'%'; 
                                 $newEntry->searchBook();
                             }
                             if (isset($_POST['addToCart'])){
-                                $newEntry->addToCart();  
-                                                                                                              
+                                $newEntry->addToCart();                                                                                                                
                             }
                             if (isset($_POST['checkIn'])){
                                 $newEntry->bookCheckin();
                             }
+                            if (isset($_POST['edit'])){
+                                $newEntry->editBook();
+                            }
+                            if(isset($_POST['editSubmit'])){
+                                $newEntry->submitEdit();
+                            }
                             if (isset($_POST['viewBooks'])){
                                 $newEntry->viewAuthorsBooks();
-                            };  
-                            
-                           
+                            };                            
                             if (isset($_POST['sortByIdAsc'])){
                                 $_SESSION['sortBy'] = 'book_id';
                                 $newEntry->sortAscending();
@@ -115,6 +115,11 @@ include('login.php');
                         ?>
                             
                     </section>
+                    <section id='eventsAndInfoContainer'>
+                    <h1>This is the Events section</h1>
+                    
+                    </section>
+                    
                 <footer>
                     <?php include('footer.php') ?>
                 </footer>
