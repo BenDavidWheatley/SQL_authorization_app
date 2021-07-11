@@ -17,7 +17,6 @@ if(isset($_POST['newMemberSubmit'])){
     $newMemberUserName = $_SESSION['newMemberUserName'];
     $newMemberPassword = $_SESSION['newMemberPassword'];
 }
-
 class NewMember {
     private $firstName;
     private $surname;
@@ -76,22 +75,18 @@ class NewMember {
     // ******** METHODS ********
 
     public function newUserAccount () {
-        
         $newMemberName = $this->firstName;
         $newMemberSurname = $this->surname;
         $newMemberEmail = $this->email;
         $newMemberUserName = $this->userName;
         $newMemberPassword = $this->password;
         $defaultImage = $this->default; 
-
         $sql = "SELECT * FROM users WHERE username = '$newMemberUserName'";
             global $mysqli;
         $checkUserName = $mysqli->query($sql);
         $usernameValid = $checkUserName->fetch_assoc();
-
             if($usernameValid['username'] != $newMemberUserName) {
                 if ($_FILES['profilePic']['error'] != 0){
-                    
                     $newUserNoImage = "INSERT INTO users (username, user_password, user_first_name, user_surname, user_email, user_image, fineTotal)
                                         VALUES ('$newMemberUserName', '$newMemberPassword', '$newMemberName', '$newMemberSurname', '$newMemberEmail', '$defaultImage', 0)";
                     global $mysqli;
@@ -101,17 +96,14 @@ class NewMember {
                         } else {
                             echo "There was an error creating the account: Username or email already exists";                         
                         };    
-
                 }else if ($_FILES['profilePic']['error'] === 0){
                         $fileName = $_FILES['profilePic']['name'];
                         $fileTmpName = $_FILES['profilePic']['tmp_name'];
                         $fileSize = $_FILES['profilePic']['size'];
                         $fileError = $_FILES['profilePic']['error'];
                         $fileType = $_FILES['profilePic']['type'];
-            
                         $fileExt = explode('.', $fileName);
                         $fileActualExt = strtolower(end($fileExt));
-                     
                         $allowed = array('jpg', 'jpeg', 'png');
                         if (in_array($fileActualExt, $allowed)) {
                             if ($fileError === 0){
@@ -119,11 +111,9 @@ class NewMember {
                                     $fileNameNew = uniqid('', true) . "." . $fileActualExt;
                                     $fileDestination = 'assets/users/' . $fileNameNew;
                                     move_uploaded_file($fileTmpName, $fileDestination);
-
                                     $newUser = "INSERT INTO users (username, user_password, user_first_name, user_surname, user_email, user_image)
                                                 VALUES ('$newMemberUserName', '$newMemberPassword', '$newMemberName', '$newMemberSurname', '$newMemberEmail', '$fileNameNew')";
                                         global $mysqli;
-            
                                         if ($mysqli->query($newUser) === TRUE) {
                                             echo "<script>window.location.href='newAccount.php';</script>";
                                             } else {
@@ -155,7 +145,6 @@ class NewMember {
             if($memberCheck['username'] === $userName && $memberCheck['user_password'] === $password){
                 $_SESSION['userId'] = $memberCheck['id'];
                 header("Location: mainPage.php"); 
-                
             } else {
                 echo "<h3 id='textError' class='textError'>The username or password is incorrect</h3>";
             } 
@@ -177,7 +166,6 @@ class NewMember {
         return $_SESSION['isStaff'];
     }
     public function logout () {
-    
         header("Location: index.php");
         $_SESSION['loggedIn'] = false;
     }
@@ -187,7 +175,6 @@ class NewMember {
             global $mysqli;
         $queryUser = $mysqli->query($sql);
         $getUser = $queryUser->fetch_assoc();
-
         $this->firstName = $getUser['user_first_name'];
         $this->surname = $getUser['user_surname'];
         $this->email = $getUser['user_email'];
@@ -241,14 +228,12 @@ class NewMember {
                 $fileExt = explode('.', $fileName);
                 $fileActualExt = strtolower(end($fileExt));       
                 $allowed = array('jpg', 'jpeg', 'png');
-
                 if (in_array($fileActualExt, $allowed)) {
                     if ($fileError === 0){
                         if ($fileSize < 5000000){
                                 $fileNameNew = uniqid('', true) . "." . $fileActualExt;
                                 $fileDestination = 'assets/users/' . $fileNameNew;
                                     move_uploaded_file($fileTmpName, $fileDestination);  
-                                                            
                                 $sql= "UPDATE users SET user_image = '$fileNameNew' WHERE id = '$id'";
                                 global $mysqli;
                                     if ($mysqli->query($sql) === TRUE) {  
@@ -271,7 +256,6 @@ class NewMember {
                 else { 
                     echo "image not edited";
                 };                        
-                
     }     
     public function editFirstName(){
         $id = $_SESSION['userId'];
@@ -340,25 +324,21 @@ class NewMember {
             $sqlUsername = "SELECT * FROM users WHERE username LIKE '$search' ORDER BY user_surname ASC";
                 global $mysqli;
                 $user = $mysqli->query($sqlUsername);
-                echo "<section class='libraryUsers'>
+                echo "<section class='libraryUsers container innerContainers overlay'>
                         <table class='searchUserContainer'>
                             <tr class='tableHeaders'>    
-                                <th><h4>Name</h4></th>
-                                <th><h4>ID</h4></th>
-                                <th><h4>Username</h4></th>
-                                <th><h4>Email</h4></th>
-                                <th><h4>Fines</h4></th>
-                                <th><h4>Select User</h4></th>                          
+                                <th class='userTitles' ><h4>Name</h4></th>
+                                <th class='userTitles' ><h4>Username</h4></th>
+                                <th class='userTitles' ><h4>Email</h4></th>
+                                <th class='userTitles' ><h4>Select User</h4></th>                          
                             </tr>";
                 while($userDetails = $user->fetch_assoc()){                   
                         echo "<tr class='searchUserTable'>
                                     <td>" . $userDetails['user_first_name']  . " " .  $userDetails['user_surname'] . "</td>
-                                    <td>" . $userDetails['id'] . "</td>
                                     <td>" . $userDetails['username'] . "</td>                                  
                                     <td>" . $userDetails['user_email'] . "</td>   
-                                    <td>" . $userDetails['fine'] . "</td> 
-                                    <td>    <form method='post'>
-                                                <button class='searchbutton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
+                                    <td class='searchUserFormButtons'>    <form method='post'>
+                                                <button id='selectUserUsername' class='searchbutton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
                                             </form>
                                     </td>
                                     
@@ -375,29 +355,23 @@ class NewMember {
                 $sqlSurname = "SELECT * FROM users WHERE user_surname LIKE '$search'";
                 global $mysqli;
                 $user = $mysqli->query($sqlSurname);
-                echo "<section class='libraryUsers'>
+                echo "<section class='libraryUsers container innerContainers overlay'>
                 <table class='searchUserContainer'>
                     <tr class='tableHeaders'>    
-                        <th><h4>Name</h4></th>
-                        <th><h4>ID</h4></th>
-                        <th><h4>Username</h4></th>
-                        <th><h4>Email</h4></th>
-                        <th><h4>Fines</h4></th>
-                        <th><h4>Select User</h4></th>                         
+                        <th class='userTitles' ><h4>Name</h4></th>
+                        <th class='userTitles' ><h4>Username</h4></th>
+                        <th class='userTitles' ><h4>Email</h4></th>
+                        <th class='userTitles' ><h4>Select User</h4></th>                         
                     </tr>";
-
             while($userDetails = $user->fetch_assoc()){
                 echo "<tr class='searchUserTable'>
                             <td>" . $userDetails['user_first_name']  . " " .  $userDetails['user_surname'] . "</td>
-                            <td>" . $userDetails['id'] . "</td>
                             <td>" . $userDetails['username'] . "</td>                                  
                             <td>" . $userDetails['user_email'] . "</td>   
-                            <td>" . $userDetails['fine'] . "</td> 
                             <td>    <form method='post'>
-                                        <button class='searchbutton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
+                                        <button id='selectUser' class='searchbutton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
                                     </form>
                             </td>
-                    
                         </tr>
                         <tr>
                             <td><hr></td>
@@ -410,18 +384,17 @@ class NewMember {
     public function selectThisUser() {
         $id = $_POST['selectThisUser'];
         global $mysqli; 
-
         $sqlTwo = "SELECT * FROM users WHERE id = '$id'";
         $userFineInfo = $mysqli->query($sqlTwo);
         $userFine = $userFineInfo->fetch_assoc();    
-            echo"<section class='selectUserContainer'>
-                    <div class='selecteUserDetails'>
+            echo"<section class='selectUserContainer containers innerContainers overlay'>
+                    <div class='selecteUserDetails '>
                         <h3> User - " . $userFine['user_first_name'] . " " . $userFine['user_surname'] . "</h3>
                         <h3>Fines to pay -  " . $userFine['fineTotal'] . " pounds</h3>";       
             if ($userFine['fineTotal'] > 0){
                 echo 
                         "<form method='post'>
-                            <button class='searchbutton addBook' type='submit' name='payFine' value='" . $userFine['id'] . "'>Pay fine</button>                  
+                            <button id='payUserFine' class='searchbutton addBook' type='submit' name='payFine' value='" . $userFine['id'] . "'>Pay fine</button>                  
                         </form>";
             }
                 echo "</div>";
@@ -429,46 +402,34 @@ class NewMember {
        
         $sql = "SELECT * FROM users LEFT OUTER JOIN checkedOut ON users.id = checkedOut.users_id WHERE users.id = '$id'";
         $sqlTwo = "SELECT * FROM users LEFT OUTER JOIN checkedOut ON users.id = checkedOut.users_id WHERE users.id = '$id'";
-
         $user = $mysqli->query($sql);
         $userTwo = $mysqli->query($sqlTwo);
         $usersTwo = $userTwo->fetch_assoc();
-  
-
         if (!$usersTwo['book_id']){
-            echo "<td><h2 class='nothingCheckedOut'>You currently have nothing checked out</h2></td>";
+            echo "<div class='selectUserContainer container innerContainer overlay'><h2>You currently have nothing checked out</h2></div>";
         } else {
-        echo "<table class='selectUserTable'>
-                <tr>
-                    <th><h4>Book</h4></th>
-                    <th><h4>Checked out on:</h4></th>
-                    <th><h4>Due back on:</h4></th>
-                    <th><h4>Fine</h4></th>
+        echo "<table class='selectUserTable selectedUserHeading'>
+                <tr class='userTitlesContainer'>
+                    <th class='coloumnOne' ><h4>Book</h4></th>
+                    <th class='coloumnTwo'><h4>Checked out on:</h4></th>
+                    <th class='coloumnThree'><h4>Due back on:</h4></th>
                 </tr>";
         while($rows = $user->fetch_assoc()){
             $bookId = $rows["book_id"];
             $book = "SELECT * FROM books WHERE book_id = '$bookId'";
             $queryBook = $mysqli->query($book);
             $fetchBook = $queryBook->fetch_assoc();        
-            echo    "<tr>
-                        <td>" . $fetchBook['book_title'] . "</td>
-                        <td>" . $rows['check_out_date'] . "</td>
-                        <td>" . $rows['due_date'] . "</td>
-                        <td>";  if($rows['fine']){
-                            echo $rows['fine'];
-                        } else {
-                            echo 0;
-                        } echo "</td>
+            echo    "<tr class='userTitlesContainer'>
+                        <td class='coloumnOne'>" . $fetchBook['book_title'] . "</td>
+                        <td class='coloumnTwo'>" . $rows['check_out_date'] . "</td>
+                        <td class='coloumnThree'>" . $rows['due_date'] . "</td>
                     </tr>";
         }                                                 
         echo "</table>
             </section>";
-                    
-                        
                         }                      
     }
 }; 
-
 $newUser = new NewMember;
 
     $newUser->setName($_SESSION['newMemberName']);

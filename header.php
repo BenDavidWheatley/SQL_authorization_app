@@ -21,18 +21,32 @@ if ($_SESSION['loggedIn'] != 1){
         <div id='headerContainer'>
             <section id='headerTitles'>                             
                 <?php                                                        
-                    echo "<form method='post' action='index.php'>
-                            <input class='headerImage' name='logout' type='image' src='assets/header-logos/exit.png'>
+                    echo "<form class='tooltip' method='post' action='index.php'>                          
+                                <input class='headerImage tooltip' name='logout' type='image' src='assets/header-logos/exit.png'>                              
+                                <span class='tooltiptext'>Exit</span>
                           </form>";      
-                    echo "<a href='mainPage.php'><input class='headerImage' type='image' src='assets/header-logos/home.png'></a>";         
+                    echo "<div class='tooltip'>
+                                <a href='mainPage.php'><input class='headerImage' type='image' src='assets/header-logos/home.png'></a>
+                                <span class='tooltiptext'>Home</span>
+                        </div>";         
                 if($_SESSION['isStaff'] === TRUE){
-                    echo "<a href='editLibrary.php'><input class='headerImage' type='image' src='assets/header-logos/editLibrary.png'></a>";
-                    echo "<a href='searchUser.php'><input class='headerImage' type='image' src='assets/header-logos/searchUser.png'></a>";                              
+                    echo "<div class='tooltip'>
+                                <a href='editLibrary.php'><input class='headerImage' type='image' src='assets/header-logos/editLibrary.png'></a>
+                                <span class='tooltiptext'>Edit Library</span>
+                            </div>";
+                    echo "<div class='tooltip'>
+                                <a href='searchUser.php'><input class='headerImage' type='image' src='assets/header-logos/searchUser.png'></a>
+                                <span class='tooltiptext'>Search for user</span>
+                            </div>";                              
                     }   
                 if($_SESSION['isStaff'] === FALSE){          
-                    echo "<a href='profile.php'><input class='headerImage' type='image' src='assets/header-logos/account.png'></a>";
-                    echo "<form method='POST' action='cart.php'>
-                        <input class='headerImage' type='image' src='assets/header-logos/cart.png'> 
+                    echo "<div class='tooltip'>
+                                <a href='profile.php'><input class='headerImage' type='image' src='assets/header-logos/account.png'></a>
+                            <span class='tooltiptext'>Account</span>
+                        </div>";
+                    echo "<form class='tooltip' method='POST' action='cart.php'>                         
+                                <input class='headerImage' type='image' src='assets/header-logos/cart.png'> 
+                                <span class='tooltiptext'>Cart</span>
                      </form>";  
                 }           
                 ?>              
@@ -40,13 +54,12 @@ if ($_SESSION['loggedIn'] != 1){
             <?php if($_SESSION['isStaff'] === FALSE){
                 echo "<section class='allowance'>";
                 $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);                    
-                if($_SESSION['isStaff'] != TRUE && $curPageName != 'confirmCheckOut.php'){
+                if($_SESSION['isStaff'] != TRUE ){
                 $newEntry->availableAllowance();
                 echo "</section>";
                 } 
                 } else {
                     echo "<section>
-                         
                         </section>";              
                 } ?>
         </div>

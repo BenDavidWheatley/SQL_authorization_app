@@ -33,7 +33,6 @@ if (isset($_POST['logout_x'])){
                 <h5>Sign up or login to view library content</h5>
             </section>
             
-            
             <section class='box transform' id='loginTypeContainer'>
                 <div> 
                     <button class='loginButtons' id='memberButton' onclick="setTimeout(member, 500, 'memberContainer');">Member</button>
@@ -50,7 +49,6 @@ if (isset($_POST['logout_x'])){
                     <!-- LOGIN INPUT -->
 
             <section>
-                
                 <div class="mainLoginContainers" id='memberContainer'>           
                     <form class='form' id='memberLoginForm' method='post' >
                         
@@ -61,7 +59,6 @@ if (isset($_POST['logout_x'])){
                         <input id='memberPassword' name='memberPassword' type='password'>
 
                         <button class='loginButtons'  type='submit' name='submitMember'>Login</button>
-                         
                     </form>   
                     <div>
                         <a href='forgotPassword.php'><button class='loginButtons' >Forgot username or password</button></a> 
@@ -71,7 +68,6 @@ if (isset($_POST['logout_x'])){
                     </div>  
                 </div>
                 
-
                 <div class="mainLoginContainers" id='staffContainer'>
                     <form class='form'  id='staffLoginForm' method='post'>
                         <label for='staffMember'>Staff ID</label>
@@ -117,16 +113,12 @@ if (isset($_POST['logout_x'])){
 
                         <button class='loginButtons'  type='submit' name='newMemberSubmit' value='newMemberSubmit'>Create Account</button>              
                     </form>
-                    <button class='loginButtons cancel' onclick='member("cancelNewMember")'>Cancel</button>
+                    <button id='loginCancel' class='loginButtons cancel' onclick='member("cancelNewMember")'>Cancel</button>
                 </div> 
-              
-                
-             
                 <?php 
                     if(isset($_POST['newMemberSubmit'])){
                         if ($_POST['newMemberPassword'] === $_POST['repeatMemberPassword']) {
                             $newUser->newUserAccount();
-                            
                         } else {
                             echo "<h2 id='textError' class='textError'>The passwords do not match</h2>";
                         }

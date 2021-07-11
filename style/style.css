@@ -21,6 +21,7 @@
     font-family: "DMSansBold";
     src: url(../assets/fonts/DM_Sans/DMSans-Bold.ttf);
 }
+
 * {
     margin: 0px;
     font-family: 'DMSansReg';
@@ -33,17 +34,32 @@ button {
 input:hover, select:hover{
     background-color: #f2f2f2;
 }
-.pageContainer {
+#pageContainer {
     position: relative;
-    min-height: 100vh; 
+    height: auto;
   }
+  .pageContainer{
+    margin: auto;
+}
+.innerContainers {
+    position: absolute;
+    height: 100vh;
+    overflow: scroll; 
+}
+.innerContainer {
+    position: absolute;
+    height: 100vh;
+}
+.overlay {
+    z-index: 10;
+}
 
 
 /******** HEADER AND FOOTER ********/
 
 #headerContainer, #footerContainer {
     background-color: #EC8F00;
-    height: 100px;
+    height: 150px;
 }
 #headerContainer img {
     height: 200px;
@@ -60,21 +76,75 @@ input:hover, select:hover{
     grid-template-columns: auto auto auto auto;
     width: 80%;
 }
+.footer {
+    transform: translate(0px, 700px);
+    margin-top: 50px;
+} 
 #footerContainer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 300px;  
+    height: auto;  
+    margin-top: 50px;
+    margin-top: 50px;
+    bottom: 0;
 }  
-.footer {
-    transform: translate(0px, 200px);
-} 
+
 .footerTopBanner {
     background-color: #c1c1c1;
     height: 50px;
     margin-top: 2px;
     margin-bottom: 2px;
-
+}
+#footerInfoContainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 20% auto 20% auto 20% auto 20%;
+    height: 80%;
+    padding: 20px;
+    align-content: center;
+    justify-content: center;
+}
+#footerInfoContainer p {
+    color: white;
+    font-size: 0.7em;
+    line-height: 2em;
+}
+.footerInfo {
+    text-align: center;
+}
+#footerInfoContainer h3 {
+    font-family: "DMSansBold";
+    margin-bottom: 20px;
+}
+#footerInfoContainer a {
+    text-decoration: none;
+}
+#timesContainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 80%;
+    margin-right:30px;
+}
+.openTimes {
+    width: 100%;
+    text-align: left;
+}
+.times {
+    text-align: right;
+}
+.verticalBreak {
+    height: 90%;
+    width: 1px;
+    background-color: #292929;
+}
+#social{
+    margin-top: 10px;
+}
+#instagram, #twitter, #facebook {
+    width: 30px;
+    height:30px;
+    margin: 10px;
 }
 #niceTry{
     height: 100vh;
@@ -93,7 +163,6 @@ input:hover, select:hover{
     border: none;
     background-color: #EC8F00;
     font-size: 20px;
-
 }
 #headerTitles button:hover {
     color: white;
@@ -102,12 +171,18 @@ input:hover, select:hover{
     -ms-transition: .4s;
     -moz-transition: .4s;
     -webkit-transition: .4s;
-}    
+}   
 .allowance {
-    background-color: white;
-    padding: 10px;
+    background-color: #292929;
+    width: 90%;
+    height: auto;
+    padding: 15px;
     margin-right: 20px;
     border-radius: 10px;
+    box-shadow: 2px 2px white;
+}
+.allowance p {
+    color: white;
 }
 .libraryLogo {
     height: 20px;
@@ -118,13 +193,65 @@ input:hover, select:hover{
     width: auto;
     padding-left: 0px;
 }
-
+.alloawnceFigure {
+    font-family: "DMSansBold" ;
+    color: #EC8F00;
+}
+#headerContainer {
+    display: block;
+    margin: 0px;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.allowance {
+    width: 100%;
+    text-align: center;
+    padding: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px 5px 0px 0px;
+    margin: auto;   
+    box-shadow: none;   
+    transform: translate(0px, 14px);       
+}
+#headerTitles {
+    margin-left: 0%;
+    margin: auto;
+    display: grid;
+    text-align: center;
+    justify-items: center;
+    align-content: center;
+    grid-template-columns: auto auto auto auto;
+    width: 100%;      
+}
+/******** tooltip ********/
+.tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: #292929;
+    color: white;
+    box-shadow: 1px 1px white;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 20%;
+    margin-left: 10px;
+  }
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
 /******** LOGIN PAGE *******/
 
 #memberContainer, #staffContainer, #newMemberContainer{
     display: none;
 }
-
 #loginPage {
     display : grid;
     grid-template-columns: 50% 50%;
@@ -162,13 +289,13 @@ input:hover, select:hover{
     grid-template-columns: 100%;
     width: 300px;
 }
-
 #loginBody {
     background-color: #EC8F00;
+    margin: 0px;
 }
 #loginImage{
-    width: auto;
-    height: 700px;    
+    width: 100%;
+    height: auto;    
 }
 .loginButtons, .authorButtons button, .addBook{
     width: 100%;
@@ -176,7 +303,7 @@ input:hover, select:hover{
     margin-top: 2em;
 }
 .loginButtons {
-    width : 300px;   
+    width: 300px;
 }
 .searchButton {
     width: 30%;
@@ -189,7 +316,7 @@ input:hover, select:hover{
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
 }
-.searchButton, .loginButtons, .login, .cancel, .forgot, .addBook{
+.searchButton, .loginButtons, .login, .cancel, .forgot, .addBook {
     -o-transition: .4s;
     -ms-transition: .4s;
     -moz-transition: .4s;
@@ -211,7 +338,7 @@ input:hover, select:hover{
     border-style: none;
     color: white;
 }
-.searchButton:hover, .login:hover, .cancel:hover, .forgot:hover, .sortButtons button:hover {
+.searchButton:hover, .login:hover, .cancel:hover, .forgot:hover, .sortButtons button:hover{
     -o-transition: 1s;
     -ms-transition: 1s;
     -moz-transition: 1s;
@@ -244,7 +371,6 @@ input:hover, select:hover{
 .input {
     margin-top: 50px;
 }
-
 .textError {
     color: #292929;
     background-color: #efefef;
@@ -271,7 +397,6 @@ input:hover, select:hover{
 .forgotContainer label {
     margin-top: 40px;
 }
-
 .forgotContainer input {
     border: solid 1px #292929;
     border-radius: 4px;
@@ -281,11 +406,12 @@ input:hover, select:hover{
     margin-top: 20px;
     margin-bottom: 40px;
 }
-
 /******** newAccount.php ********/
 
 .newAccountImage {
     background-image: url(../assets/logo.png);
+    background-position: center;
+    background-position-y: top;
     background-repeat: no-repeat;
     background-size: 50%;
     background-color: #EC8F00;
@@ -304,22 +430,24 @@ input:hover, select:hover{
     transform: translate(50%);
 }
 #newAccountContainer h2 {
-
     margin-bottom: 5%;
 }
-
-
 .userInfo {
     font-family: 'DMSansBold' ;
 }
 
 /******** User search ********/
-
+#searchUser {
+    width: 80%;
+    margin: auto;
+}
+#searchUser  h2 {
+    margin-bottom: 30px;
+}
 .libraryUsers {
     width: 100%;
     padding-top: 50px;
-    min-height: 120vh;
-    max-height: auto;
+    height: 100vh;
     background-color: white;
 }
 .searchUserContainer {
@@ -350,7 +478,7 @@ input:hover, select:hover{
 }
 .selectUserContainer {
     width: 100%;
-    height: 120vh;
+    height: 100vh;
     background-color: white;
 }
 .selectUserTable{
@@ -358,6 +486,7 @@ input:hover, select:hover{
     margin: auto;
 }
 .nothingCheckedOut {
+    height: 100vh;
     width: 90%;
     margin: auto;
 }
@@ -368,16 +497,64 @@ input:hover, select:hover{
     background-color: white;
     height: 120vh;
     text-align: center;
- /*   transform: translate(0px, -32px);   */ 
 }
 .container h2 {
     font-family: "DMSansBold";
     padding-top: 50px;
 }
+/******** events ********/
+.eventsContainer{
+    margin: auto;
+    height: 120vh;
+    overflow: scroll;
+}
+#eventsAndInfoContainer {
+    width: 90%;
+
+    margin: auto;
+    height: 130vh;
+    margin-left: 5%;
+    text-align: center;
+}
+#eventsAndInfoContainer h1{
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+#eventsContainer {
+    margin-top: 60px;
+}
+.events {
+    text-align: left;
+    height: auto;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 5% 5% 80%;
+}
+.eventsHr{
+    margin-bottom: 100px;
+    margin-top: 60px;
+}
+.eventsImage {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 4;    
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+#scrollDown {
+    width: 100%;
+}
+#scrollDown img {
+    width: 30px;
+    height: 30px;
+}
 /******** Search ********/
 
 .searchDatabaseContainer{
-    height: 60px;
+    height: 90px;
     width: 100%;
     background-color: #292929;
     display: flex;
@@ -391,7 +568,6 @@ input:hover, select:hover{
     display: flex;
 }
 .searchDatabase input{
-   
     width: 100%;
     height: 30px; 
     border: none;
@@ -416,9 +592,6 @@ input:hover, select:hover{
 .spacer {
     width: 10%;
 }
-
-
-
 #seachBook, #searchAuthorForm{
     background-color: #292929;
     display: grid;
@@ -467,13 +640,12 @@ input:hover, select:hover{
     padding-top:50px;
     background-color: white;   
 }
-
 .searchTable {
     display: grid;
     grid-template-columns: 15% 60% 25%;
     grid-template-rows: 25% 25% 25% 25%;
     height: 200px;
-    padding: 20px;
+    padding: 5%;
     width: 90%;
     margin: auto;
 }
@@ -529,7 +701,6 @@ input:hover, select:hover{
     grid-row-end: 4;
 }
 .bookSearchButton {
-    
     grid-row-start: 4;
     grid-row-end: 5;
 }
@@ -557,11 +728,14 @@ input:hover, select:hover{
     padding-bottom: 20px;
 }
 .organiseSearch {
-    width: 90%; 
+    width: auto; 
+    padding-left: 10%;
+    padding-right: 10%;
     height: auto; 
     margin: auto; 
     text-align: center;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
 }
 .sortImage{
@@ -582,7 +756,7 @@ input:hover, select:hover{
     margin-top: 2px;
 }
 .sortContainer{
-    margin-right: 5%;
+   margin-right: 2%;
 }
 .orgnaiseSearchContainer button {
     background-color: white;
@@ -598,6 +772,7 @@ input:hover, select:hover{
     margin: 5px 20px;
 }
 .sortHeading{
+    font-family: "DMSansBold";
     grid-row-start: 1;
     grid-row-end: 2;
 }
@@ -625,33 +800,28 @@ input:hover, select:hover{
     grid-column-start: 6;
     grid-column-end: 7;
 }
-
-.offsetSort {
-    transform: translate(0px, -30px);
+.bookButtons {
+    width: 100%;
 }
-
-
-
 /******** Authors ********/
 
 #searchAuthorContainer {
     background-color: white;
     width: 100%;
     margin: auto;
-    height: auto;
+    height: 100vh;
     min-height: 900px;
     overflow: scroll;
     align-content: center;
     background-color: white;
-    border-radius: 5px;
-   
+    border-radius: 5px;  
 }
 .authorSearchTitle{
     padding: 2%;
     text-align: center;
 }
 .searchAuthorTableContainer{
-    width: 100%;
+    width: 96%;
     padding: 2%;
     height: auto;
     margin: auto;
@@ -665,7 +835,7 @@ input:hover, select:hover{
     margin: auto;   
     display: grid;
     grid-gap: 20px;
-    grid-template-columns: 20% 60% auto;
+    grid-template-columns: 20% 50% auto;
     grid-template-rows: 10% 10% 10% auto 10%;   
 }     
 .authorImageConatainer{
@@ -679,8 +849,7 @@ input:hover, select:hover{
     width: 100%;
     flex-shrink: 1;
     height: auto;
-    border-radius: 5px;
-  
+    border-radius: 5px; 
 }
 .authorName, .authorAge, .authorGenre, .authorBio{
     grid-column-start: 2;
@@ -712,7 +881,6 @@ input:hover, select:hover{
     -webkit-transition: 1s;
     transition: 1s;
 }
-
 .authorBio:hover, .bookSearchAbout:hover{
     -o-transition: 1s;
     -ms-transition: 1s;
@@ -723,7 +891,6 @@ input:hover, select:hover{
     background-color: #292929;
     color: white;
 }
-
 .authorButtons {
     grid-column-start: 3;
     grid-column-end: 4;
@@ -762,20 +929,28 @@ input:hover, select:hover{
     margin: auto;
     margin-bottom: 20px;
 }
-.offsetAuthor{
-  /*  transform: translate(0px, -80px); */
-}
 
-/******* Authors books ********/
-.offset {
- 
-    height: 900px;
+/******** edit library ********/
+#editLibraryContainer {
+    margin: auto;
+    margin-top: 50px;
+    width: 90%;
 }
+#editLibraryContainer h1 {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+#editLibraryContainer h2 {
+    margin-bottom: 20px;
+    margin-top: 40px;
+}
+/******* Authors books ********/
+
 .authorsBookContainerTitle {
     font-family: "DMSansBold";
     margin: 3%;
     text-align: center;
-    
 }
 .addButtonForm{
     width: 60%;
@@ -804,7 +979,6 @@ input:hover, select:hover{
 .authorBookInfo {
     text-align: center; 
 }
-
 /******** Add book *******/
 
 #FormContainerBook, #formContainerAuthor {
@@ -865,7 +1039,6 @@ input:hover, select:hover{
     margin-bottom: 10px;
     font-family: "DMSansBold";
 }
-
 .editInput {
     height: 30px;
     margin-bottom: 30px;
@@ -878,8 +1051,6 @@ input:hover, select:hover{
     width: 300px;
     margin: auto;
 }
-
-
 /******** WARNINGS ********/
 
 .warningContainer {
@@ -887,6 +1058,7 @@ input:hover, select:hover{
     width: 100%;
     text-align: center;
     padding-top: 10%;
+    z-index: 10;
 }
 .warning span {
     color: red;
@@ -898,11 +1070,6 @@ input:hover, select:hover{
 
 /******** Cart ********/
 
-.bodyImage{
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: 0px 154px;  
-}
 #viewCartContainer {
     background-color: #ffffff;
     width: 70%;
@@ -916,14 +1083,12 @@ input:hover, select:hover{
     text-align: center;
     margin-bottom: 5%;
 }
-#emptyCartContainer, #fullCartContainer {  
-    
+#emptyCartContainer, #fullCartContainer {   
     width: 100%;
     height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
-  /*  transform: translate(0px, -50px); */
 }
 #emptyCartContainer{
     height: 10vh;
@@ -932,18 +1097,15 @@ input:hover, select:hover{
 }
 #cartContainer {
     width: 80%;
-    margin: auto;
-    
+    margin: auto;    
 }
 .cartTable {
     display: grid;
     grid-template-columns: 40% 40% 20%;
     margin-right: 30px;
     margin-bottom: 40px;
-    margin-top: 40px;
-   
+    margin-top: 40px;  
 }
-
 .cartTableForm {
     width: 100%;
 }
@@ -984,6 +1146,18 @@ input:hover, select:hover{
     margin: auto;   
     margin-top: 40px; 
 }
+.checkedoutBooks h2{
+    margin-bottom: 40px;
+    margin-top: 50px;
+}    
+.checkedoutBooks h3{
+    font-family: "DMSansBold";
+    margin-bottom: 30px;
+}   
+.newAuthor {
+    margin: auto;
+    margin-bottom: 30px;
+} 
 
 /******** Edit Library ********/
 
@@ -1128,3 +1302,533 @@ input:hover, select:hover{
     border-radius: 5px;
     border: 1px solid #292929;
 }
+.smallContainer {
+    height: 100vh;
+    position: absolute;
+    z-index: 10;
+}
+@media only screen and (max-width: 768px){
+    #footerInfoContainer {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 50% 50%;
+        height: 80%;
+        padding: 10px;
+        margin-top: 30px;
+    }
+    #footerInfoContainer p {
+        color: white;
+        font-size: 0.7em;
+        line-height: 1.5em;
+    }
+    .footerInfo {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .footer {
+        transform: translate(0px, 800px);
+        margin-top: 50px;
+    }     
+    #footerInfoContainer h3 {
+        font-family: "DMSansBold";
+        margin-bottom: 20px;
+    }
+    #footerInfoContainer a {
+        text-decoration: none;
+    }
+    #timesContainer {
+        display: grid;
+        width: 60%; 
+        margin-right:30px;
+        margin: auto;  
+    }
+    .verticalBreak {
+        display: none;
+    }
+    #social{
+        margin-top: 10px;
+    }
+    #loginPage {
+        display : block;
+        justify-items: center;
+        align-items: center;
+        justify-content: center;
+    }
+    #loginContainer{
+        margin: auto;
+        width: 100%;
+    }
+    #loginTitle{
+        width: 80%;
+    }
+    #loginImageContainer{
+        text-align: center;
+    }
+    #loginImage {
+        width: 40%;  
+    }
+    #newMemberContainer{
+        transform: translate(0px, 200px);
+    }
+    #loginCancel {
+        margin-bottom: 50px;
+    }
+    /******* New account *******/
+    
+    #newAccountContainer {
+        background-color: white;
+        width: 80%;
+        margin:auto;
+        margin-top: 400px;
+        transform: translate(0%);
+    }
+    #newAccountContainer h2 {
+        margin-bottom: 5%;
+    }
+    
+    /******** Header ********/
+
+    #headerContainer {
+        display: block;
+        margin: 0px;
+        height: auto;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .allowance {
+        width: 100%;
+        text-align: center;
+        padding: 0px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 5px 5px 0px 0px;
+        margin: auto;   
+        box-shadow: none;   
+        transform: translate(0px, 14px);       
+    }
+    #headerTitles {
+        margin-left: 0%;
+        margin: auto;
+        display: grid;
+        text-align: center;
+        justify-items: center;
+        align-content: center;
+        grid-template-columns: auto auto auto auto;
+        width: 100%;      
+    }
+    #headerTitles div, #headerTitles form{
+        margin-top: 25px;
+        height: auto;
+    }
+    /******** search ********/
+    .searchDatabaseContainer {
+        display: block;
+        height: auto;
+        padding: 10px;  
+        width: auto;
+    }
+    .searchDatabaseContainer form {
+        width: 90%;
+        margin: auto;
+        margin: 10px;      
+    }  
+    .organiseSearch {
+        width: 80%;  
+    }
+    .sortContainer{
+        margin-right: 10%;
+        margin-left: 10%;
+     }
+     .searchTable {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        grid-template-rows: 10% 45% 15% 15% 15%;
+        height: auto;
+        padding: 5%;
+        width: 90%;
+        margin: auto;
+    }
+    .bookImage {
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+    .bookSearchButton {
+        width: 80%;
+        margin: auto;
+        grid-column-start: 2;
+        grid-column-end: 3;
+        grid-row-start: 4;
+        grid-row-end: 6;
+    }
+    .bookSearchGenre, .bookSearchAge, .bookSearchCheckedin {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        margin: auto;
+    }
+    .bookSearchGenre {
+        grid-row-start: 3;
+        grid-row-end: 4;
+    }
+    .bookSearchAge{
+        grid-row-start: 4;
+        grid-row-end: 5;
+    }
+    .bookSearchCheckedin{
+        grid-row-start: 5;
+        grid-row-end: 6;
+    }
+    /******** Author Search ********/
+    .authorSearchTable{
+        width: 90%;
+        height: 400px; 
+        margin: auto;   
+        display: grid;
+        grid-gap: 20px;
+        grid-template-columns: 30% 40% auto;
+        grid-template-rows: 10% 10% 10% auto 10%;   
+    }   
+    .authorBio {
+        grid-column-start: 1;
+        grid-column-end: 4;
+    }
+    /******** Author Books ********/
+    .authorsBookContainer{
+        width: 95%;
+    }
+    /******** Add book ********/
+    #addBookFormContainer, #authorFormContainer {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        margin: auto;
+    }
+    /******** Search User ********/
+    .searchUserTable {
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-template-columns: 3;
+    }
+    .searchUserTable td {
+        font-size: 20px;
+    }
+    .selectedUserHeading th, .selectedUserHeading h4{
+        font-size: 12px;
+        display: flex;
+    }
+    .userTitlesContainer {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 25% 25%;
+    }
+    .coloumnOne {
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+    .coloumnTwo {
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+    .coloumnThree {
+        grid-column-start: 3;
+        grid-column-end: 4;
+    }
+    #selectUser, #payUserFine, #selectUserUsername {
+        height: 20px;
+        margin: 20px;
+    }
+    .searchUserContainer th, .selectUserTable th{
+        display: none;
+    }
+    .authorsBookContainerTitle{
+        font-size: 20px;
+    }
+    .authorsBookContainer h4 {
+        margin-bottom: 20px;
+    }
+    .authorBookInfoRow td{
+        font-size: 12px;
+    }
+    .addButtonForm {
+        width: 50%;
+    } 
+    .cartTable {
+        display: flex;
+        margin: 0px;
+        flex-direction: column;
+        align-items: center;
+    }
+    .loginButtons {
+        width: 200px;
+    }
+    
+    /******** events ********/
+    .events {
+        text-align: left;
+        height: auto;
+        display: block;
+
+    }
+    .events h2 {
+        margin-bottom: 30px;
+    }
+    .events h2, .events h3, .events p {
+        margin-top: 30px;
+    }
+    body {
+        position: relative;
+    }
+    
+    #footerContainer {
+        position: absolute;
+    }
+    #profileContainer {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: auto 200px auto;
+        height: auto;
+        overflow:scroll;
+    }
+    #profileInformation {
+        grid-row-start: 1;
+        grid-row-end: 2; 
+        margin-bottom: 60px;
+    }
+    #userEdit {
+        grid-row-start: 2;
+        grid-row-end: 3;
+        grid-column-start: 1;
+        grid-column-end: 2;
+        background-color: #EC8F00;
+        margin-bottom: 30px;
+        height: 250px;
+        width: auto;
+        border-radius: 10px;  
+        margin-bottom: 40px;    
+    }
+    #userEdit div {
+        padding: 10px;
+    }
+    #accountBookInformation{
+        margin-top: 150px;
+        grid-row-start: 3;
+        grid-row-end: 4;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+}
+@media only screen and (max-width: 550px){
+
+    #newAccountContainer {      
+        margin-top: 250px;
+    }
+    #footerInfoContainer {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: auto;
+        height: 80%;
+        padding: 10px;
+        margin-top: 30px;
+    }
+    .footer {
+        transform: translate(0px, 800px);
+        margin-top: 50px;
+    } 
+   
+
+    /******** search ********/
+    
+    .organiseSearch {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        align-content: center;
+    }
+    .sortContainer {
+        margin: auto;
+    }
+    .searchTable {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: 5% 26% 60% auto auto auto auto auto;
+        width: 90%;
+        margin: auto;
+    }
+    .bookSearchTitle {
+        grid-column-start: 2;
+        grid-column-end: 4;
+    }
+    .bookImage {
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+    .searchTable form {
+        width: 100%;
+        margin: auto;
+    }
+    .bookSearchButton {
+        display: inline-flex;
+        width: 80%;
+        margin: auto;
+        grid-column-start: 1;
+        grid-column-end: 4;
+        grid-row-start: 5;
+        grid-row-end: 7;
+    }
+    .bookSearchGenre, .bookSearchAge, .bookSearchCheckedin {
+        grid-row-start: 4;
+        grid-row-end: 5;
+        margin: auto;
+    }
+    .bookSearchGenre {
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+    .bookSearchAge{
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+    .bookSearchCheckedin{
+        grid-column-start: 3;
+        grid-column-end: 4;
+    }
+    .bookSearchAbout {
+        grid-row-start: 3;
+        grid-row-end: 4;
+        grid-column-start: 1;
+        grid-column-end: 4;
+    }
+    .horzontalBreak {
+        grid-row-start: 8;
+        grid-row-end: 9;
+        margin-top: 100px;
+    }
+    /******** search User ********/
+    .searchUserTable td {
+        font-size: 10px;
+    }
+    .selectUserTable th {
+        display: block;
+    }
+    .coloumnOne, .coloumnTwo, .coloumnThree {
+        font-size: 10px;
+    }
+    #profileContainer {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: auto 200px auto;
+        height: auto;
+        overflow:scroll;
+    }
+    #profileInformation {
+        grid-row-start: 1;
+        grid-row-end: 2; 
+        margin-bottom: 60px;
+    }
+    #userEdit {
+        grid-row-start: 2;
+        grid-row-end: 3;
+        grid-column-start: 1;
+        grid-column-end: 2;
+        background-color: #EC8F00;
+        margin-bottom: 30px;
+        height: 250px;
+        width: auto;
+        border-radius: 10px;  
+        margin-bottom: 40px;    
+    }
+    #userEdit div {
+        padding: 10px;
+    }
+    #accountBookInformation{
+        margin-top: 60px;
+        grid-row-start: 3;
+        grid-row-end: 4;
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+
+
+     /******** Author Books ********/
+    .authorsBookContainerTitle{
+        font-size: 15px;
+    }
+    .authorBookTitles, .searchUserContainer th{
+        display: none;      
+    }  
+    .authorBookInfoRow td{
+        font-size: 10px;
+    }
+    .addButtonForm {
+        width: 50%;
+    } 
+
+      /******** Author Search ********/
+    .authorSearchTable{
+        width: 90%;
+        height: 800px;; 
+        margin: auto;   
+        display: grid;
+        grid-gap: 0%;
+        grid-template-columns: 100%;
+        grid-template-rows: 25% 3% 30% 3% 3% auto 3%;
+    }    
+    .authorImage{
+        width: 60%;
+        flex-shrink: 0;
+        height: auto;
+        border-radius: 5px;
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 1;
+        grid-row-end: 2;
+        margin: auto;     
+    }
+    .authorImageConatainer{
+        text-align: center;
+    }
+    .authorName, .authorButtons, .authorAge, .authorGenre, .authorBio{
+        grid-column-start: 1;
+        grid-column-end: 2;
+        text-align: left;
+        padding-left: 0px;
+    } 
+    .authorName {
+        grid-row-start: 2;
+        grid-row-end: 3;
+    }
+    .authorButtons {
+        grid-row-start: 3;
+        grid-row-end: 4;
+    } 
+    .authorAge{
+        grid-row-start: 4;
+        grid-row-end: 5;
+    }
+    .authorGenre{
+        grid-row-start: 5;
+        grid-row-end: 6;
+    }
+    .authorBio{
+        grid-row-start: 6;
+        grid-row-end: 7;       
+        padding: 0px;
+        margin-bottom: 10px;
+        margin-right: 0px;
+        -o-transition: 1s;
+        -ms-transition: 1s;
+        -moz-transition: 1s;
+        -webkit-transition: 1s;
+        transition: 1s;  
+    }
+    .authorHrBreak {
+        grid-row-start: 7;
+        grid-row-end: 8;
+    }
+    .authorEditButtons {
+        height: 45px;
+    }
+    
+}
+

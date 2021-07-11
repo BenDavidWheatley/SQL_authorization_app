@@ -37,15 +37,11 @@ include('login.php');
                             </form>                                         
                         ";
                         }?>
-                            
                         </div>
                     </section>
+                    <?php include('search.php'); ?>
                 <div>
                     <?php 
-                        if(isset($_POST['searchBook'])){ 
-                            $_SESSION['search'] = '%'. $_POST['searchDatabase'] .'%'; 
-                            $newEntry->searchBook();
-                        }
                         if(isset($_POST['checkout'])){
                             $newEntry->checkout();                            
                         }
@@ -58,11 +54,10 @@ include('login.php');
                     <?php $newEntry->cart(); ?>
                 </div>
                 
-                <footer>
+                <footer class='footer' id='footerContainer'>
                     <?php include('footer.php') ?>
                 </footer>
                 <script src='script/script.js'></script>
-
             </div>
         </div>
     </body> 

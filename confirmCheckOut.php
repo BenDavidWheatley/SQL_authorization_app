@@ -22,41 +22,33 @@ include('login.php');
                 <header>
 
                 <section id='searchLibrary'>
-                    <?php  if($_SESSION['isStaff'] === TRUE){   
-                    
-                    echo "<div>
-                        <h2>Search for the author you wish to update</h2>
-                        <form id='searchAuthorForm' method='post' action='mainPage.php'>
-                            <label>Search database for author</label>
-                            <input id='searchAuthor' name='searchAuthor' type='text'>
-
-                            <input type='submit' name='searchAuthorSubmit' value='search'>
-                        </form>                    
-                    </div>";
-                    }
-                    ?>
-                    <div>
-                        <form id='seachBook' method='post' action='mainPage.php'>
-                            <label for='searchDatabase'>Use the search field to look for a book</label>
-                            <input id='searchDatabase' name='searchDatabase' type='text'>
-                            <button class='searchButton' type='submit' name='searchBook' onclick='clearEventsInfo()'>Search Database</button>
-                        </form>   
-                    </div>
-                </section>
-
-                <div>
-                    <p>Thank you for checkin out - </p>
-                    <?php $newEntry->confirmedCheckOut() ?>
-                    <p>We hope that you enjoy your reads</p>
+                        <div class='searchDatabaseContainer'>
+                            <form class='searchDatabase' method='post'>
+                                <input  name='searchDatabase' type='text' placeholder='search for a book'>
+                                <button  type='submit' name='searchBook' ><img src='assets/header-logos/searchIcon.png'></button>
+                            </form>
+                            <?php  if($_SESSION['isStaff'] === TRUE){                          
+                        echo "
+                                <div class='spacer'>
+                                </div>
+                            <form class='searchDatabase' method='post'>   
+                                <input id='searchAuthor' name='searchAuthor' type='text' placeholder='search for an author'>
+                                <button type='submit' name='searchAuthorSubmit' value='search'><img src='assets/header-logos/searchIcon.png'></button>     
+                            </form>                                         
+                        ";
+                        }?>
+                            
+                        </div>
+                    </section>
+                <div>                 
+                    <?php $newEntry->confirmedCheckOut() ?>                 
                 </div>
                            
-                <footer>
+                <footer class='footer' id='footerContainer'>
                     <?php include('footer.php') ?>
                 </footer>
                 <script src='script/script.js'></script>
-
             </div>
         </div>
-
     </body> 
 </html>

@@ -13,14 +13,12 @@ include('login.php');
         <link rel="stylesheet" href="style/style.css" type="text/css">
         <title>Library App</title>
     </head>
-
     <body class='bodyImage'>
         <div class='pageContainer'>
             <div class='mainContainer'>       
                 <header>
                     <?php include('header.php')?>
                 <header>
-                       
                 <div >
                     <section id='searchLibrary'>
                         <div class='searchDatabaseContainer'>
@@ -36,8 +34,6 @@ include('login.php');
                             </form>                                                                 
                         </div>
                     </section>
-
-                    <section>
                         <?php 
                             if (isset($_POST['searchUser'])){                          
                                 $newUser->searchUser();
@@ -49,10 +45,14 @@ include('login.php');
                                 $newEntry->payFine();
                             }
                         ?>
+                    <section id='searchUser' class='container'>
+                        <h2>User Search</h2>
+                        <p>Use the search bars above to search for a user within the Library.</p>
+                        <p>Once you have selected your user you will be able to view the books they have checked out, books that are late and any fines</p>
+                        <p>Should the user pay their fine, you will be able to clear it form this page.</p>
                     </section>
                 </div>
-
-                <footer>
+                <footer class='footer' id='footerContainer'>
                     <?php include('footer.php') ?>
                 </footer>
                 <script src='script/script.js'></script>

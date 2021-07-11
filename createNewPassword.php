@@ -22,7 +22,6 @@
                 <?php
                     $selector = $_GET['selector'];
                     $selector = $_GET['validator'];
-
                     if (empty($selector) || empty($validator)) {
                         echo "We could not validate your request";
                     } else {
@@ -41,12 +40,6 @@
                 ?>
             </section>             
         </div>
-
-        <footer>
-            <?php include('footer.php') ?>
-        </footer>
-
         <script src='script/script.js'></script>
-
     </body> 
 </html>

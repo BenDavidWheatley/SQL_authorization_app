@@ -12,8 +12,6 @@ include('membersClassOOP.php');
     </head>
 
     <body class='newAccountImage'>
-       
-                    
         <div id="newAccountPagContainer">               
             <section id='newAccountContainer'>
                 <h2>New Account Created</h2>

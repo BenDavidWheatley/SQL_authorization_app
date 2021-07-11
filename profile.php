@@ -3,6 +3,7 @@ session_start();
 include('connect.php');
 include('membersClassOOP.php');
 include('libraryClassOOP.php');
+
 $newUser->editUser()
 ?>
 
@@ -40,6 +41,7 @@ $newUser->editUser()
                             
                         </div>
                     </section>
+                    <?php include('search.php'); ?>
                 <div > 
                         <?php   
                             if(isset($_POST['editFirstName'])){
@@ -69,41 +71,37 @@ $newUser->editUser()
                                 <div id='userImageContainer'>
                                     <?php $newUser->displayProfilePic(); ?>                           
                                 </div>
-                                <button id='changeImageButton' class='login profileImg' onclick='showBox("editUserImage")'>Change user Picture</button>                   
+                                <a href='#userEdit'><button id='changeImageButton' class='login profileImg' onclick='showBox("editUserImage")'>Change user Picture</button></a>                  
                             </section>               
                         </div>
-                    
                         <div id='userProfileContainer'>
                             <section class='userDetails' id='usersName'>
                                 <h4>Name - <span><?php echo $newUser->getFirstName()?></span></h4>
-                                <button  class='login' onclick='showBox("editFirstName")'>Change first name</button>                       
+                                <a href='#userEdit'><button  class='login' onclick='showBox("editFirstName")'>Change first name</button></a>                       
                             </section>
                             <section class='userDetails' id='usersSurname'>
                                 <h4>Surname - <span><?php echo $newUser->getSurname()?></span></h4>
-                                <button class='login'  onclick='showBox("editSurname")'>Change surname</button>
+                                <a href='#userEdit'><button class='login'  onclick='showBox("editSurname")'>Change surname</button></a> 
                             </section>
                             <section class='userDetails' id='usersUsername'>
                                 <h4>Username - <span><?php echo $newUser->getUsername()?></span></h4>
-                                <button class='login'  onclick='showBox("editUsername")'>Change username</button>
+                                <a href='#userEdit'><button class='login'  onclick='showBox("editUsername")'>Change username</button></a> 
                             </section>
                             <section class='userDetails' id='usersEmail'>
                                 <h4>Email - <span><?php echo $newUser->getEmail()?></span></h4>
-                                <button class='login' onclick='showBox("editEmail")'>Change email address</button>
+                                <a href='#userEdit'><button class='login' onclick='showBox("editEmail")'>Change email address</button></a> 
                             </section>
                             <section class='userDetails bottomButton' id='usersPassword'>
                                 <h4>Password - </h4>
-                                <button class='login' onclick='showBox("editPassword")'>Change password</button>
+                                <a href='#userEdit'><button class='login' onclick='showBox("editPassword")'>Change password</button></a> 
                             </section>
                         </div>
-
-                        
                     </div>
                     <div id='accountBookInformation'>
                         <?php 
                         $newEntry->currentCheckOut();
                         ?>
                     </div>
-
                     <div id='userEdit' class='editAccount'>
                             <div id='editFirstName'>
                                 <form class='editProfileForm' method='post'>
@@ -151,20 +149,17 @@ $newUser->editUser()
                                     <input type='file' name='editUserPic'>
                                     <button class='loginButtons' type='submit'>Submit</button>
                                 </form>                              
-                                <button class='loginButtons' onclick='hideBox("editUserImage")'>Cancel</button>                    
-                                    
+                                <button class='loginButtons' onclick='hideBox("editUserImage")'>Cancel</button>                                                      
                             </div>
                         </div>
-                    
-                    
+                    </div>
                 </section>
-
-                <footer>
-                    <?php include('footer.php') ?>
-                </footer>
+                
             </div>
         </div>
         <script src='script/script.js'></script>
     </body>
-
+    <footer class='footer' id='footerContainer'>
+                    <?php include('footer.php') ?>
+                </footer>
 </html>

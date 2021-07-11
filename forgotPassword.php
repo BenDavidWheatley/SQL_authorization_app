@@ -17,7 +17,6 @@ $mysqli->query($sql);
     </head>
 
     <body>
-   
         <div class='pageContainer'>  
             <div class='container forgotContainer'>
                 <h1>Reset your password</h1>
@@ -25,10 +24,8 @@ $mysqli->query($sql);
                 <form action='reset.php' method='POST'>
                     <label class='label' for='resetEmail'>Enter email Address</label>
                     <input class='forgotInput' type='text' name='resetEmail' placeholder="Enter your email address">
-
                     <button class='loginButtons' type='submit' name='requestRequestSubmit'>Recieve new password by email</button>
                 </form>
-
                 <?php 
                     if(isset($_GET['reset'])){
                         if($_GET['reset'] === 'success'){
@@ -36,14 +33,8 @@ $mysqli->query($sql);
                         }
                     }
                 ?>
-                    <a href='index.php'><button class='loginButtons'>Back to login</button></a>
+                <a href='index.php'><button class='loginButtons'>Back to login</button></a>
             </div>
-    
-            
-           
-            <footer>
-                <?php include('footer.php') ?>
-            </footer>
         </div>
         <script src='script/script.js'></script>
 

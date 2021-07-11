@@ -17,7 +17,6 @@ $mysqli->query($sql);
     </head>
 
     <body>
-   
         <div class='pageContainer'>  
             <div class='mainContainer'> 
                 <header>
@@ -137,14 +136,27 @@ $mysqli->query($sql);
                                 $newEntry->deleteBookFromDatabase();
                             }?>
                         </section>
-                        <section id='eventsAndInfoContainer'>
-                        <h1>This is the Edits section</h1>
+                        <section id='editLibraryContainer'>
+                            <h1>Edit the library</h1>
+                            <h2>To edit an author or book</h2>
+                            <p>Search for the book or author you wish to edit. Then click on the edit button.
+                            <br>You will be taken to a form will the entries details in. Once you have finished editing, click submit. </p>
+                            <h2>To add a book to the library</h2>
+                            <p>First check to see if the author exists in the database. If they don't, then you wll need to add the author (see below).
+                                If the author is in the database, you will first need to click on the view books to double check if the book is not there.
+                                <br>Then click on add book and fill out the form.
+                            </p>
+                            <h2>To add an author to the library</h2>
+                            <p>in the author search bar check if the author exists, If it does not then the author form should automatically show. FIll this form in and click submit</p>
+                            <h2>To delete a book or author</h2>
+                            <p>Search for the entry that you wish to delete, then click on delete book or delete author. You will be taken to a warning screen to confirm deletion</p>
+                        </section>
                     </section>
                 </section>
             </div> 
         
-            <footer>
-                <?php include('footer.php') ?>
+            <footer class='footer' id='footerContainer'>
+                <?php include('footer.php') ?>                      
             </footer>
         </div>
         <script src='script/script.js'></script>
