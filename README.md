@@ -45,7 +45,7 @@
 
 
 ![screenshot search book edit](/assets/readme/bookSearchEdit.png)
-![screenshot search author edit](/assets/readme/auhtorEdit.png)
+![screenshot search author edit](/assets/readme/authorEdit.png)
 
 <p>Clicking on the edit button with take you to a pre populated edit form, meaning that you only need to edit the fields that you wish to without havng to update all the date.
 
