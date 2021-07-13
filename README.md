@@ -26,8 +26,8 @@
 
 <p>The results will slightly vary depending on the user. If you are a member, then you have the option to add a book to your cart, if available. If you are a staff member then you are able to check books back in to the library.</p>
 
-![screenshot search result as staff](/assets/readme/screenResultStaff.png)
-![screenshot search result as member](/assets/readme/screenResultMember.png)
+![screenshot search result as staff](/assets/readme/screenSearchResultStaff.png)
+![screenshot search result as member](/assets/readme/screenSearchResultMember.png)
 <h3>Searching an author</h3>
 <p>The search author bar is the same as searching for a book, but is only available to staff members. The results will show info about the author and will allow you to view what books that author has within the library.</p>
 
