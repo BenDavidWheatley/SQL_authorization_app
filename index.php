@@ -46,7 +46,7 @@ if (isset($_POST['logout_x'])){
                 
             </section>
 
-                    <!-- LOGIN INPUT -->
+            <!-- LOGIN INPUT -->
 
             <section>
                 <div class="mainLoginContainers" id='memberContainer'>           
@@ -81,6 +81,9 @@ if (isset($_POST['logout_x'])){
                     <button class='loginButtons cancel' onclick='member("cancelStaff")'>Cancel</button>
                 </div>
                 <?php 
+
+                    // Checks to see if the relevant submit buttons have been clicked 
+
                     if(isset($_POST['staffLogin'])){                      
                         $newUser->staffLogin();
                     }                 
