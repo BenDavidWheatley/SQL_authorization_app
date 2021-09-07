@@ -23,6 +23,8 @@ member = (x) => {
         document.getElementById('loginTitle').style.display = 'block';
     }
 }
+
+
 showBox = (x) => {
     document.getElementById('editFirstName').style.display = 'none';
     document.getElementById('editSurname').style.display = 'none';
@@ -57,5 +59,31 @@ cart= () => {
 }
 display = () => {
     document.getElementById('viewCartContainer').style.display = 'none';
+}
+
+
+// This function hides the relevant page divs when a book is searched
+
+bookSearch = () => {
+    let doesExist = document.getElementById('bookSearchResult');
+    let events = document.getElementById('eventsAndInfoContainer');
+    let cart = document.getElementById('booksInCart');
+
+    console.timeLog(cart);
+    console.log(events);
+    if (doesExist) {
+        console.log('yes');
+        if (events) {
+        events.style.display = 'none';
+        } else if (cart) {
+        cart.style.display = 'none'
+        }
+    } else {
+        if(events) {
+            events.style.display = 'block';
+        } else if (cart){
+            cart.style.display = 'block'
+        }
+    }
 }
 

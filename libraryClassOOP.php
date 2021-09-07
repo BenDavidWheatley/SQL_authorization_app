@@ -477,7 +477,7 @@ class LibraryDatabase{
         WHERE book_title LIKE '$result'";
         global $mysqli;
         $searchResult = $mysqli->query($sqls); 
-            echo "<div id='innerContainer Container' class='innerContainers overlay'>
+            echo "<div id='bookSearchResult' class='innerContainers overlay'>
                     <div class='orgnaiseSearchContainer'>  
                         <h2 class='searchResultTitle'>Here are your search results : </h2>  
                         <h4>Sort By - </h4>           
@@ -544,19 +544,19 @@ class LibraryDatabase{
                                                 if ($rows["is_checked_out"] != 0) {
                                                     echo "<button class='loginButtons bookButtons' type='submit' name='checkIn' value=" . $rows["book_id"] . ">Checkin Book</button>";
                                                 }                                 
-                                                echo "<button class='loginButtons bookButtons'>Cancel</button>
+                                                echo "<button class='loginButtons bookButtons'>Back</button>
                                             </form>"; 
                                         } else if ($rows["is_checked_out"] === "1" && $_SESSION['isStaff'] != TRUE) {
                                             echo     
-                                            "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                            "<form method='post'" . $rows["book_id"] . "'>                               
                                                 <button class='loginButtons bookButtons' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Currently Unavailable</button> 
-                                                <button class='loginButtons bookButtons' >Cancel</button>
+                                                <button class='loginButtons bookButtons' >Back</button>
                                             </form>";                                  
                                         } else {
                                             echo     
-                                            "<form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
+                                            "<form method='post'" . $rows["book_id"] . "'>                               
                                                 <button class='loginButtons bookButtons' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
-                                                <button class='loginButtons bookButtons'>Cancel</button>
+                                                <button class='loginButtons bookButtons'>Back</button>
                                             </form>";                                           
                                         }
                                         echo "</td>

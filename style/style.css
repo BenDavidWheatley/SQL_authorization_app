@@ -41,17 +41,19 @@ input:hover, select:hover{
   .pageContainer{
     margin: auto;
 }
-.innerContainers {
-    position: absolute;
-    height: 100vh;
-    overflow: scroll; 
-}
 .innerContainer {
     position: absolute;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
 }
 .overlay {
     z-index: 10;
+}
+main {
+    position: relative;
+}
+footer {
+    position: relative;
 }
 
 
@@ -77,17 +79,13 @@ input:hover, select:hover{
     width: 80%;
 }
 .footer {
-    transform: translate(0px, 700px);
     margin-top: 50px;
 } 
 #footerContainer {
-    position: absolute;
-    bottom: 0;
     width: 100%;
     height: auto;  
     margin-top: 50px;
     margin-top: 50px;
-    bottom: 0;
 }  
 
 .footerTopBanner {
@@ -101,7 +99,8 @@ input:hover, select:hover{
     display: grid;
     grid-template-columns: 20% auto 20% auto 20% auto 20%;
     height: 80%;
-    padding: 20px;
+    padding-top: 50px;
+    padding-bottom: 50px;
     align-content: center;
     justify-content: center;
 }
@@ -503,16 +502,11 @@ input:hover, select:hover{
     padding-top: 50px;
 }
 /******** events ********/
-.eventsContainer{
-    margin: auto;
-    height: 120vh;
-    overflow: scroll;
-}
+
 #eventsAndInfoContainer {
     width: 90%;
-
     margin: auto;
-    height: 130vh;
+    height: auto;
     margin-left: 5%;
     text-align: center;
 }
@@ -634,7 +628,6 @@ input:hover, select:hover{
 }
 #searchLibraryContainer{
     height: auto;
-    min-height: 700px;
     width: 100%;
     margin: auto;
     padding-top:50px;
@@ -679,9 +672,6 @@ input:hover, select:hover{
     border-radius: 5px;
     overflow: scroll;
     height: 200px;
-}
-.bookSearchAbout:hover{
-    background-color: #29292911;
 }
 .bookSearchGenre, .bookSearchAge, .bookSearchCheckedin, .bookSearchButton{
     text-align: center;
@@ -881,16 +871,7 @@ input:hover, select:hover{
     -webkit-transition: 1s;
     transition: 1s;
 }
-.authorBio:hover, .bookSearchAbout:hover{
-    -o-transition: 1s;
-    -ms-transition: 1s;
-    -moz-transition: 1s;
-    -webkit-transition: 1s;
-    transition: 1s;
-    border-radius: 5px;
-    background-color: #292929;
-    color: white;
-}
+
 .authorButtons {
     grid-column-start: 3;
     grid-column-end: 4;
@@ -1094,10 +1075,6 @@ input:hover, select:hover{
     height: 10vh;
     width: 100%;  
     transform: translate(0px, 200px); 
-}
-#cartContainer {
-    width: 80%;
-    margin: auto;    
 }
 .cartTable {
     display: grid;
@@ -1326,10 +1303,7 @@ input:hover, select:hover{
         text-align: center;
         margin-bottom: 30px;
     }
-    .footer {
-        transform: translate(0px, 800px);
-        margin-top: 50px;
-    }     
+   
     #footerInfoContainer h3 {
         font-family: "DMSansBold";
         margin-bottom: 20px;
