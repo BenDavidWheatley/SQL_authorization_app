@@ -37,10 +37,10 @@ include('login.php');
                     </form>                                         
                 ";
                 }?>
-
             </section>
        
-            <?php include('search.php'); ?>
+            <?php include('search.php');?>
+
             <section class='innerContainers' id='eventsAndInfoContainer'>
                 <h1>Welcome to the Inner City Library, London</h1>
                 <?php if($_SESSION['isStaff'] === TRUE) {

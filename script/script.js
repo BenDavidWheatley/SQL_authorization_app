@@ -23,8 +23,6 @@ member = (x) => {
         document.getElementById('loginTitle').style.display = 'block';
     }
 }
-
-
 showBox = (x) => {
     document.getElementById('editFirstName').style.display = 'none';
     document.getElementById('editSurname').style.display = 'none';
@@ -86,4 +84,3 @@ bookSearch = () => {
         }
     }
 }
-
