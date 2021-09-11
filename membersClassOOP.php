@@ -324,7 +324,7 @@ class NewMember {
             $sqlUsername = "SELECT * FROM users WHERE username LIKE '$search' ORDER BY user_surname ASC";
                 global $mysqli;
                 $user = $mysqli->query($sqlUsername);
-                echo "<section class='libraryUsers container innerContainers overlay'>
+                echo "<section id='userSearch' class='libraryUsers container innerContainers overlay'>
                         <table class='searchUserContainer'>
                             <tr class='tableHeaders'>    
                                 <th class='userTitles' ><h4>Name</h4></th>
@@ -338,7 +338,7 @@ class NewMember {
                                     <td>" . $userDetails['username'] . "</td>                                  
                                     <td>" . $userDetails['user_email'] . "</td>   
                                     <td class='searchUserFormButtons'>    <form method='post'>
-                                                <button id='selectUserUsername' class='searchbutton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
+                                                <button id='selectUserUsername' class='searchButton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
                                             </form>
                                     </td>
                                     
@@ -355,7 +355,7 @@ class NewMember {
                 $sqlSurname = "SELECT * FROM users WHERE user_surname LIKE '$search'";
                 global $mysqli;
                 $user = $mysqli->query($sqlSurname);
-                echo "<section class='libraryUsers container innerContainers overlay'>
+                echo "<section id='userSearch' class='libraryUsers container innerContainers overlay'>
                 <table class='searchUserContainer'>
                     <tr class='tableHeaders'>    
                         <th class='userTitles' ><h4>Name</h4></th>
@@ -387,7 +387,7 @@ class NewMember {
         $sqlTwo = "SELECT * FROM users WHERE id = '$id'";
         $userFineInfo = $mysqli->query($sqlTwo);
         $userFine = $userFineInfo->fetch_assoc();    
-            echo"<section class='selectUserContainer containers innerContainers overlay'>
+            echo"<section id='userSearch' class='selectUserContainer containers innerContainers overlay'>
                     <div class='selecteUserDetails '>
                         <h3> User - " . $userFine['user_first_name'] . " " . $userFine['user_surname'] . "</h3>
                         <h3>Fines to pay -  " . $userFine['fineTotal'] . " pounds</h3>";       
@@ -425,7 +425,9 @@ class NewMember {
                         <td class='coloumnThree'>" . $rows['due_date'] . "</td>
                     </tr>";
         }                                                 
-        echo "</table>
+        echo "
+                </table>
+                
             </section>";
                         }                      
     }

@@ -13,7 +13,7 @@ include('login.php');
         <link rel="stylesheet" href="style/style.css" type="text/css">
         <title>Library App</title>
     </head>
-    <body class='bodyImage'>
+    <body class='bodyImage' onload='bookSearch()'>
         <div class='pageContainer'>
             <div class='mainContainer'>       
                 <header>

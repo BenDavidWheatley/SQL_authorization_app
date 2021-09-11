@@ -193,7 +193,7 @@ class LibraryDatabase{
                         </div>";
                     }    
         }       
-            }
+    }
     public function editAuthor(){
         $id = $_POST['editAuthor'];        
         $sql = "SELECT * FROM authors WHERE author_id = '$id'"; 
@@ -326,7 +326,7 @@ class LibraryDatabase{
         $author = $mysqli->query($sqlAuthor);
         $authors = $author->fetch_assoc();
         echo "
-            <div class='container offset innerContainers overlay'>
+            <div id='authorBooks' class='container innerContainers'>
                 <h2 class='authorsBookContainerTitle'>We currently have the following books by " . $authors['author_name'] . " in the library</h2>
                 <table class='authorsBookContainer'> 
                         <tr class='titles'>

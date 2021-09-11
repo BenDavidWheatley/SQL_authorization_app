@@ -64,23 +64,37 @@ display = () => {
 
 bookSearch = () => {
     let doesExist = document.getElementById('bookSearchResult');
+    let doesAuthorExist = document.getElementById('searchAuthorContainer');
+    let authorsBooks = document.getElementById('searchAuthorContainer');
+    let noBooks = document.getElementById('authorDoesNotExist');
+    let user = document.getElementById('userSearch');
+    let usersBooks = document.getElementById('');
+    let searchUser = document.getElementById('searchUser');
     let events = document.getElementById('eventsAndInfoContainer');
     let cart = document.getElementById('booksInCart');
+    let profile = document.getElementById('profileContainer');
 
-    console.timeLog(cart);
-    console.log(events);
-    if (doesExist) {
+  
+    if (doesExist || doesAuthorExist || authorsBooks || noBooks || user) {
         console.log('yes');
         if (events) {
         events.style.display = 'none';
         } else if (cart) {
-        cart.style.display = 'none'
+        cart.style.display = 'none';
+        } else if (profile) {
+            profile.style.display = 'none';
+        } else if (searchUser){
+            searchUser.style.display = 'none'
         }
     } else {
         if(events) {
             events.style.display = 'block';
         } else if (cart){
-            cart.style.display = 'block'
+            cart.style.display = 'block';
+        } else if  (profile) {
+            profile.style.display = 'grid';
+        } else if (searchUser) {
+            searchUser.style.display = 'block';
         }
     }
 }

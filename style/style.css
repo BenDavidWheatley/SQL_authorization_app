@@ -799,9 +799,7 @@ footer {
     background-color: white;
     width: 100%;
     margin: auto;
-    height: 100vh;
-    min-height: 900px;
-    overflow: scroll;
+    height: auto;
     align-content: center;
     background-color: white;
     border-radius: 5px;  
@@ -1620,7 +1618,7 @@ footer {
  
         margin-top: 50px;
     } 
-   
+
 
     /******** search ********/
     
