@@ -16,7 +16,7 @@ include('login.php');
         <title>Library App</title>
     </head>
 
-    <body id=body class='bodyImage' onload='bookSearch()'> 
+    <body id=body class='bodyImage' onload='showHideSearch()'> 
         <header>
             <?php include('header.php')?>
         <header>    
@@ -41,7 +41,7 @@ include('login.php');
        
             <?php include('search.php');?>
 
-            <section class='innerContainers' id='eventsAndInfoContainer'>
+            <section class='innerContainers hide' id='eventsAndInfoContainer'>
                 <h1>Welcome to the Inner City Library, London</h1>
                 <?php if($_SESSION['isStaff'] === TRUE) {
                     echo "<p> Use the search bar above to look for a book or an author within the library</p>

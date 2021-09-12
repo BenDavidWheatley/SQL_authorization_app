@@ -45,7 +45,7 @@ class LibraryDatabase{
 
         if ($exist['author_name']) {
         echo "
-            <section class='innerContainers overlay' id='searchAuthorContainer'>
+            <section class='show' id='searchAuthorContainer'>
                  <h2 class='authorSearchTitle'>Here are your search results : </h2>";
                  $displayAuthor = $mysqli->query($sql); 
                 while($author = $displayAuthor->fetch_assoc()){;                              
@@ -82,7 +82,7 @@ class LibraryDatabase{
         $autDoesNot = $authorDoesNot->fetch_assoc();
             if ($autDoesNot["author_name"] === NULL  &&  $curPageName === 'editLibrary.php') {
                 echo "
-                    <section class='container innerContainers overlay'>
+                    <section class='container show'>
                         <h2>Author is not in the database. create a new author entry</h2>
                         <div id='formContainerAuthor'>
                             <form id='authorFormContainer' method='post' enctype='multipart/form-data'>
@@ -113,8 +113,8 @@ class LibraryDatabase{
 
                 } else if ($autDoesNot["author_name"] === NULL  &&  $curPageName === 'mainPage.php'){
                     echo "
-                        <div id='authorDoesNotExist'>
-                            <h3>Unfortunatlty the author you are looking for is not in our library</h3>
+                        <div id='authorDoesNotExist' class='show'>
+                            <h3>Unfortunately the author you are looking for is not in our library</h3>
                             <form>
                                 <button class='loginButtons' type='submit'>Back to search</button>
                             </form>
@@ -151,30 +151,30 @@ class LibraryDatabase{
                                     
                         if ($mysqli->query($author) === TRUE) {
                             echo "
-                                <div class='container innerContainers overlay'>
+                                <div class='container show'>
                                         <h3></p>New record created successfully</h3>
                                 </div>";
                         } else {
                             echo "
-                                <div class='container innerContainers overlay'>
+                                <div class='container show'>
                                     <h3>Error <br>" .  $mysqli->error . "</h3>
                                 </div>";
                             }   
                     } else {
                         echo "
-                            <div class='container innerContainers overlay'>
+                            <div class='container show'>
                                 <h3>Your file is too big, image must be less then 5mb</h3>
                             </div>";
                     }
                 } else {
                     echo "
-                        <div class='container innerContainers overlay'>
+                        <div class='container show'>
                             <h3>There was an error uploading your file</h3>
                         </div>";
                 }
             } else {
                 echo "
-                    <div class='container innerContainers overlay'>
+                    <div class='container show'>
                         <h3>You cannot upload files of this type, file must be either jpeg, jpg or png</h3>
                     </div>";
             };  
@@ -183,12 +183,12 @@ class LibraryDatabase{
             global $mysqli;                               
             if ($mysqli->query($sql) === TRUE) {
                 echo "
-                    <div class='container innerContainers overlay'>
+                    <div class='container show'>
                         <h3>New author added to database</h3>
                     </div>";
                 } else {
                     echo "
-                        <div class='container innerContainers overlay'> 
+                        <div class='container show'> 
                             <h3>Error: " . $authorName . "<br>" .  $mysqli->error . "</h3>
                         </div>";
                     }    
@@ -202,7 +202,7 @@ class LibraryDatabase{
         $rows = $author->fetch_assoc();
 
         echo "
-            <div class='container offsetAuthor innerContainers overlay' id='formContainerAuthor'>
+            <div class='container show' id='formContainerAuthor'>
                 <h2>You are about to edit " . $rows['author_name'] . ":</h2>
                 <form id='authorFormContainer' method='post' enctype='multipart/form-data'>
                     <label class='labelEdit' for='authorsName'>Authors Name</label>
@@ -241,11 +241,11 @@ class LibraryDatabase{
         global $mysqli;    
             if ($mysqli->query($sql) === TRUE) {
                 echo "
-                    <div class='container offsetBook innerContainers overlay'>
+                    <div class='container show'>
                         <h2>Record for " . $authorName . " updated successfully";
             } else {
                 echo "<
-                    div class='container offsetBook innerContainers overlay'>
+                    div class='container show'>
                         <h2>Error editing record: " . $mysqli->error . "</h2>
                     </div>";
         }
@@ -281,30 +281,30 @@ class LibraryDatabase{
                                 global $mysqli;
                                     if ($mysqli->query($sql) === TRUE) {
                                         echo "
-                                            <div class='container offsetBook'>
+                                            <div class='container'>
                                                 <h2>New record created successfully</h2>
                                             </div>";
                                         } else {
                                             echo "
-                                                <div class='container offsetBook'>
+                                                <div class='container'>
                                                     <h2>Error: " .  $mysqli->error . "</h2>
                                                 </div>";
                                         }                
                             } else {
                                 echo "
-                                    <div class='container offsetBook'>
+                                    <div class='container'>
                                         <h2>Your file is too big, image should be less the 5mb</h2>
                                     </div>";
                             }
                         } else {
                             echo "
-                                <div class='container offsetBook'>
+                                <div class='container'>
                                     <h2>There was an error uploading your file</h2>
                                 </div>";
                         }
                     } else {
                         echo "
-                            <div class='container offsetBook'>
+                            <div class='container'>
                                     <h2>You cannot upload files of this type, file must be either jpeg, jpg or png</h2>
                             </div>";
                     };                         
@@ -326,7 +326,7 @@ class LibraryDatabase{
         $author = $mysqli->query($sqlAuthor);
         $authors = $author->fetch_assoc();
         echo "
-            <div id='authorBooks' class='container innerContainers'>
+            <div id='authorBooks' class='container show'>
                 <h2 class='authorsBookContainerTitle'>We currently have the following books by " . $authors['author_name'] . " in the library</h2>
                 <table class='authorsBookContainer'> 
                         <tr class='titles'>
@@ -367,7 +367,7 @@ class LibraryDatabase{
         $author = $mysqli->query($sql);
         $author = $author->fetch_assoc();
             echo "
-                <div class='container innerContainers overlay'' id='formContainerBook'>      
+                <div class='container show'' id='formContainerBook'>      
                     <form id='addBookFormContainer' method='post'  enctype='multipart/form-data'>
                         <h2>Create a new book entry for <span>" . $author['author_name'] .  "</span>:</h2>
                         <label class='labelEdit' for='bookTitle'>Book Title</label>
@@ -467,30 +467,30 @@ class LibraryDatabase{
                         global $mysqli;
                             if ($mysqli->query($book) === TRUE) {
                                 echo "
-                                    <div class='container offsetBook innerContainers overlay'>
+                                    <div class='container show'>
                                         <h2>New record created successfully</h2>
                                     </div>";
                                 } else {
                                     echo "
-                                        <div class='container offsetBook innerContainers overlay'>
+                                        <div class='container show'>
                                             <h2>Error: " . $bookTitle . "<br>" .  $mysqli->error . "</h2>
                                         </div>";
                                 }                
                     } else {
                         echo "
-                            <div class='container offsetBook innerContainers overlay'>
+                            <div class='container show'>
                                 <h2>Your file is too big, image must be less then 5mb</h2>
                             </div>";
                     }
                 } else {
                     echo "
-                        <div class='container offsetBook innerContainers overlay'>
+                        <div class='container show'>
                             <h2>There was an error uploading your file</h2>
                         </div>";
                 }
             } else {
                 echo "
-                    <div class='container offsetBook innerContainers overlay'>
+                    <div class='container show'>
                         <h2>You cannot upload files of this type, file must be either jpeg, jpg or png</h2>
                     </div>";
             };  
@@ -500,12 +500,12 @@ class LibraryDatabase{
             global $mysqli;
                 if ($mysqli->query($sql) === TRUE) {
                     echo "
-                        <div class='container offsetBook'>
+                        <div class='container'>
                             <h2>New record created successfully<h2>
                         </div>";
                     } else {
                         echo "  
-                            <div class='container offsetBook'>
+                            <div class='container'>
                                 <h2>Error: " . $bookTitle . "<br>" .  $mysqli->error . "</h2>
                             </div>";
                     } 
@@ -522,7 +522,7 @@ class LibraryDatabase{
 
             if (!$exists->fetch_assoc()){
                 echo "
-                    <div id='bookSearchResult' class='innerContainers fullHeight'>
+                    <div id='bookSearchResult' class='fullHeight show'>
                         <p>Sorry, the book is not part of our library</p>
                         <form method='post'>
                             <button class='loginButtons bookButtons'>Back</button>
@@ -530,7 +530,7 @@ class LibraryDatabase{
                     </div>";
             }else {
                 echo "
-                    <div id='bookSearchResult' class='innerContainers overlay'>
+                    <div id='bookSearchResult' class='show'>
                         <div class='orgnaiseSearchContainer'>  
                             <h2 class='searchResultTitle'>Here are your search results : </h2>  
                             <h4>Sort By - </h4>           
@@ -700,7 +700,7 @@ class LibraryDatabase{
             $isEmtpy = $emptyCart->fetch_assoc();
         if ($isEmtpy['book_id'] != NULL){
             echo "
-                <section id='viewCartContainer'>
+                <section id='viewCartContainer show'>
                     <h1>Welcome to your cart</h1>";  
                     while($rows = $result->fetch_assoc()){
                         echo "
@@ -727,7 +727,7 @@ class LibraryDatabase{
                 </section>";
         }  else {
             echo "
-            <section id='emptyCartContainer'>
+            <section id='emptyCartContainer show'>
                 <div id='emtpyMessage'>
                     <h1>Your cart is emtpy</h1>
                     <p>Head back to the main age to add books to your cart</p>
@@ -774,9 +774,9 @@ class LibraryDatabase{
                 }    
             } else {
                 echo 
-                    "<section id='fullCartContainer'>
+                    "<section id='fullCartContainer show'>
                         <div id='fullCartMessage'>
-                            <h1>Unfortunatly your check out capacity is maxed</h1>
+                            <h1>Unfortunately your check out capacity is maxed</h1>
                             <p>A maximum of 6 books are allowed to be checked out. You may check out up to " . $canCheckOut . " books on this occation</p>
                             <button class='loginButtons' onclick='cart()'>Back to Cart</button>
                         </div>
@@ -791,7 +791,7 @@ class LibraryDatabase{
         global $mysqli;
         $check = $mysqli->query($sql);
         echo "
-            <div class='container checkedoutBooks'>
+            <div class='container checkedoutBooks show'>
                 <h2>We hope you enjoy your read.</h2>
                 <h3>You now currently have the following checked out:</h3>";
                 while ($fetch = $check->fetch_assoc()){
@@ -824,13 +824,13 @@ class LibraryDatabase{
                 $confirm = $mysqli->query($sql);
                 $confirmBook = $confirm->fetch_assoc();
                 echo "
-                    <div class='container'>
+                    <div class='container show'>
                         <h2>" . $confirmBook['book_title'] . " has been checked back in</h2>
                         <button class='loginButtons' onclick='mainPage()'>Main page</button>
                     </div>";
             } else {
                 echo "
-                    <div class='container'>
+                    <div class='container show'>
                         <h2>There was an error checking the book back in</h2>
                         <button class='loginButtons' onclick='mainPage()'>Main page</button>
                     </div>";
@@ -869,7 +869,7 @@ class LibraryDatabase{
         global $mysqli;
         if($mysqli->query($sql)){
             echo "
-                <div class='container'>
+                <div id='userSearch' class='container show'>
                     <h2>The fine has been paid</h2>   
                     <button class='loginButtons' onclick='mainPage()'>Main page</button>       
                 </div>";
@@ -886,7 +886,7 @@ class LibraryDatabase{
         global $mysqli;
         $searchResult = $mysqli->query($sqls); 
         echo "
-        <div class='offsetSort'>
+        <div class='show'>
             <div class='orgnaiseSearchContainer'>  
                 <h2 class='searchResultTitle'>Here are your search results : </h2>  
                 <h4>Sort By - </h4>           
@@ -959,14 +959,14 @@ class LibraryDatabase{
                             } else if ($rows["is_checked_out"] === "1" && $_SESSION['isStaff'] != TRUE) {
                                 echo "
                                     <form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
-                                        <button class='login searchbutton bookButtons' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Currently Unavailable</button> 
-                                        <button class='login searchbutton bookButtons' >Cancel</button>
+                                        <button class='login searchButton bookButtons' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Currently Unavailable</button> 
+                                        <button class='login searchButton bookButtons' >Cancel</button>
                                     </form>";                                  
                             } else {
                                 echo "
                                     <form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
-                                        <button class='login searchbutton bookButtons' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
-                                        <button class='login searchbutton bookButtons'>Cancel</button>
+                                        <button class='login searchButton bookButtons' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
+                                        <button class='login searchButton bookButtons'>Cancel</button>
                                     </form>";                                           
                             }
                             echo "</td>
@@ -986,7 +986,7 @@ class LibraryDatabase{
         global $mysqli;
         $searchResult = $mysqli->query($sqls); 
         echo "
-        <div class='offsetSort'>
+        <div class='show'>
             <div class='orgnaiseSearchContainer'>  
                 <h2 class='searchResultTitle'>Here are your search results : </h2>  
                 <h4>Sort By - </h4>           
@@ -1060,14 +1060,14 @@ class LibraryDatabase{
                             } else if ($rows["is_checked_out"] === "1" && $_SESSION['isStaff'] != TRUE) {
                                 echo "
                                     <form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
-                                        <button class='login searchbutton' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Currently Unavailable</button> 
-                                        <button class='login searchbutton' >Cancel</button>
+                                        <button class='login searchButton' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . " disabled>Currently Unavailable</button> 
+                                        <button class='login searchButton' >Cancel</button>
                                     </form>";                                  
                             } else {
                                 echo "
                                     <form method='post' action='mainPage.php#" . $rows["book_id"] . "'>                               
-                                        <button class='login searchbutton' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
-                                        <button class='login searchbutton'>Cancel</button>
+                                        <button class='login searchButton' id=" . $rows["book_id"] . " type='submit' name='addToCart' value=" . $rows["book_id"] . ">Add to Cart</button> 
+                                        <button class='login searchButton'>Cancel</button>
                                     </form>";                                           
                             }
                             echo "</td>
@@ -1089,7 +1089,7 @@ class LibraryDatabase{
         $bookToEdit = $mysqli->query($sqls);                                           
         $rows = $bookToEdit->fetch_assoc();
         echo "
-            <div class='container offsetBook innerContainers overlay' id='editFormContainer'>
+            <div class='container show' id='editFormContainer'>
                 <form method='post' id=editForm enctype='multipart/form-data'>
                     <h2>Edit A Book Entry</h2>
                     <h4>You about to edit <span>" . $rows['book_title'] . "</span> by <span>" . $rows['author_name'] . "</span>.</h4>
@@ -1169,12 +1169,12 @@ class LibraryDatabase{
                 global $mysqli; 
         if ($mysqli->query($sql) === TRUE) {
             echo "
-                <div class='container offsetBook innerContainers overlay''>
+                <div class='container show''>
                     <h2>Record '" . $bookTitleEdit . "' updated successfully</h2>
                 </div>";
         } else {
             echo "
-                <div class='container offsetBook innerContainers overlay''>
+                <div class='container show''>
                     <h2>Error deleting record: " . $mysqli->error . "</h2>
                 </div>";
         }  
@@ -1210,30 +1210,30 @@ class LibraryDatabase{
                                 global $mysqli;
                                     if ($mysqli->query($sql) === TRUE) {
                                         echo "
-                                            <div class='container offsetBook innerContainers overlay''>
+                                            <div class='container show'>
                                                 <h2>New record created successfully</h2>
                                             ";
                                     } else {
                                         echo "
-                                            <div class='container offsetBook innerContainers overlay>
+                                            <div class='container show'>
                                                 <h2>Error: " . $bookTitle . "<br>" .  $mysqli->error . "</h2>
                                             </div>";
                                     }                
                             } else {
                                 echo "
-                                    <div class='container offsetBook innerContainers overlay''>
+                                    <div class='container show'>
                                         <h2>Your file is too big, image should be less the 5mb</h2>
                                     </div>";
                             }
                         } else {
                             echo "
-                                <div class='container offsetBook innerContainers overlay'>
+                                <div class='container show'>
                                     <h2>There was an error uploading your file</h2>
                                 </div>";
                         }
                     } else {
                         echo "
-                            <div class='container offsetBook innerContainers overlay''>
+                            <div class='container show'>
                                 <h2>You cannot upload files of this type, file must be either jpeg, jpg or png</h2>
                             </div>";
                     };                         
@@ -1248,8 +1248,8 @@ class LibraryDatabase{
         $book = $mysqli->query($sql);
         $bookToDelete = $book->fetch_assoc();
         echo "
-            <section class='container offsetBook innerContainers overlay'>  
-                <div class='warningInnerContainer'>
+            <section class='container show'>  
+                <div>
                     <h2 class='warning'><span>WARNING</span> - You about to <span>permanently delete</span> " . $bookToDelete['book_title']. " from the database? </h2>
                     <h3>Are you sure you want to delete this?</h3>
                     <form method='post'>
@@ -1268,7 +1268,7 @@ class LibraryDatabase{
         $sql = "DELETE FROM books WHERE book_id = '$id'";
             if($mysqli->query($sql) === TRUE){
                 echo "
-                    <div class='container offsetBook innerContainers overlay'>
+                    <div class='container show'>
                         <h2>" . $deleteBook['book_title'] . " has been succesfully deleted from the database</h2>
                     </div>";
             }
@@ -1280,13 +1280,13 @@ class LibraryDatabase{
         $author = $mysqli->query($sql);
         $authorToDelete = $author->fetch_assoc();
         echo "
-            <section class='container offsetBook innerContainers overlay'>       
-                <div class='warningInnerContainer'>
+            <section class='container show'>       
+                <div>
                     <h2 class='warning'> <span>WARNING</span> - You about to <span>permanently delete</span> " . $authorToDelete['author_name']. " from the database, and all associated books! </h2>
                     <h3>Are you sure you want to delete this?</h3>
                     <form method='post'>
-                        <button id='deleteEntry' class='searchbutton addBook' type='submit' name='confirmDeleteAuthor' value=" . $id . ">Delete Author</button>
-                        <button class='searchbutton addBook' onclick='cancelEdit()'>Cancel</button>
+                        <button id='deleteEntry' class='searchButton addBook' type='submit' name='confirmDeleteAuthor' value=" . $id . ">Delete Author</button>
+                        <button class='searchButton addBook' onclick='cancelEdit()'>Cancel</button>
                     </form>
                 </div>
             </section>";
@@ -1303,7 +1303,7 @@ class LibraryDatabase{
         $sqled = "DELETE FROM authors WHERE author_id = '$id'";
             if ($mysqli->query($sqled) === TRUE) {
                 echo "
-                    <div class='container offsetBook innerContainers overlay'>
+                    <div class='container show'>
                         <h2>" . $author . " has been succesfully deleted from the database</h2>
                     </div>";
             }

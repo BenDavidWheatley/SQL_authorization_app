@@ -41,14 +41,14 @@ input:hover, select:hover{
   .pageContainer{
     margin: auto;
 }
+
+/*
 .innerContainer {
     position: absolute;
     min-height: 100vh;
     height: auto;
-}
-.overlay {
-    z-index: 10;
-}
+} */
+
 main {
     position: relative;
 }
@@ -475,11 +475,12 @@ footer {
 .searchUserContainer button{
     margin: auto;
 }
+/*
 .selectUserContainer {
     width: 100%;
     height: 100vh;
     background-color: white;
-}
+} */
 .selectUserTable{
     width: 90%;
     margin: auto;
@@ -494,7 +495,8 @@ footer {
 .container{
     width: 100%;
     background-color: white;
-    height: 600px;
+    min-height: 100vh;
+    height: auto;
     text-align: center;
 }
 .container h2 {
@@ -1036,7 +1038,6 @@ footer {
     width: 100%;
     text-align: center;
     padding-top: 10%;
-    z-index: 10;
 }
 .warning span {
     color: red;
@@ -1288,11 +1289,7 @@ footer {
     border-radius: 5px;
     border: 1px solid #292929;
 }
-.smallContainer {
-    height: 100vh;
-    position: absolute;
-    z-index: 10;
-}
+
 @media only screen and (max-width: 768px){
     #footerInfoContainer {
         width: 100%;

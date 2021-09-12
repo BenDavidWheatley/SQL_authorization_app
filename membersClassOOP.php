@@ -387,14 +387,15 @@ class NewMember {
         $sqlTwo = "SELECT * FROM users WHERE id = '$id'";
         $userFineInfo = $mysqli->query($sqlTwo);
         $userFine = $userFineInfo->fetch_assoc();    
-            echo"<section id='userSearch' class='selectUserContainer containers innerContainers overlay'>
+            echo "
+                <section id='userSearch' class='full show'>
                     <div class='selecteUserDetails '>
                         <h3> User - " . $userFine['user_first_name'] . " " . $userFine['user_surname'] . "</h3>
                         <h3>Fines to pay -  " . $userFine['fineTotal'] . " pounds</h3>";       
             if ($userFine['fineTotal'] > 0){
-                echo 
-                        "<form method='post'>
-                            <button id='payUserFine' class='searchbutton addBook' type='submit' name='payFine' value='" . $userFine['id'] . "'>Pay fine</button>                  
+                echo "
+                        <form method='post'>
+                            <button id='payUserFine' class='searchButton addBook' type='submit' name='payFine' value='" . $userFine['id'] . "'>Pay fine</button>                  
                         </form>";
             }
                 echo "</div>";
@@ -406,14 +407,16 @@ class NewMember {
         $userTwo = $mysqli->query($sqlTwo);
         $usersTwo = $userTwo->fetch_assoc();
         if (!$usersTwo['book_id']){
-            echo "<div class='selectUserContainer container innerContainer overlay'><h2>You currently have nothing checked out</h2></div>";
+            echo "
+                <div class='container'><h2>You currently have nothing checked out</h2></div>";
         } else {
-        echo "<table class='selectUserTable selectedUserHeading'>
-                <tr class='userTitlesContainer'>
-                    <th class='coloumnOne' ><h4>Book</h4></th>
-                    <th class='coloumnTwo'><h4>Checked out on:</h4></th>
-                    <th class='coloumnThree'><h4>Due back on:</h4></th>
-                </tr>";
+            echo "
+                <table class='selectUserTable selectedUserHeading'>
+                    <tr class='userTitlesContainer'>
+                        <th class='coloumnOne' ><h4>Book</h4></th>
+                        <th class='coloumnTwo'><h4>Checked out on:</h4></th>
+                        <th class='coloumnThree'><h4>Due back on:</h4></th>
+                    </tr>";
         while($rows = $user->fetch_assoc()){
             $bookId = $rows["book_id"];
             $book = "SELECT * FROM books WHERE book_id = '$bookId'";
@@ -425,9 +428,8 @@ class NewMember {
                         <td class='coloumnThree'>" . $rows['due_date'] . "</td>
                     </tr>";
         }                                                 
-        echo "
-                </table>
-                
+            echo "
+                </table>               
             </section>";
                         }                      
     }

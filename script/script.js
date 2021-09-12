@@ -62,39 +62,10 @@ display = () => {
 
 // This function hides the relevant page divs when a book is searched
 
-bookSearch = () => {
-    let doesExist = document.getElementById('bookSearchResult');
-    let doesAuthorExist = document.getElementById('searchAuthorContainer');
-    let authorsBooks = document.getElementById('searchAuthorContainer');
-    let noBooks = document.getElementById('authorDoesNotExist');
-    let user = document.getElementById('userSearch');
-    let usersBooks = document.getElementById('');
-    let searchUser = document.getElementById('searchUser');
-    let events = document.getElementById('eventsAndInfoContainer');
-    let cart = document.getElementById('booksInCart');
-    let profile = document.getElementById('profileContainer');
-
-  
-    if (doesExist || doesAuthorExist || authorsBooks || noBooks || user) {
-        console.log('yes');
-        if (events) {
-        events.style.display = 'none';
-        } else if (cart) {
-        cart.style.display = 'none';
-        } else if (profile) {
-            profile.style.display = 'none';
-        } else if (searchUser){
-            searchUser.style.display = 'none'
-        }
-    } else {
-        if(events) {
-            events.style.display = 'block';
-        } else if (cart){
-            cart.style.display = 'block';
-        } else if  (profile) {
-            profile.style.display = 'grid';
-        } else if (searchUser) {
-            searchUser.style.display = 'block';
-        }
-    }
+showHideSearch = () => {
+    let doesExist = document.getElementsByClassName('show')[0];
+    let hideThis = document.getElementsByClassName('hide')[0];
+    if (doesExist) {
+        hideThis.style.display = 'none';
+    } 
 }

@@ -16,7 +16,7 @@ $mysqli->query($sql);
         <title>Library App</title>
     </head>
 
-    <body>
+    <body onload='showHideSearch()'>
         <div class='pageContainer'>  
             <div class='mainContainer'> 
                 <header>
@@ -136,7 +136,7 @@ $mysqli->query($sql);
                                 $newEntry->deleteBookFromDatabase();
                             }?>
                         </section>
-                        <section id='editLibraryContainer'>
+                        <section id='editLibraryContainer' class='hide'>
                             <h1>Edit the library</h1>
                             <h2>To edit an author or book</h2>
                             <p>Search for the book or author you wish to edit. Then click on the edit button.

@@ -13,7 +13,7 @@ include('login.php');
         <link rel="stylesheet" href="style/style.css" type="text/css">
         <title>Library App</title>
     </head>
-    <body class='bodyImage' onload='bookSearch()'>
+    <body class='bodyImage' onload='showHideSearch()'>
         <div class='pageContainer'>
             <div class='mainContainer'>       
                 <header>
@@ -45,7 +45,7 @@ include('login.php');
                                 $newEntry->payFine();
                             }
                         ?>
-                    <section id='searchUser' class='container'>
+                    <section id='searchUser' class='container hide'>
                         <h2>User Search</h2>
                         <p>Use the search bars above to search for a user within the Library.</p>
                         <p>Once you have selected your user you will be able to view the books they have checked out, books that are late and any fines</p>
