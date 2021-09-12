@@ -56,7 +56,10 @@ class LibraryDatabase{
                                 <td class='authorName'><span>Author - </span>" . $author["author_name"] . "</td>
                                 <td class='authorAge'><span>Age - </span>" . $author["age"] . "</td>
                                 <td class='authorGenre'><span>Main Genre - </span>" . $author["genre"] . "</td>  
-                                <td class='authorBio'><span>About - </span>" . $author["author_bio"] .  "</td>                                                                                                              
+                                <td class='authorBio'><span>About - </span>" . $author["author_bio"] .  "</td>   
+                           
+                                    <td class='viewMore'>View More</td>
+                                                                                                                                        
                                 <td class='authorButtons'>
                                     <form method='post'>
                                         <button class='loginButtons' id=" . $author["author_id"] . " type='submit' name='viewBooks' value=" . $author["author_id"] . ">View books</button>";
