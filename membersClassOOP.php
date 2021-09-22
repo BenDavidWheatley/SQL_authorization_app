@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include('login.php');
+// include('login.php');
 include('connect.php');
 include('editLibrary');
 
@@ -17,6 +17,7 @@ if(isset($_POST['newMemberSubmit'])){
     $newMemberUserName = $_SESSION['newMemberUserName'];
     $newMemberPassword = $_SESSION['newMemberPassword'];
 }
+
 class NewMember {
     private $firstName;
     private $surname;
@@ -81,10 +82,12 @@ class NewMember {
         $newMemberUserName = $this->userName;
         $newMemberPassword = $this->password;
         $defaultImage = $this->default; 
+
         $sql = "SELECT * FROM users WHERE username = '$newMemberUserName'";
             global $mysqli;
         $checkUserName = $mysqli->query($sql);
         $usernameValid = $checkUserName->fetch_assoc();
+
             if($usernameValid['username'] != $newMemberUserName) {
                 if ($_FILES['profilePic']['error'] != 0){
                     $newUserNoImage = "INSERT INTO users (username, user_password, user_first_name, user_surname, user_email, user_image, fineTotal)
@@ -94,9 +97,14 @@ class NewMember {
                             echo "<script>window.location.href='newAccount.php';</script>";
                             exit;
                         } else {
-                            echo "There was an error creating the account: Username or email already exists";                         
+                            echo "
+                                <section class='container show error'>
+                                    <p>There was an error creating the account: Username or email already exists</p>
+                                </section>";                         
                         };    
+
                 }else if ($_FILES['profilePic']['error'] === 0){
+
                         $fileName = $_FILES['profilePic']['name'];
                         $fileTmpName = $_FILES['profilePic']['tmp_name'];
                         $fileSize = $_FILES['profilePic']['size'];
@@ -105,6 +113,7 @@ class NewMember {
                         $fileExt = explode('.', $fileName);
                         $fileActualExt = strtolower(end($fileExt));
                         $allowed = array('jpg', 'jpeg', 'png');
+
                         if (in_array($fileActualExt, $allowed)) {
                             if ($fileError === 0){
                                 if ($fileSize < 5000000){
@@ -120,17 +129,29 @@ class NewMember {
                                                 echo "Error <br>" .  $mysqli->error;
                                             }                
                                 } else {
-                                    echo "Your file is too big, image must be less then 5mb";
+                                    echo "
+                                        <section class='container show error'>
+                                            <p>Your file is too big, image must be less then 5mb</p>
+                                        </section>";
                                 }
                             } else {
-                                echo 'There was an error uploading your file';
+                                echo "
+                                    <section class='container show error'>
+                                        <p>There was an error uploading your file</p>
+                                    </section>";
                             }
                         } else {
-                            echo 'You cannot upload files of this type, file must be either jpeg, jpg or png';
+                            echo "
+                                <section class='container show error'>
+                                    <p>You cannot upload files of this type, file must be either jpeg, jpg or png</p>
+                                </section>";
                         };  
                 }
             }else {               
-                echo 'username already exists';       
+                echo "
+                    <section class='container show error'>
+                        <p>username already exists</p>
+                    </section>";       
             } 
     } 
     public function login() {
@@ -244,17 +265,29 @@ class NewMember {
                                             echo "Error: " .  $mysqli->error;
                                         }                
                             } else {
-                                echo "Your file is too big, image should be less the 5mb";
+                                echo "
+                                    <section class='container show error'>
+                                        <p>Your file is too big, image should be less the 5mb</p>
+                                    </section>";
                             }
                         } else {
-                            echo 'There was an error uploading your file';
+                            echo "
+                                <section class='container show error'>
+                                    <p>There was an error uploading your file</p>
+                                </section>";
                         }
                     } else {
-                        echo 'You cannot upload files of this type, file must be either jpeg, jpg or png';
+                        echo "
+                            <section class='container show error'>
+                                <p>You cannot upload files of this type, file must be either jpeg, jpg or png</p>
+                            </section>";
                     }
                 }
                 else { 
-                    echo "image not edited";
+                    echo "
+                        <section class='container show error'>
+                            <p>image not edited</p>
+                        </section>";
                 };                        
     }     
     public function editFirstName(){
@@ -322,9 +355,20 @@ class NewMember {
         if (isset($_POST['searchUsername'])){
             $search = '%' . strtolower($_POST['searchUsername']) . '%';            
             $sqlUsername = "SELECT * FROM users WHERE username LIKE '$search' ORDER BY user_surname ASC";
+            $sqlUserValidation = "SELECT * FROM users WHERE username LIKE '$search'";
                 global $mysqli;
                 $user = $mysqli->query($sqlUsername);
-                echo "<section id='userSearch' class='libraryUsers container innerContainers overlay'>
+                $userExist = $mysqli->query($sqlUserValidation);
+                $doesUserExist = $userExist->fetch_assoc();
+          
+
+                if (!$doesUserExist) {
+                    echo "
+                        <section class='libraryUsers container show error'>
+                            <p class='show full'>User does not exist</p>
+                        </section>";
+                } else {
+                echo "<section id='userSearch' class='libraryUsers container show'>
                         <table class='searchUserContainer'>
                             <tr class='tableHeaders'>    
                                 <th class='userTitles' ><h4>Name</h4></th>
@@ -350,35 +394,48 @@ class NewMember {
             echo "</table> 
             </section>"; 
         }
+    }
         if (isset($_POST['searchSurname'])) {
             $search = '%' . strtolower($_POST['searchSurname']) . '%';
                 $sqlSurname = "SELECT * FROM users WHERE user_surname LIKE '$search'";
+                $sqlValidateUser = "SELECT * FROM users WHERE user_surname LIKE '$search'";
                 global $mysqli;
                 $user = $mysqli->query($sqlSurname);
-                echo "<section id='userSearch' class='libraryUsers container innerContainers overlay'>
-                <table class='searchUserContainer'>
-                    <tr class='tableHeaders'>    
-                        <th class='userTitles' ><h4>Name</h4></th>
-                        <th class='userTitles' ><h4>Username</h4></th>
-                        <th class='userTitles' ><h4>Email</h4></th>
-                        <th class='userTitles' ><h4>Select User</h4></th>                         
-                    </tr>";
-            while($userDetails = $user->fetch_assoc()){
-                echo "<tr class='searchUserTable'>
-                            <td>" . $userDetails['user_first_name']  . " " .  $userDetails['user_surname'] . "</td>
-                            <td>" . $userDetails['username'] . "</td>                                  
-                            <td>" . $userDetails['user_email'] . "</td>   
-                            <td>    <form method='post'>
-                                        <button id='selectUser' class='searchbutton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
-                                    </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><hr></td>
-                        </tr>";                      
-            }
-            echo "</table> 
-            </section>"; 
+                $validateUser = $mysqli->query($sqlValidateUser);
+                $doesUserExist = $validateUser->fetch_assoc();
+
+            if(!$doesUserExist){
+                echo "
+                    <section class='libraryUsers container show error'>
+                        <p class='show full'>User does not exist</p>
+                    </section>";
+            } else {
+                echo "
+                    <section id='userSearch' class='libraryUsers container show'>
+                        <table class='searchUserContainer'>
+                            <tr class='tableHeaders'>    
+                                <th class='userTitles' ><h4>Name</h4></th>
+                                <th class='userTitles' ><h4>Username</h4></th>
+                                <th class='userTitles' ><h4>Email</h4></th>
+                                <th class='userTitles' ><h4>Select User</h4></th>                         
+                            </tr>";
+                    while($userDetails = $user->fetch_assoc()){
+                        echo "<tr class='searchUserTable'>
+                                    <td>" . $userDetails['user_first_name']  . " " .  $userDetails['user_surname'] . "</td>
+                                    <td>" . $userDetails['username'] . "</td>                                  
+                                    <td>" . $userDetails['user_email'] . "</td>   
+                                    <td>    <form method='post'>
+                                                <button id='selectUser' class='searchButton addBook' type='submit' name='selectThisUser' value=" . $userDetails['id'] . ">Select User</button>
+                                            </form>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><hr></td>
+                                </tr>";                      
+                    }
+                    echo "</table> 
+                    </section>"; 
+                    }
         }
     }
     public function selectThisUser() {

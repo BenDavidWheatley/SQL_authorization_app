@@ -69,3 +69,32 @@ showHideSearch = () => {
         hideThis.style.display = 'none';
     } 
 }
+
+
+// This function shows more information about the author
+hideSeeMore = () => {
+    let bio = document.getElementsByClassName('authorBio');
+    for (x = 0; x < bio.length; x ++) {
+        let height = document.getElementsByClassName('authorBio')[x].offsetHeight;
+        console.log(height);
+        if (height < 180) {
+            bio[x].nextElementSibling.style.display = 'none';
+        }
+
+        //[0]
+    }
+    console.log(bio); 
+   
+}
+
+seeMore = (x) => {
+    let seeMoreBio = x.parentNode;
+    seeMoreBio.classList.toggle("expanded");
+    const expanded = seeMoreBio.classList.contains("expanded");
+
+    if (expanded) {
+        x.innerHTML = "View Less";
+    } else {
+        x.innerHTML = "View More";
+    } 
+}; 

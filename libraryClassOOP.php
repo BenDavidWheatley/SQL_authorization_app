@@ -58,7 +58,7 @@ class LibraryDatabase{
                                 <td class='authorGenre'><span>Main Genre - </span>" . $author["genre"] . "</td>  
                                 <td class='authorBio'><span>About - </span>" . $author["author_bio"] .  "</td>   
                            
-                                    <td class='viewMore'>View More</td>
+                                    <td class='viewMore' onclick='seeMore(this)'>View More</td>
                                                                                                                                         
                                 <td class='authorButtons'>
                                     <form method='post'>
@@ -154,46 +154,46 @@ class LibraryDatabase{
                                     
                         if ($mysqli->query($author) === TRUE) {
                             echo "
-                                <div class='container show'>
+                                <section class='container show error'>
                                         <h3></p>New record created successfully</h3>
-                                </div>";
+                                </section>";
                         } else {
                             echo "
-                                <div class='container show'>
+                                <section class='container show error'>
                                     <h3>Error <br>" .  $mysqli->error . "</h3>
-                                </div>";
+                                </section>";
                             }   
                     } else {
                         echo "
-                            <div class='container show'>
+                            <section class='container show error'>
                                 <h3>Your file is too big, image must be less then 5mb</h3>
-                            </div>";
+                            </section>";
                     }
                 } else {
                     echo "
-                        <div class='container show'>
+                        <section class='container show error'>
                             <h3>There was an error uploading your file</h3>
-                        </div>";
+                        </section>";
                 }
             } else {
                 echo "
-                    <div class='container show'>
+                    <section class='container show error'>
                         <h3>You cannot upload files of this type, file must be either jpeg, jpg or png</h3>
-                    </div>";
+                    </section>";
             };  
         } else {
             $sql = "INSERT INTO authors (author_name, age, genre, author_bio) VALUE ('$authorsName', '$authorsAge', '$mainGenre', '$authorBio')";
             global $mysqli;                               
             if ($mysqli->query($sql) === TRUE) {
                 echo "
-                    <div class='container show'>
+                    <section class='container show error'>
                         <h3>New author added to database</h3>
-                    </div>";
+                    </section>";
                 } else {
                     echo "
-                        <div class='container show'> 
+                        <section class='container show error'>
                             <h3>Error: " . $authorName . "<br>" .  $mysqli->error . "</h3>
-                        </div>";
+                        </section>";
                     }    
         }       
     }
@@ -244,13 +244,14 @@ class LibraryDatabase{
         global $mysqli;    
             if ($mysqli->query($sql) === TRUE) {
                 echo "
-                    <div class='container show'>
-                        <h2>Record for " . $authorName . " updated successfully";
+                    <section class='container show error'>
+                        <h2>Record for " . $authorName . " updated successfully</h2>
+                    </section>";
             } else {
-                echo "<
-                    div class='container show'>
+                echo "
+                    <section class='container show error'>
                         <h2>Error editing record: " . $mysqli->error . "</h2>
-                    </div>";
+                    </section>";
         }
         if ($_FILES['authorImageEdit']['error'] === 0) {        
             $sqlImage = "SELECT author_image FROM authors WHERE author_id = '$id'";          
@@ -284,36 +285,38 @@ class LibraryDatabase{
                                 global $mysqli;
                                     if ($mysqli->query($sql) === TRUE) {
                                         echo "
-                                            <div class='container'>
+                                            <section class='container show error'>
                                                 <h2>New record created successfully</h2>
-                                            </div>";
+                                            </section>";
                                         } else {
                                             echo "
-                                                <div class='container'>
+                                                <section class='container show error'>
                                                     <h2>Error: " .  $mysqli->error . "</h2>
-                                                </div>";
+                                                </section>";
                                         }                
                             } else {
                                 echo "
-                                    <div class='container'>
+                                    <section class='container show error'>
                                         <h2>Your file is too big, image should be less the 5mb</h2>
-                                    </div>";
+                                    </section>";
                             }
                         } else {
                             echo "
-                                <div class='container'>
+                                <section class='container show error'>
                                     <h2>There was an error uploading your file</h2>
-                                </div>";
+                                </section>";
                         }
                     } else {
                         echo "
-                            <div class='container'>
+                            <section class='container show error'>
                                     <h2>You cannot upload files of this type, file must be either jpeg, jpg or png</h2>
-                            </div>";
+                            </section>";
                     };                         
         } else { 
-            echo "<h2>image not edited</h2>
-            </div>";
+            echo "
+                <section class='container show error'>
+                    <h2>image not edited</h2>
+                </section>";
         };
     }
 
@@ -470,32 +473,32 @@ class LibraryDatabase{
                         global $mysqli;
                             if ($mysqli->query($book) === TRUE) {
                                 echo "
-                                    <div class='container show'>
+                                    <section class='container show error'>
                                         <h2>New record created successfully</h2>
-                                    </div>";
+                                    </section>";
                                 } else {
                                     echo "
-                                        <div class='container show'>
+                                        <section class='container show error'>
                                             <h2>Error: " . $bookTitle . "<br>" .  $mysqli->error . "</h2>
-                                        </div>";
+                                        </section>";
                                 }                
                     } else {
                         echo "
-                            <div class='container show'>
+                            <section class='container show error'>
                                 <h2>Your file is too big, image must be less then 5mb</h2>
-                            </div>";
+                            </section>";
                     }
                 } else {
                     echo "
-                        <div class='container show'>
+                        <section class='container show error'>
                             <h2>There was an error uploading your file</h2>
-                        </div>";
+                        </section>";
                 }
             } else {
                 echo "
-                    <div class='container show'>
+                    <section class='container show error'>
                         <h2>You cannot upload files of this type, file must be either jpeg, jpg or png</h2>
-                    </div>";
+                    </section>";
             };  
         } else {
             $sql = "INSERT INTO books (book_title, year_released, book_genre, age_group, author_id)
@@ -503,14 +506,14 @@ class LibraryDatabase{
             global $mysqli;
                 if ($mysqli->query($sql) === TRUE) {
                     echo "
-                        <div class='container'>
+                        <section class='container show error'>
                             <h2>New record created successfully<h2>
-                        </div>";
+                        </section>";
                     } else {
                         echo "  
-                            <div class='container'>
+                            <section class='container show error'>
                                 <h2>Error: " . $bookTitle . "<br>" .  $mysqli->error . "</h2>
-                            </div>";
+                            </section>";
                     } 
         } 
     }  

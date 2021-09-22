@@ -14,12 +14,12 @@ include('login.php');
         <title>Library App</title>
     </head>
     <body class='bodyImage' onload='showHideSearch()'>
-        <div class='pageContainer'>
-            <div class='mainContainer'>       
-                <header>
-                    <?php include('header.php')?>
-                <header>
-                <div >
+        <header>
+            <?php include('header.php')?>
+        </header>
+
+        <main>   
+            
                     <section id='searchLibrary'>
                         <div class='searchDatabaseContainer'>
                             <form class='searchDatabase' method='post'>
@@ -50,14 +50,12 @@ include('login.php');
                         <p>Use the search bars above to search for a user within the Library.</p>
                         <p>Once you have selected your user you will be able to view the books they have checked out, books that are late and any fines</p>
                         <p>Should the user pay their fine, you will be able to clear it form this page.</p>
-                    </section>
-                </div>
-                <footer class='footer' id='footerContainer'>
-                    <?php include('footer.php') ?>
-                </footer>
-                <script src='script/script.js'></script>
-            </div>
-        </div>
-
+                    </section>          
+        </main>
+        
+        <footer class='footer' id='footerContainer'>
+            <?php include('footer.php') ?>
+        </footer>
+        <script src='script/script.js'></script>
     </body> 
 </html>
