@@ -7,7 +7,6 @@ session_start();
 include('login.php');
 include('connect.php');
 include('editLibrary');
-include('membersClassOOP.php');
 
 class LibraryDatabase{
     public $numBooksInCart = 0;
@@ -692,8 +691,8 @@ class LibraryDatabase{
                 echo "
                     <p id='bookTitleOwn' class='profileBookTitle'>" . $books['book_title'] . "</p>  
                     <p id='due' class='profileBookDue'>" . $books['due_date'] . "</p>
-                    <form method='post>
-                        <button class='loginButtons bookButtons' type='submit' name='checkIn' value=" . $rows["book_id"] . ">Checkin Book</button>
+                    <form method='post'>
+                        <button class='loginButtons bookButtons' type='submit' name='checkIn' value=" . $books["book_id"] . ">Checkin Book</button>
                     </form> ";                      
             }          
         }  
@@ -746,12 +745,14 @@ class LibraryDatabase{
             </section>";
         }  
     }
+
     public function removeFromCart () {
         $id = $_POST['removeFromCart'];      
         $sql = "DELETE FROM cart WHERE book_id = '$id'";
         global $mysqli;
         $mysqli->query($sql);
     }      
+
     public function checkout(){
         $id = $_SESSION['userId'];
         $sql = "SELECT COUNT(book_id) AS 'count' FROM cart WHERE users_id = '$id'";
@@ -811,7 +812,9 @@ class LibraryDatabase{
                     echo "
             </div>";
     }
+
     public function bookCheckin() {
+        $currentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
         $bookId = $_POST['checkIn'];    
         $fine = "SELECT * FROM checkedOut WHERE book_id = '$bookId'";
         global $mysqli;
@@ -833,19 +836,40 @@ class LibraryDatabase{
                 global $mysqli;
                 $confirm = $mysqli->query($sql);
                 $confirmBook = $confirm->fetch_assoc();
-                echo "
-                    <div class='container show'>
-                        <h2>" . $confirmBook['book_title'] . " has been checked back in</h2>
-                        <button class='loginButtons' onclick='mainPage()'>Main page</button>
-                    </div>";
+                if ($currentPage != 'profile.php') {
+                    echo "
+                        <div class='container show'>
+                            <h2>" . $confirmBook['book_title'] . " has been checked back in</h2>
+                            <button class='loginButtons' onclick='mainPage()'>Main page</button>
+                        </div>";
+                } else {
+                    echo "
+                        <div class='container show'>
+                            <h2>" . $confirmBook['book_title'] . " has been checked back in</h2>
+                            <form method='post'>
+                                <button class='loginButtons' >Back to profile</button>
+                            </form>
+                        </div>";
+                }
             } else {
-                echo "
-                    <div class='container show'>
-                        <h2>There was an error checking the book back in</h2>
-                        <button class='loginButtons' onclick='mainPage()'>Main page</button>
-                    </div>";
+                if ($currentPage != 'profile.php') {
+                    echo "
+                        <div class='container show'>
+                            <h2>There was an error checking the book back in</h2>
+                            <button class='loginButtons' onclick='mainPage()'>Main page</button>
+                        </div>";
+                } else {
+                    echo "
+                        <div class='container show'>
+                            <h2>There was an error checking the book back in</h2>
+                            <form method='post'>
+                                <button class='loginButtons' >Back to profile</button>
+                            </form>
+                        </div>";
+                }
             }
     }
+
     public function fine() {
         $sql = "SELECT * FROM checkedOut";
         $checkDate = new DateTime ();      
