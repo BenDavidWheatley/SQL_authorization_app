@@ -7,7 +7,7 @@ session_start();
 include('login.php');
 include('connect.php');
 include('editLibrary');
-include('memebersClassOOP.php');
+include('membersClassOOP.php');
 
 class LibraryDatabase{
     public $numBooksInCart = 0;
@@ -35,14 +35,16 @@ class LibraryDatabase{
 // This function will search the database for all or a particular author.
 
     public function searchAuthor(){
+        //Gets current URL
         $curPageName = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1); 
-        
+        //Gets search input for author
         $authorName = '%'. $_POST['searchAuthor'] .'%'; 
+        //SQL query
         $sql = "SELECT * FROM authors  WHERE author_name LIKE '$authorName'";
             global $mysqli;    
         $doesAuthorExist = $mysqli->query($sql); 
         $exist = $doesAuthorExist->fetch_assoc(); 
-
+ 
         if ($exist['author_name']) {
         echo "
             <section class='show' id='searchAuthorContainer'>
@@ -52,18 +54,16 @@ class LibraryDatabase{
                     echo "
                         <table class='searchAuthorTableContainer'>
                             <tr class='authorSearchTable'>                                          
-                                <td class='authorImageConatainer'><img class='authorImage' src='assets/authors/" . $author['author_image'] . "'></td>                                             
+                                <td class='authorImageContainer'><img class='authorImage' src='assets/authors/" . $author['author_image'] . "'></td>                                             
                                 <td class='authorName'><span>Author - </span>" . $author["author_name"] . "</td>
                                 <td class='authorAge'><span>Age - </span>" . $author["age"] . "</td>
                                 <td class='authorGenre'><span>Main Genre - </span>" . $author["genre"] . "</td>  
-                                <td class='authorBio'><span>About - </span>" . $author["author_bio"] .  "</td>   
-                           
-                                    <td class='viewMore' onclick='seeMore(this)'>View More</td>
-                                                                                                                                        
+                                <td class='authorBio'><span>About - </span>" . $author["author_bio"] .  "</td>                       
+                                <td class='viewMore' onclick='seeMore(this)'>View More</td>                                                                                                                                       
                                 <td class='authorButtons'>
                                     <form method='post'>
                                         <button class='loginButtons' id=" . $author["author_id"] . " type='submit' name='viewBooks' value=" . $author["author_id"] . ">View books</button>";
-
+                                            //if on editLibrary.php then the following buttons will be added to allow you to edit the author
                                             if ($curPageName === 'editLibrary.php') {
                                                 echo "
                                                     <button class='loginButtons' type='submit' name='editAuthor' value=" . $author["author_id"] . ">Edit Author</button>
@@ -134,6 +134,7 @@ class LibraryDatabase{
         $authorImage = $_FILES['authorImage'];
 
         if ($_FILES['authorImage']['error'] === 0){
+            //This variables store all the information from the file for the authorImage
             $fileName = $_FILES['authorImage']['name'];
             $fileTmpName = $_FILES['authorImage']['tmp_name'];
             $fileSize = $_FILES['authorImage']['size'];
@@ -143,6 +144,7 @@ class LibraryDatabase{
             $fileActualExt = strtolower(end($fileExt));                    
             $allowed = array('jpg', 'jpeg', 'png');
 
+            //checks to see if the image is either jpeg or png 
             if (in_array($fileActualExt, $allowed)) {
                 if ($fileError === 0){
                     if ($fileSize < 5000000){
@@ -668,6 +670,7 @@ class LibraryDatabase{
             <p> You currently have <span class='alloawnceFigure'>" . $resultPrevCheckout['currentlyCheckedOut'] . "</span> books checked out.</p>
             <p> You may check out up to <span class='alloawnceFigure'>" . $canCheckOut . "</span> books on this occation</p>";
     }
+
     public function currentCheckOut(){
         $id = $_SESSION['userId']; 
         $sql= "SELECT * FROM checkedOut LEFT OUTER JOIN books ON checkedOut.book_id = books.book_id WHERE users_id = '$id'";
@@ -696,6 +699,7 @@ class LibraryDatabase{
         }  
             echo "</div>";
     }
+
     public function cart(){
         $id = $_SESSION['userId']; 
         $sql = "SELECT * FROM cart LEFT OUTER JOIN books ON cart.book_id = books.book_id WHERE users_id = '$id'";

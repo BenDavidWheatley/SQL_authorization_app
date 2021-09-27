@@ -5,6 +5,7 @@ include('connect.php');
 include('editLibrary');
 
 if(isset($_POST['newMemberSubmit'])){
+    
     $_SESSION['newMemberName'] = $_POST['newMemberFirstName'];
     $_SESSION['newMemberSurname'] = $_POST['newMemberSurname'];
     $_SESSION['newMemberEmail'] = $_POST['newMemberEmail'];
@@ -291,6 +292,7 @@ class NewMember {
                 };                        
     }     
     public function editFirstName(){
+        //Takes the users id that was saved to the session when logged in
         $id = $_SESSION['userId'];
         $newName = $_POST['editFirstName'];
         $sql = "UPDATE users SET user_first_name = '$newName' WHERE id = '$id'";
@@ -301,16 +303,22 @@ class NewMember {
         }                      
     }
     public function editSurname(){
+        //Takes the users id that was saved to the session when logged in
         $id = $_SESSION['userId'];
+        // saves the new user name that was input in the form to a variable
         $newSurname = $_POST['editSurname'];
+        //SQL statement prepared
         $sql = "UPDATE users SET user_surname = '$newSurname' WHERE id = '$id'";
         global $mysqli;
+        //if the query works then the page will refresh and update the user on the website
         if ($mysqli->query($sql)){
             echo "<script>window.location.href='profile.php';</script>";
             exit; 
         }  
     }
+    
     public function editUserName(){
+         //Takes the users id that was saved to the session when logged in
         $id = $_SESSION['userId'];
         $newUsername = $_POST['editUsername'];       
         $sql = "SELECT * FROM users WHERE username = '$newUsername'";

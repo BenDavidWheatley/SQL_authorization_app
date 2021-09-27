@@ -832,7 +832,7 @@ footer {
     grid-template-rows: 20px 20px 20px 180px 20px 20px;   
     transition: grid-template-rows 1s smooth;
 }     
-.authorImageConatainer{
+.authorImageContainer{
     width: 100%;
     grid-column-start: 1;
     grid-column-end: 2;
@@ -1782,7 +1782,7 @@ footer {
         grid-row-end: 2;
         margin: auto;     
     }
-    .authorImageConatainer{
+    .authorImageContainer{
         text-align: center;
     }
     .authorName, .authorButtons, .authorAge, .authorGenre, .authorBio{
